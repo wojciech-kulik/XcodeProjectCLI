@@ -8,6 +8,11 @@
 import ArgumentParser
 import Foundation
 
+struct ProjectOptions: ParsableArguments {
+    @Argument(help: "xcodeproj path")
+    var projectPath: String
+}
+
 @main
 struct XcodeProjectCLI: ParsableCommand {
     static let configuration: CommandConfiguration = .init(

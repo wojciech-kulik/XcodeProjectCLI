@@ -2,15 +2,6 @@ import ArgumentParser
 import Foundation
 import XcodeProj
 
-struct ProjectOptions: ParsableArguments {
-    @Argument(help: "xcodeproj path")
-    var projectPath: String
-
-    var projectDir: String {
-        (projectPath as NSString).deletingLastPathComponent
-    }
-}
-
 struct ListTargetsCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "list-targets",
@@ -20,29 +11,26 @@ struct ListTargetsCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(help: "List targets for a specific file")
+    @Option(help: "Find targets for a specific file")
     var filePath: String?
 
-    @Option(help: "List targets for a specific group")
+    @Option(help: "Find targets for a specific group")
     var groupPath: String?
 
     func run() throws {
-        let project = try XcodeProj(pathString: options.projectPath)
-        var targets = project.pbxproj.nativeTargets
+        let project = try Project(projectPath: options.projectPath)
+        var targets: [PBXTarget] = []
 
         if let groupPath {
-            // TODO:
+            targets = try project.targets.list(forGroupPath: groupPath)
         } else if let filePath {
-            targets = try targets.filter { target in
-                let files = try target.sourceFiles()
-                return try files.contains {
-                    try $0.fullPath(sourceRoot: options.projectDir) == filePath
-                }
-            }
+            targets = try project.targets.list(forFilePath: filePath)
+        } else {
+            targets = project.targets.list()
         }
 
-        for target in targets.map(\.name) {
-            print(target)
+        for target in targets {
+            print(target.name)
         }
     }
 }
