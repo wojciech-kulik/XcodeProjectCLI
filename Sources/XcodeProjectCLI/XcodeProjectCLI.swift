@@ -27,7 +27,7 @@ struct XcodeProjectCLI: ParsableCommand {
                 name: "Targets",
                 subcommands: [
                     ListTargetsCommand.self,
-                    UpdateTargetsCommand.self
+                    SetTargetCommand.self
                 ]
             )
         ]

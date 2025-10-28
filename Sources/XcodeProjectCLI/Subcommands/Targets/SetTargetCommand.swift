@@ -2,10 +2,10 @@ import ArgumentParser
 import Foundation
 import XcodeProj
 
-struct UpdateTargetsCommand: ParsableCommand {
+struct SetTargetCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
-        commandName: "update-targets",
-        abstract: "Update project targets."
+        commandName: "set-target",
+        abstract: "Set target for a file or group."
     )
 
     @OptionGroup
