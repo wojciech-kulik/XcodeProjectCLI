@@ -11,10 +11,10 @@ struct ListTargetsCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(help: "Find targets for a specific file")
+    @Option(name: .customLong("file"), help: "Full path to file - find targets for a specific file")
     var filePath: String?
 
-    @Option(help: "Find targets for a specific group")
+    @Option(name: .customLong("group"), help: "Full path to group - find targets for a specific group")
     var groupPath: String?
 
     func run() throws {
@@ -22,9 +22,9 @@ struct ListTargetsCommand: ParsableCommand {
         let targets: [PBXTarget]
 
         if let groupPath {
-            targets = try project.targets.listTargets(forGroupPath: groupPath)
+            targets = try project.targets.listTargetsForGroup(groupPath)
         } else if let filePath {
-            targets = try project.targets.listTargets(forFilePath: filePath)
+            targets = try project.targets.listTargetsForFile(filePath)
         } else {
             targets = project.targets.listTargets()
         }

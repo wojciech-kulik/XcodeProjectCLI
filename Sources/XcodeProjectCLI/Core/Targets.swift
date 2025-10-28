@@ -15,7 +15,7 @@ final class Targets {
         project.pbxproj.nativeTargets.sorted { $0.name < $1.name }
     }
 
-    func listTargets(forFilePath filePath: String) throws -> [PBXTarget] {
+    func listTargetsForFile(_ filePath: String) throws -> [PBXTarget] {
         try project.pbxproj.nativeTargets
             .filter { target in
                 let files = try target.sourceFiles()
@@ -26,7 +26,7 @@ final class Targets {
             .sorted { $0.name < $1.name }
     }
 
-    func listTargets(forGroupPath groupPath: String) throws -> [PBXTarget] {
+    func listTargetsForGroup(_ groupPath: String) throws -> [PBXTarget] {
         let group = try groups.findGroup(byFullPath: groupPath)
 
         guard let group else {

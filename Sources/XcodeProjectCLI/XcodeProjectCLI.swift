@@ -9,7 +9,10 @@ import ArgumentParser
 import Foundation
 
 struct ProjectOptions: ParsableArguments {
-    @Argument(help: "xcodeproj path, if not provided will search in the current directory")
+    @Argument(help: .init(
+        "xcodeproj full path, if not provided will search in the current directory",
+        valueName: "xcodeproj"
+    ))
     var projectPath: String?
 }
 

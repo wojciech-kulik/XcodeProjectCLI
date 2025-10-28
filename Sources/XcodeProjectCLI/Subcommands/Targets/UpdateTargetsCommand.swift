@@ -11,7 +11,7 @@ struct UpdateTargetsCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(help: "File path")
+    @Option(name: .customLong("file"), help: "Full path to file")
     var filePath: String
 
     @Option(help: "Comma separated list of target names")
