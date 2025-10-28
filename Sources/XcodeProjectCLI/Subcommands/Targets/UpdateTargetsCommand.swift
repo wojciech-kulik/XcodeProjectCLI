@@ -1,0 +1,37 @@
+import ArgumentParser
+import Foundation
+import XcodeProj
+
+struct UpdateTargetsCommand: ParsableCommand {
+    static var configuration = CommandConfiguration(
+        commandName: "update-targets",
+        abstract: "Update project targets."
+    )
+
+    @OptionGroup
+    var options: ProjectOptions
+
+    @Option(help: "File path")
+    var filePath: String
+
+    @Option(help: "Comma separated list of target names")
+    var targets: String
+
+    private var parsedTargets: [String] = []
+
+    func run() throws {
+        let project = try Project(projectPath: options.projectPath)
+        try project.targets.setTargets(parsedTargets, for: filePath)
+        try project.save()
+    }
+
+    mutating func validate() throws {
+        let targets = targets.components(separatedBy: ",")
+
+        guard !targets.isEmpty else {
+            throw ValidationError("targets field required")
+        }
+
+        parsedTargets = targets
+    }
+}

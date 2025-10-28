@@ -9,4 +9,10 @@ final class Project {
         self.project = try XcodeProj(pathString: projectPath)
         self.targets = Targets(project: project)
     }
+
+    func save() throws {
+        if let path = project.path {
+            try project.write(path: path, override: true)
+        }
+    }
 }
