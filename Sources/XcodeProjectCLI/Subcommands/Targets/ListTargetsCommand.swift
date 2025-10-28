@@ -22,7 +22,7 @@ struct ListTargetsCommand: ParsableCommand {
         let targets: [PBXTarget]
 
         if let groupPath {
-            targets = try project.targets.listTargetsForGroup(groupPath)
+            targets = try project.targets.guessTargetsForGroup(groupPath)
         } else if let filePath {
             targets = try project.targets.listTargetsForFile(filePath)
         } else {

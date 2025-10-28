@@ -26,7 +26,10 @@ final class Targets {
             .sorted { $0.name < $1.name }
     }
 
-    func listTargetsForGroup(_ groupPath: String) throws -> [PBXTarget] {
+    /// Guesses targets for the given group by looking for Swift files in the group
+    /// and finding which targets includes the first found Swift file.
+    /// If no Swift files are found in the group, it falls back to the parent group once.
+    func guessTargetsForGroup(_ groupPath: String, fallbackToParent: Bool = true) throws -> [PBXTarget] {
         let group = try groups.findGroup(byFullPath: groupPath)
 
         guard let group else {
@@ -37,6 +40,10 @@ final class Targets {
         let swiftFiles = try group.children
             .filter { $0.path?.hasSuffix("swift") == true }
             .compactMap { try $0.fullPath(sourceRoot: project.rootDir) }
+
+        if fallbackToParent, swiftFiles.isEmpty, let parentGroup = try group.parent?.fullPath(sourceRoot: project.rootDir) {
+            return try guessTargetsForGroup(parentGroup, fallbackToParent: false)
+        }
 
         for swiftFile in swiftFiles {
             if fileToTargetMap[swiftFile]?.isEmpty == false {
