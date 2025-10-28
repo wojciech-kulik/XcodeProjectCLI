@@ -48,6 +48,14 @@ final class Targets {
     }
 
     func setTargets(_ targets: [String], for filePath: String) throws {
+        let destTargets = targets.flatMap {
+            project.pbxproj.targets(named: $0)
+        }
+
+        guard destTargets.count == targets.count else {
+            throw CLIError.invalidParameter("One or more specified targets do not exist in the project.")
+        }
+
         let fileToTargetMap = try createFileToTargetMap()
 
         for target in fileToTargetMap[filePath] ?? [] {
@@ -61,10 +69,6 @@ final class Targets {
 
         guard let fileReference else {
             return
-        }
-
-        let destTargets = targets.flatMap {
-            project.pbxproj.targets(named: $0)
         }
 
         for target in destTargets {
