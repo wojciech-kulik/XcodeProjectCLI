@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+@testable import XcodeProjectCLI
 
 class ProjectTests {
     let testProjectPath: String
@@ -48,6 +49,13 @@ class ProjectTests {
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    }
+
+    func targets(forFile path: String) throws -> [String] {
+        try Project(projectPath: testXcodeprojPath)
+            .targets
+            .listTargetsForFile(path.asInputPath)
+            .map(\.name)
     }
 }
 

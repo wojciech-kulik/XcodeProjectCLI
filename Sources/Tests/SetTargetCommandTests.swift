@@ -20,16 +20,11 @@ extension SerializedSuite.SetTargetCommandTests {
             "Helpers"
         ])
 
-        var output = try runTest(for: &sut)
+        let output = try runTest(for: &sut)
         #expect(output == "")
 
-        output = try Project(projectPath: testXcodeprojPath)
-            .targets
-            .listTargetsForFile(Files.XcodebuildNvimApp.Modules.Main.mainViewModel.asInputPath)
-            .map(\.name)
-            .joined(separator: "\n")
-
-        #expect(output == "Helpers")
+        let targets = try targets(forFile: Files.XcodebuildNvimApp.Modules.Main.mainViewModel)
+        #expect(targets == ["Helpers"])
     }
 
     @Test
@@ -42,16 +37,11 @@ extension SerializedSuite.SetTargetCommandTests {
             "EmptyTarget,Helpers,XcodebuildNvimAppTests"
         ])
 
-        var output = try runTest(for: &sut)
+        let output = try runTest(for: &sut)
         #expect(output == "")
 
-        output = try Project(projectPath: testXcodeprojPath)
-            .targets
-            .listTargetsForFile(Files.XcodebuildNvimApp.Modules.Main.mainViewModel.asInputPath)
-            .map(\.name)
-            .joined(separator: "\n")
-
-        #expect(output == [
+        let targets = try targets(forFile: Files.XcodebuildNvimApp.Modules.Main.mainViewModel)
+        #expect(targets == [
             "EmptyTarget",
             "Helpers",
             "XcodebuildNvimAppTests"
