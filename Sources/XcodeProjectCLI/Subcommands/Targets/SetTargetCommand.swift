@@ -26,7 +26,7 @@ struct SetTargetCommand: ParsableCommand {
     }
 
     mutating func validate() throws {
-        let targets = targets.components(separatedBy: ",")
+        let targets = targets.components(separatedBy: ",").filter { !$0.isEmpty }
 
         guard !targets.isEmpty else {
             throw ValidationError("targets field required")

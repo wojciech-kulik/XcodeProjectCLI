@@ -39,7 +39,7 @@ struct AddFileCommand: ParsableCommand {
     }
 
     mutating func validate() throws {
-        let targets = targets?.components(separatedBy: ",")
+        let targets = targets?.components(separatedBy: ",").filter { !$0.isEmpty }
 
         guard targets?.isEmpty == false || guessTarget else {
             throw ValidationError("--targets parameter is required unless --guess-target is specified")
