@@ -2,17 +2,20 @@ import Foundation
 import XcodeProj
 
 extension PBXGroup {
-    func listAllGroups() throws -> [PBXGroup] {
+    func allNestedGroups() throws -> [PBXGroup] {
         var allGroups: [PBXGroup] = []
 
-        for group in children.compactMap({ $0 as? PBXGroup }) {
-            allGroups.append(group)
-            try allGroups.append(contentsOf: group.listAllGroups())
+        for child in children.compactMap({ $0 as? PBXGroup }) {
+            allGroups.append(child)
+            try allGroups.append(contentsOf: child.allNestedGroups())
         }
+
         return allGroups
     }
 
     func subgroup(named name: String) -> PBXGroup? {
-        children.compactMap { $0 as? PBXGroup }.first { $0.path == (name as NSString).lastPathComponent }
+        children
+            .compactMap { $0 as? PBXGroup }
+            .first { ($0.path as NSString?)?.lastPathComponent == name }
     }
 }

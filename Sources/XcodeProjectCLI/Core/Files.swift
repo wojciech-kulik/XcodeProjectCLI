@@ -24,7 +24,7 @@ final class Files {
 
         // Validate group
         if group == nil, !createGroups {
-            throw CLIError.invalidParameter("Group at path \(groupPath) not found. Use --create-groups to create missing groups.")
+            throw CLIError.invalidInput("Group at path \(groupPath) not found. Use --create-groups to create missing groups.")
         }
 
         // Create group if needed

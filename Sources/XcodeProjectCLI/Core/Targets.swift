@@ -51,6 +51,7 @@ final class Targets {
             }
         }
 
+        // TODO: refactor
         let relativeGroupPath = groupPath.replacingOccurrences(of: project.rootDir, with: "").trimmingCharacters(in: ["/"])
         let firstGroup = (relativeGroupPath as NSString).pathComponents.first ?? ""
 
@@ -63,7 +64,7 @@ final class Targets {
         }
 
         guard destTargets.count == targets.count else {
-            throw CLIError.invalidParameter("One or more specified targets do not exist in the project.")
+            throw CLIError.invalidInput("One or more specified targets do not exist in the project.")
         }
 
         let fileToTargetMap = try createFileToTargetMap()
@@ -78,7 +79,7 @@ final class Targets {
             .first { try $0.fullPath(sourceRoot: project.rootDir) == filePath }
 
         guard let fileReference else {
-            return
+            throw CLIError.invalidInput("File \(filePath) does not exist in the project.")
         }
 
         for target in destTargets {

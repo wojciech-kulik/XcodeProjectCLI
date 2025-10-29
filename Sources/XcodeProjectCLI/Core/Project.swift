@@ -19,7 +19,7 @@ final class Project {
         }
 
         guard let projectPath else {
-            throw CLIError.invalidParameter("Xcode project file not found in the current directory.")
+            throw CLIError.invalidInput("xcodeproj file not found in the current directory.")
         }
 
         self.project = try XcodeProj(pathString: projectPath)
