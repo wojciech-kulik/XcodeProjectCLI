@@ -19,11 +19,9 @@ extension SerializedSuite.DeleteFileCommandTests {
 
         let output = try runTest(for: &sut)
         #expect(output == "")
-        #expect(!file.asInputPath.exists)
+        try notExpectFileInProject(file.asInputPath)
 
         let project = try XcodeProj(path: .init(testXcodeprojPath))
-        let files = FilesManager(project: project)
-        #expect(try files.findFile(file.asInputPath) == nil)
 
         for target in project.pbxproj.nativeTargets {
             let buildFiles = target.buildPhases

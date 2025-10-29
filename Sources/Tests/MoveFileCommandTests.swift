@@ -1,6 +1,4 @@
-import ArgumentParser
 import Testing
-import XcodeProj
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -23,15 +21,10 @@ extension SerializedSuite.MoveFileCommandTests {
 
         let output = try runTest(for: &sut)
         #expect(output == "")
-        #expect(!file.asInputPath.exists)
-        #expect(dest.asInputPath.exists)
 
-        let project = try XcodeProj(path: .init(testXcodeprojPath))
-        let files = FilesManager(project: project)
-        let targets = try targets(forFile: dest)
-        #expect(try files.findFile(file.asInputPath) == nil)
-        #expect(try files.findFile(dest.asInputPath) != nil)
-        #expect(targets == ["XcodebuildNvimApp"])
+        try notExpectFileInProject(file.asInputPath)
+        try expectFileInProject(dest.asInputPath)
+        try expectTargets(["XcodebuildNvimApp"], forFile: dest.asInputPath)
     }
 
     @Test

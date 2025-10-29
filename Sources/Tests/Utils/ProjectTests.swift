@@ -1,5 +1,7 @@
 import ArgumentParser
 import Foundation
+import Testing
+import XcodeProj
 @testable import XcodeProjectCLI
 
 class ProjectTests {
@@ -56,5 +58,26 @@ class ProjectTests {
             .targets
             .listTargetsForFile(path.asInputPath)
             .map(\.name)
+    }
+
+    func expectFileInProject(_ filePath: InputPath) throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+        let files = FilesManager(project: project)
+
+        #expect(filePath.exists)
+        #expect(try files.findFile(filePath) != nil)
+    }
+
+    func notExpectFileInProject(_ filePath: InputPath) throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+        let files = FilesManager(project: project)
+
+        #expect(!filePath.exists)
+        #expect(try files.findFile(filePath) == nil)
+    }
+
+    func expectTargets(_ targets: [String], forFile filePath: InputPath) throws {
+        let targets = try self.targets(forFile: filePath.absolutePath)
+        #expect(targets == targets)
     }
 }
