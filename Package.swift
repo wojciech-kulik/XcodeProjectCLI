@@ -25,6 +25,10 @@ let package = Package(
                 "XcodeProj",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
+        ),
+        .testTarget(
+            name: "Tests",
+            dependencies: ["XcodeProjectCLI"]
         )
     ]
 )

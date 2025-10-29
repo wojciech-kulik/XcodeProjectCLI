@@ -30,7 +30,7 @@ struct AddFileCommand: ParsableCommand {
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
         try project.files.addFile(
-            filePath,
+            filePath.asInputPath,
             toTargets: parsedTargets,
             guessTarget: guessTarget,
             createGroups: createGroups

@@ -8,27 +8,25 @@ final class Groups {
         self.project = project
     }
 
-    func listAllGroups() throws -> [(group: PBXGroup, fullPath: String)] {
+    func listAllGroups() throws -> [(group: PBXGroup, path: InputPath)] {
         try project.pbxproj.rootGroup()?
             .allNestedGroups()
             .compactMap {
                 guard let path = try $0.fullPath(sourceRoot: project.rootDir) else { return nil }
-                return ($0, path)
+                return ($0, path.asInputPath)
             } ?? []
     }
 
-    func findGroup(_ groupPath: String) throws -> PBXGroup? {
+    func findGroup(_ groupPath: InputPath) throws -> PBXGroup? {
         try listAllGroups()
-            .first { _, groupFullPath in
-                groupFullPath == groupPath || groupPath == "\(groupFullPath)/"
+            .first { _, enumeratedGroupPath in
+                enumeratedGroupPath == groupPath
             }?
             .group
     }
 
-    func createGroupHierarchy(at groupPath: String) throws -> PBXGroup {
-        // TODO: refactor
-        let relativePath = groupPath.replacingOccurrences(of: project.rootDir, with: "").trimmingCharacters(in: ["/"])
-        let pathComponents = (relativePath as NSString).pathComponents
+    func createGroupHierarchy(at groupPath: InputPath) throws -> PBXGroup {
+        let pathComponents = groupPath.relativePathComponents
 
         guard let rootGroup = try project.pbxproj.rootGroup() else {
             throw CLIError.unexpectedValue("Root group not found.")

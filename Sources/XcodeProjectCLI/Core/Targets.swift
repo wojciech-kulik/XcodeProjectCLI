@@ -14,12 +14,12 @@ final class Targets {
         project.pbxproj.nativeTargets.sorted { $0.name < $1.name }
     }
 
-    func listTargetsForFile(_ filePath: String) throws -> [PBXTarget] {
+    func listTargetsForFile(_ filePath: InputPath) throws -> [PBXTarget] {
         try project.pbxproj.nativeTargets
             .filter { target in
                 let files = try target.sourceFiles()
                 return try files.contains {
-                    try $0.fullPath(sourceRoot: project.rootDir) == filePath
+                    try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath == filePath
                 }
             }
             .sorted { $0.name < $1.name }
@@ -29,7 +29,7 @@ final class Targets {
     /// and finding which targets includes the first found Swift file.
     /// If no Swift files are found in the group, it falls back to the parent group once.
     /// If everything fails, it returns targets matching the first path component of the group.
-    func guessTargetsForGroup(_ groupPath: String, fallbackToParent: Bool = true) throws -> [PBXTarget] {
+    func guessTargetsForGroup(_ groupPath: InputPath, fallbackToParent: Bool = true) throws -> [PBXTarget] {
         let group = try groups.findGroup(groupPath)
 
         guard let group else {
@@ -39,9 +39,10 @@ final class Targets {
         let fileToTargetMap = try createFileToTargetMap()
         let swiftFiles = try group.children
             .filter { $0.path?.hasSuffix("swift") == true }
-            .compactMap { try $0.fullPath(sourceRoot: project.rootDir) }
+            .compactMap { try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath }
 
-        if fallbackToParent, swiftFiles.isEmpty, let parentGroup = try group.parent?.fullPath(sourceRoot: project.rootDir) {
+        if fallbackToParent, swiftFiles.isEmpty,
+           let parentGroup = try group.parent?.fullPath(sourceRoot: project.rootDir)?.asInputPath {
             return try guessTargetsForGroup(parentGroup, fallbackToParent: false)
         }
 
@@ -51,14 +52,11 @@ final class Targets {
             }
         }
 
-        // TODO: refactor
-        let relativeGroupPath = groupPath.replacingOccurrences(of: project.rootDir, with: "").trimmingCharacters(in: ["/"])
-        let firstGroup = (relativeGroupPath as NSString).pathComponents.first ?? ""
-
+        let firstGroup = groupPath.relativePathComponents.first ?? ""
         return project.pbxproj.targets(named: firstGroup)
     }
 
-    func setTargets(_ targets: [String], for filePath: String) throws {
+    func setTargets(_ targets: [String], for filePath: InputPath) throws {
         let destTargets = targets.flatMap {
             project.pbxproj.targets(named: $0)
         }
@@ -76,7 +74,7 @@ final class Targets {
         }
 
         let fileReference = try project.pbxproj.fileReferences
-            .first { try $0.fullPath(sourceRoot: project.rootDir) == filePath }
+            .first { try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath == filePath }
 
         guard let fileReference else {
             throw CLIError.invalidInput("File \(filePath) does not exist in the project.")
@@ -88,30 +86,30 @@ final class Targets {
         }
     }
 
-    private func removeFile(_ filePath: String, from target: String) throws {
+    private func removeFile(_ filePath: InputPath, from target: String) throws {
         guard let target = project.pbxproj.targets(named: target).first else {
             return
         }
 
         let buildPhase = try target.sourcesBuildPhase()
         buildPhase?.files = try buildPhase?.files?.filter {
-            guard let fileRef = $0.file else {
+            guard let fileRef = $0.file,
+                  let fullPath = try fileRef.fullPath(sourceRoot: project.rootDir) else {
                 return true
             }
-            let fullPath = try fileRef.fullPath(sourceRoot: project.rootDir)
-            return fullPath != filePath
+            return fullPath.asInputPath != filePath
         }
     }
 
-    private func createFileToTargetMap() throws -> [String: [PBXNativeTarget]] {
-        var fileToTargetMap: [String: [PBXNativeTarget]] = [:]
+    private func createFileToTargetMap() throws -> [InputPath: [PBXNativeTarget]] {
+        var fileToTargetMap: [InputPath: [PBXNativeTarget]] = [:]
 
         for target in project.pbxproj.nativeTargets {
             let sourceFiles = try target.sourceFiles()
 
             for file in sourceFiles {
                 if let filePath = try file.fullPath(sourceRoot: project.rootDir), !filePath.isEmpty {
-                    fileToTargetMap[filePath, default: []].append(target)
+                    fileToTargetMap[filePath.asInputPath, default: []].append(target)
                 }
             }
         }

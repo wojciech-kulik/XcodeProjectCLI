@@ -13,13 +13,13 @@ final class Files {
     }
 
     func addFile(
-        _ filePath: String,
+        _ filePath: InputPath,
         toTargets targets: [String],
         guessTarget: Bool,
         createGroups: Bool
     ) throws {
         // Find group
-        let groupPath = (filePath as NSString).deletingLastPathComponent
+        let groupPath = filePath.directory
         let group = try groups.findGroup(groupPath)
 
         // Validate group
@@ -44,7 +44,7 @@ final class Files {
 
         // Add file to group
         try targetGroup.addFile(
-            at: .init(filePath),
+            at: .init(filePath.absolutePath),
             sourceRoot: .init(project.rootDir)
         )
 

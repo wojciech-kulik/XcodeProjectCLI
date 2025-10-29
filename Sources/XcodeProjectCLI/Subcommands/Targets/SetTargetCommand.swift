@@ -21,7 +21,7 @@ struct SetTargetCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
-        try project.targets.setTargets(parsedTargets, for: filePath)
+        try project.targets.setTargets(parsedTargets, for: filePath.asInputPath)
         try project.save()
     }
 
