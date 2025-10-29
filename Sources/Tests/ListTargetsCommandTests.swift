@@ -9,7 +9,7 @@ extension SerializedSuite {
     final class ListTargetsCommandTests: ProjectTests {}
 }
 
-// MARK: - List All Targets
+// MARK: List All Targets
 // ---------------------------------------------------------------------------------------
 extension SerializedSuite.ListTargetsCommandTests {
     @Test
@@ -28,11 +28,11 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 }
 
-// MARK: - List Targets by File Path
+// MARK: List Targets by File Path
 // ---------------------------------------------------------------------------------------
 extension SerializedSuite.ListTargetsCommandTests {
     @Test(arguments: 0...1)
-    func listTargetsForFilePath_shouldReturnTargets(testCase: Int) throws {
+    func listTargets_byFilePath_shouldReturnTargets(testCase: Int) throws {
         let testCases = [
             (input: Files.Helpers.GeneralUtils.Subfolder2.stringExtensions, expected: [
                 "Helpers",
@@ -56,7 +56,7 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 
     @Test
-    func listTargetsForFilePath_shouldReturnError_whenFileDoesNotExist() throws {
+    func listTargets_byFilePath_shouldReturnError_whenFileDoesNotExist() throws {
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -71,7 +71,7 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 
     @Test
-    func listTargetsForFilePath_shouldReturnEmptyString_whenFileIsNotAddedToAnyTarget() throws {
+    func listTargets_byFilePath_shouldReturnEmptyString_whenFileIsNotAddedToAnyTarget() throws {
         var sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -84,11 +84,11 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 }
 
-// MARK: - List Targets by Group Path
+// MARK: List Targets by Group Path
 // ---------------------------------------------------------------------------------------
 extension SerializedSuite.ListTargetsCommandTests {
     @Test(arguments: 0...1)
-    func listTargetsForGroupPath_shouldReturnTargetsForFirstSwiftFile(testCase: Int) throws {
+    func listTargets_byGroupPath_shouldReturnTargetsForFirstSwiftFile(testCase: Int) throws {
         let testCases = [
             (input: Files.Helpers.GeneralUtils.Subfolder2.group, expected: [
                 "Helpers",
@@ -108,7 +108,7 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 
     @Test
-    func listTargetsForGroupPath_shouldReturnEmptyString_whenGroupIsNotAddedToAnyTarget() throws {
+    func listTargets_byGroupPath_shouldReturnEmptyString_whenGroupIsNotAddedToAnyTarget() throws {
         var sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--group",
@@ -121,7 +121,7 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 
     @Test
-    func listTargetsForGroupPath_shouldReturnError_whenGroupDoesNotExist() throws {
+    func listTargets_byGroupPath_shouldReturnError_whenGroupDoesNotExist() throws {
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--group",
