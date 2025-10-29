@@ -35,7 +35,8 @@ struct XcodeProjectCLI: ParsableCommand {
                 subcommands: [
                     AddFileCommand.self,
                     DeleteFileCommand.self,
-                    MoveFileCommand.self
+                    MoveFileCommand.self,
+                    RenameFileCommand.self
                 ]
             )
         ]

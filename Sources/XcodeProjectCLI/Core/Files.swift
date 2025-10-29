@@ -1,3 +1,4 @@
+import Foundation
 import XcodeProj
 
 #if DEBUG
@@ -105,5 +106,15 @@ final class Files {
     func moveFile(_ filePath: InputPath, to newPath: InputPath) throws {
         try removeFile(filePath)
         try addFile(newPath, toTargets: [], guessTarget: true, createGroups: true)
+    }
+
+    func renameFile(_ filePath: InputPath, newName: String) throws {
+        guard let file = try findFile(filePath) else {
+            throw CLIError.fileNotFoundInProject(filePath)
+        }
+
+        file.sourceTree = .group
+        file.name = newName
+        file.path = newName
     }
 }
