@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1603AB892BAA11EF00854BED /* EmptyTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 1603AB882BAA11EF00854BED /* EmptyTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1603AB8C2BAA11EF00854BED /* EmptyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1603AB862BAA11EF00854BED /* EmptyTarget.framework */; };
 		1603AB8D2BAA11EF00854BED /* EmptyTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1603AB862BAA11EF00854BED /* EmptyTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1617556B2EB196E900F5C100 /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
 		161957182EB2B5E9008B9334 /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 161957172EB2B5E4008B9334 /* other.txt */; };
 		161957192EB2B5E9008B9334 /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 161957172EB2B5E4008B9334 /* other.txt */; };
+		163E85A22EB2B64300E4A01E /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 163E85A12EB2B64200E4A01E /* other.txt */; };
 		166E27392EB2838F00E5B17B /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
 		166E273A2EB2839400E5B17B /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9960CBC0047AADAB051DFB /* String+Extensions.swift */; };
 		166E273B2EB284B400E5B17B /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
@@ -79,9 +79,9 @@
 
 /* Begin PBXFileReference section */
 		1603AB862BAA11EF00854BED /* EmptyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EmptyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1603AB882BAA11EF00854BED /* EmptyTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyTarget.h; sourceTree = "<group>"; };
 		161755692EB196E900F5C100 /* RandomFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomFile.swift; sourceTree = "<group>"; };
 		161957172EB2B5E4008B9334 /* other.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = other.txt; sourceTree = "<group>"; };
+		163E85A12EB2B64200E4A01E /* other.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = other.txt; sourceTree = "<group>"; };
 		1680AC782B9C80AB0036CB34 /* XcodebuildNvimApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XcodebuildNvimApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1680AC7B2B9C80AB0036CB34 /* XcodebuildNvimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodebuildNvimApp.swift; sourceTree = "<group>"; };
 		1680AC7D2B9C80AB0036CB34 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 		1603AB872BAA11EF00854BED /* EmptyTarget */ = {
 			isa = PBXGroup;
 			children = (
-				1603AB882BAA11EF00854BED /* EmptyTarget.h */,
+				163E85A12EB2B64200E4A01E /* other.txt */,
 			);
 			path = EmptyTarget;
 			sourceTree = "<group>";
@@ -266,7 +266,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1603AB892BAA11EF00854BED /* EmptyTarget.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +428,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				163E85A22EB2B64300E4A01E /* other.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
