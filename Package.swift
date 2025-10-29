@@ -8,12 +8,6 @@ let package = Package(
     platforms: [
         .macOS(.v13)
     ],
-    products: [
-        .executable(
-            name: "xcodeproj",
-            targets: ["XcodeProjectCLI"]
-        )
-    ],
     dependencies: [
         .package(url: "https://github.com/tuist/XcodeProj.git", .upToNextMajor(from: "8.12.0")),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0")
