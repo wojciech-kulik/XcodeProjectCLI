@@ -33,7 +33,8 @@ struct XcodeProjectCLI: ParsableCommand {
             .init(
                 name: "Files",
                 subcommands: [
-                    AddFileCommand.self
+                    AddFileCommand.self,
+                    DeleteFileCommand.self
                 ]
             )
         ]

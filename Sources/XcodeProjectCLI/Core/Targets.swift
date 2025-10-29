@@ -1,13 +1,12 @@
-import Foundation
 import XcodeProj
 
 final class Targets {
     private let project: XcodeProj
-    private let groups: Groups
+    private lazy var groups = Groups(project: project)
+    private lazy var files = Files(project: project)
 
     init(project: XcodeProj) {
         self.project = project
-        self.groups = Groups(project: project)
     }
 
     func listTargets() -> [PBXTarget] {
@@ -91,12 +90,11 @@ final class Targets {
 
         for target in fileToTargetMap[filePath] ?? [] {
             if !targets.contains(target.name) {
-                try removeFile(filePath, from: target.name)
+                try files.removeFile(filePath, from: target.name)
             }
         }
 
-        let fileReference = try project.pbxproj.fileReferences
-            .first { try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath == filePath }
+        let fileReference = try files.findFile(filePath)
 
         guard let fileReference else {
             throw CLIError.invalidInput("File \(filePath) does not exist in the project.")
@@ -105,21 +103,6 @@ final class Targets {
         for target in destTargets {
             let buildPhase = try target.sourcesBuildPhase()
             _ = try buildPhase?.add(file: fileReference)
-        }
-    }
-
-    private func removeFile(_ filePath: InputPath, from target: String) throws {
-        guard let target = project.pbxproj.targets(named: target).first else {
-            return
-        }
-
-        let buildPhase = try target.sourcesBuildPhase()
-        buildPhase?.files = try buildPhase?.files?.filter {
-            guard let fileRef = $0.file,
-                  let fullPath = try fileRef.fullPath(sourceRoot: project.rootDir) else {
-                return true
-            }
-            return fullPath.asInputPath != filePath
         }
     }
 

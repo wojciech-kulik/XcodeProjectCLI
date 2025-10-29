@@ -1,17 +1,15 @@
 import ArgumentParser
-import Foundation
-import XcodeProj
 
 struct AddFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "add-file",
-        abstract: "Adds a file to specified targets in the project."
+        abstract: "Add a file to specified targets in the project."
     )
 
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(name: .customLong("file"), help: "Full path to file.")
+    @Option(name: .customLong("file"), help: "Path to file.")
     var filePath: String
 
     @Option(help: "Comma separated list of target names.")

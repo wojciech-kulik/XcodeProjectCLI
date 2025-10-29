@@ -1,5 +1,3 @@
-import ArgumentParser
-import Foundation
 import Testing
 @testable import XcodeProjectCLI
 

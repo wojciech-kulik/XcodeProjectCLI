@@ -1,6 +1,4 @@
 import ArgumentParser
-import Foundation
-import XcodeProj
 
 struct ListTargetsCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -11,22 +9,21 @@ struct ListTargetsCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(name: .customLong("file"), help: "Full path to file - find targets for a specific file.")
+    @Option(name: .customLong("file"), help: "Path to file - find targets for a specific file.")
     var filePath: String?
 
-    @Option(name: .customLong("group"), help: "Full path to group - find targets for a specific group.")
+    @Option(name: .customLong("group"), help: "Path to group - find targets for a specific group.")
     var groupPath: String?
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
-        let targets: [PBXTarget]
 
-        if let groupPath {
-            targets = try project.targets.guessTargetsForGroup(groupPath.asInputPath)
+        let targets = if let groupPath {
+            try project.targets.guessTargetsForGroup(groupPath.asInputPath)
         } else if let filePath {
-            targets = try project.targets.listTargetsForFile(filePath.asInputPath)
+            try project.targets.listTargetsForFile(filePath.asInputPath)
         } else {
-            targets = project.targets.listTargets()
+            project.targets.listTargets()
         }
 
         for target in targets.map(\.name) {

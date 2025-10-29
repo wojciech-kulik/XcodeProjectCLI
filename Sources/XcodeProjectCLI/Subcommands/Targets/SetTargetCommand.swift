@@ -1,6 +1,4 @@
 import ArgumentParser
-import Foundation
-import XcodeProj
 
 struct SetTargetCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -11,7 +9,7 @@ struct SetTargetCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(name: .customLong("file"), help: "Full path to file.")
+    @Option(name: .customLong("file"), help: "Path to file.")
     var filePath: String
 
     @Option(help: "Comma separated list of target names.")

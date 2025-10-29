@@ -1,15 +1,23 @@
-import Foundation
 import XcodeProj
+
+#if DEBUG
+typealias FilesManager = Files
+#endif
 
 final class Files {
     private let project: XcodeProj
-    private let groups: Groups
-    private let targets: Targets
+    private lazy var groups = Groups(project: project)
+    private lazy var targets = Targets(project: project)
 
     init(project: XcodeProj) {
         self.project = project
-        self.groups = Groups(project: project)
-        self.targets = Targets(project: project)
+    }
+
+    func findFile(_ filePath: InputPath) throws -> PBXFileReference? {
+        try project.pbxproj.fileReferences.first {
+            let fileRefPath = try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath
+            return fileRefPath == filePath
+        }
     }
 
     func addFile(
@@ -54,5 +62,43 @@ final class Files {
 
         // Add file to targets
         try self.targets.setTargets(targets, for: filePath)
+    }
+
+    func removeFile(_ filePath: InputPath) throws {
+        guard let fileRef = try findFile(filePath) else {
+            throw CLIError.invalidInput("File \(filePath) not found in the project.")
+        }
+
+        // Remove from build phases
+        try project.pbxproj.nativeTargets
+            .filter { target in
+                try target.sourceFiles().contains {
+                    try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath == filePath
+                }
+            }
+            .forEach { try removeFile(filePath, from: $0.name) }
+
+        // Remove from parent group
+        if let parent = fileRef.parent as? PBXGroup {
+            parent.children.removeAll { $0 === fileRef }
+        }
+
+        // Remove file reference
+        project.pbxproj.delete(object: fileRef)
+    }
+
+    func removeFile(_ filePath: InputPath, from target: String) throws {
+        guard let target = project.pbxproj.targets(named: target).first else {
+            return
+        }
+
+        let buildPhase = try target.sourcesBuildPhase()
+        buildPhase?.files = try buildPhase?.files?.filter {
+            guard let fileRef = $0.file,
+                  let fullPath = try fileRef.fullPath(sourceRoot: project.rootDir) else {
+                return true
+            }
+            return fullPath.asInputPath != filePath
+        }
     }
 }
