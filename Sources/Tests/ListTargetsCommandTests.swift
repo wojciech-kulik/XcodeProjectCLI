@@ -6,126 +6,132 @@ import Testing
 
 extension SerializedSuite {
     @Suite("List Targets Command", .serialized)
-    final class ListTargetsCommandTests: ProjectTests {
-        // MARK: - List All Targets
+    final class ListTargetsCommandTests: ProjectTests {}
+}
 
-        @Test
-        func listTargets_shouldReturnTargets() throws {
-            var sut = try ListTargetsCommand.parse([testXcodeprojPath])
+// MARK: - List All Targets
+// ---------------------------------------------------------------------------------------
+extension SerializedSuite.ListTargetsCommandTests {
+    @Test
+    func listTargets_shouldReturnTargets() throws {
+        var sut = try ListTargetsCommand.parse([testXcodeprojPath])
 
-            let output = try runTest(for: &sut)
+        let output = try runTest(for: &sut)
 
-            #expect(output == [
-                "EmptyTarget",
+        #expect(output == [
+            "EmptyTarget",
+            "Helpers",
+            "XcodebuildNvimApp",
+            "XcodebuildNvimAppTests",
+            "XcodebuildNvimAppUITests"
+        ])
+    }
+}
+
+// MARK: - List Targets by File Path
+// ---------------------------------------------------------------------------------------
+extension SerializedSuite.ListTargetsCommandTests {
+    @Test(arguments: 0...1)
+    func listTargetsForFilePath_shouldReturnTargets(testCase: Int) throws {
+        let testCases = [
+            (input: Files.Helpers.GeneralUtils.Subfolder2.stringExtensions, expected: [
+                "Helpers",
+                "XcodebuildNvimApp"
+            ]),
+            (input: Files.Helpers.GeneralUtils.randomFile, expected: [
                 "Helpers",
                 "XcodebuildNvimApp",
-                "XcodebuildNvimAppTests",
-                "XcodebuildNvimAppUITests"
+                "XcodebuildNvimAppTests"
             ])
+        ]
+        var sut = try ListTargetsCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            testCases[testCase].input
+        ])
+
+        let output = try runTest(for: &sut)
+
+        #expect(output == testCases[testCase].expected)
+    }
+
+    @Test
+    func listTargetsForFilePath_shouldReturnError_whenFileDoesNotExist() throws {
+        let sut = try ListTargetsCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            "Helpers/NonExistentFile.swift"
+        ])
+
+        do {
+            try sut.run()
+        } catch let error as CLIError {
+            #expect(error.description == "File \(testProjectPath)/Helpers/NonExistentFile.swift does not exist.")
         }
+    }
 
-        // MARK: - File Path
+    @Test
+    func listTargetsForFilePath_shouldReturnEmptyString_whenFileIsNotAddedToAnyTarget() throws {
+        var sut = try ListTargetsCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            Files.XcodebuildNvimApp.Modules.notAddedFile
+        ])
 
-        @Test(arguments: 0...1)
-        func listTargetsForFilePath_shouldReturnTargets(testCase: Int) throws {
-            let testCases = [
-                (input: Files.Helpers.GeneralUtils.Subfolder2.stringExtensions, expected: [
-                    "Helpers",
-                    "XcodebuildNvimApp"
-                ]),
-                (input: Files.Helpers.GeneralUtils.randomFile, expected: [
-                    "Helpers",
-                    "XcodebuildNvimApp",
-                    "XcodebuildNvimAppTests"
-                ])
-            ]
-            var sut = try ListTargetsCommand.parse([
-                testXcodeprojPath,
-                "--file",
-                testCases[testCase].input
+        let output = try runTest(for: &sut)
+
+        #expect(output == "")
+    }
+}
+
+// MARK: - List Targets by Group Path
+// ---------------------------------------------------------------------------------------
+extension SerializedSuite.ListTargetsCommandTests {
+    @Test(arguments: 0...1)
+    func listTargetsForGroupPath_shouldReturnTargetsForFirstSwiftFile(testCase: Int) throws {
+        let testCases = [
+            (input: Files.Helpers.GeneralUtils.Subfolder2.group, expected: [
+                "Helpers",
+                "XcodebuildNvimApp"
+            ]),
+            (input: Files.Helpers.GeneralUtils.group, expected: [
+                "Helpers",
+                "XcodebuildNvimApp",
+                "XcodebuildNvimAppTests"
             ])
+        ]
+        var sut = try ListTargetsCommand.parse([testXcodeprojPath, "--group", testCases[testCase].input])
 
-            let output = try runTest(for: &sut)
+        let output = try runTest(for: &sut)
 
-            #expect(output == testCases[testCase].expected)
-        }
+        #expect(output == testCases[testCase].expected)
+    }
 
-        @Test
-        func listTargetsForFilePath_shouldReturnError_whenFileDoesNotExist() throws {
-            let sut = try ListTargetsCommand.parse([
-                testXcodeprojPath,
-                "--file",
-                "Helpers/NonExistentFile.swift"
-            ])
+    @Test
+    func listTargetsForGroupPath_shouldReturnEmptyString_whenGroupIsNotAddedToAnyTarget() throws {
+        var sut = try ListTargetsCommand.parse([
+            testXcodeprojPath,
+            "--group",
+            Files.XcodebuildNvimApp.Modules.NotAdded.group
+        ])
 
-            do {
-                try sut.run()
-            } catch let error as CLIError {
-                #expect(error.description == "File \(testProjectPath)/Helpers/NonExistentFile.swift does not exist.")
-            }
-        }
+        let output = try runTest(for: &sut)
 
-        @Test
-        func listTargetsForFilePath_shouldReturnEmptyString_whenFileIsNotAddedToAnyTarget() throws {
-            var sut = try ListTargetsCommand.parse([
-                testXcodeprojPath,
-                "--file",
-                Files.XcodebuildNvimApp.Modules.notAddedFile
-            ])
+        #expect(output == "")
+    }
 
-            let output = try runTest(for: &sut)
+    @Test
+    func listTargetsForGroupPath_shouldReturnError_whenGroupDoesNotExist() throws {
+        let sut = try ListTargetsCommand.parse([
+            testXcodeprojPath,
+            "--group",
+            "Helpers/NonExistentGroup"
+        ])
 
-            #expect(output == "")
-        }
-
-        // MARK: - Group Path
-
-        @Test(arguments: 0...1)
-        func listTargetsForGroupPath_shouldReturnTargetsForFirstSwiftFile(testCase: Int) throws {
-            let testCases = [
-                (input: Files.Helpers.GeneralUtils.Subfolder2.group, expected: [
-                    "Helpers",
-                    "XcodebuildNvimApp"
-                ]),
-                (input: Files.Helpers.GeneralUtils.group, expected: [
-                    "Helpers",
-                    "XcodebuildNvimApp",
-                    "XcodebuildNvimAppTests"
-                ])
-            ]
-            var sut = try ListTargetsCommand.parse([testXcodeprojPath, "--group", testCases[testCase].input])
-
-            let output = try runTest(for: &sut)
-
-            #expect(output == testCases[testCase].expected)
-        }
-
-        @Test
-        func listTargetsForGroupPath_shouldReturnEmptyString_whenGroupIsNotAddedToAnyTarget() throws {
-            var sut = try ListTargetsCommand.parse([
-                testXcodeprojPath,
-                "--group",
-                Files.XcodebuildNvimApp.Modules.NotAdded.group
-            ])
-
-            let output = try runTest(for: &sut)
-
-            #expect(output == "")
-        }
-
-        @Test
-        func listTargetsForGroupPath_shouldReturnError_whenGroupDoesNotExist() throws {
-            let sut = try ListTargetsCommand.parse([
-                testXcodeprojPath,
-                "--group",
-                "Helpers/NonExistentGroup"
-            ])
-
-            do {
-                try sut.run()
-            } catch let error as CLIError {
-                #expect(error.description == "Group \(testProjectPath)/Helpers/NonExistentGroup does not exist.")
-            }
+        do {
+            try sut.run()
+        } catch let error as CLIError {
+            #expect(error.description == "Group \(testProjectPath)/Helpers/NonExistentGroup does not exist.")
         }
     }
 }

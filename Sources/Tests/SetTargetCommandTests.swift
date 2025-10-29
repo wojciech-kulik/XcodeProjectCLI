@@ -6,70 +6,72 @@ import Testing
 
 extension SerializedSuite {
     @Suite("Set Target Command", .serialized)
-    final class SetTargetCommandTests: ProjectTests {
-        @Test
-        func setTarget_shouldAddFileToSingleTarget() throws {
-            var sut = try SetTargetCommand.parse([
-                testXcodeprojPath,
-                "--file",
-                Files.XcodebuildNvimApp.Modules.Main.mainViewModel,
-                "--targets",
-                "Helpers"
-            ])
+    final class SetTargetCommandTests: ProjectTests {}
+}
 
-            var output = try runTest(for: &sut)
-            #expect(output == "")
+extension SerializedSuite.SetTargetCommandTests {
+    @Test
+    func setTarget_shouldAddFileToSingleTarget() throws {
+        var sut = try SetTargetCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            Files.XcodebuildNvimApp.Modules.Main.mainViewModel,
+            "--targets",
+            "Helpers"
+        ])
 
-            output = try Project(projectPath: testXcodeprojPath)
-                .targets
-                .listTargetsForFile(Files.XcodebuildNvimApp.Modules.Main.mainViewModel.asInputPath)
-                .map(\.name)
-                .joined(separator: "\n")
+        var output = try runTest(for: &sut)
+        #expect(output == "")
 
-            #expect(output == "Helpers")
-        }
+        output = try Project(projectPath: testXcodeprojPath)
+            .targets
+            .listTargetsForFile(Files.XcodebuildNvimApp.Modules.Main.mainViewModel.asInputPath)
+            .map(\.name)
+            .joined(separator: "\n")
 
-        @Test
-        func setTarget_shouldAddFileToMultipleTargets() throws {
-            var sut = try SetTargetCommand.parse([
-                testXcodeprojPath,
-                "--file",
-                Files.XcodebuildNvimApp.Modules.Main.mainViewModel,
-                "--targets",
-                "EmptyTarget,Helpers,XcodebuildNvimAppTests"
-            ])
+        #expect(output == "Helpers")
+    }
 
-            var output = try runTest(for: &sut)
-            #expect(output == "")
+    @Test
+    func setTarget_shouldAddFileToMultipleTargets() throws {
+        var sut = try SetTargetCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            Files.XcodebuildNvimApp.Modules.Main.mainViewModel,
+            "--targets",
+            "EmptyTarget,Helpers,XcodebuildNvimAppTests"
+        ])
 
-            output = try Project(projectPath: testXcodeprojPath)
-                .targets
-                .listTargetsForFile(Files.XcodebuildNvimApp.Modules.Main.mainViewModel.asInputPath)
-                .map(\.name)
-                .joined(separator: "\n")
+        var output = try runTest(for: &sut)
+        #expect(output == "")
 
-            #expect(output == [
-                "EmptyTarget",
-                "Helpers",
-                "XcodebuildNvimAppTests"
-            ])
-        }
+        output = try Project(projectPath: testXcodeprojPath)
+            .targets
+            .listTargetsForFile(Files.XcodebuildNvimApp.Modules.Main.mainViewModel.asInputPath)
+            .map(\.name)
+            .joined(separator: "\n")
 
-        @Test
-        func setTarget_shouldReturnError_whenProvidedTargetDoesNotExist() throws {
-            let sut = try SetTargetCommand.parse([
-                testXcodeprojPath,
-                "--file",
-                Files.XcodebuildNvimApp.Modules.Main.mainViewModel,
-                "--targets",
-                "Helpers,NonExistentTarget"
-            ])
+        #expect(output == [
+            "EmptyTarget",
+            "Helpers",
+            "XcodebuildNvimAppTests"
+        ])
+    }
 
-            do {
-                try sut.run()
-            } catch let error as CLIError {
-                #expect(error.description == "One or more specified targets do not exist in the project.")
-            }
+    @Test
+    func setTarget_shouldReturnError_whenProvidedTargetDoesNotExist() throws {
+        let sut = try SetTargetCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            Files.XcodebuildNvimApp.Modules.Main.mainViewModel,
+            "--targets",
+            "Helpers,NonExistentTarget"
+        ])
+
+        do {
+            try sut.run()
+        } catch let error as CLIError {
+            #expect(error.description == "One or more specified targets do not exist in the project.")
         }
     }
 }
