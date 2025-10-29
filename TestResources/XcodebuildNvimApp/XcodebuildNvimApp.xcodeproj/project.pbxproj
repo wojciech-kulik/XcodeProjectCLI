@@ -11,6 +11,8 @@
 		1603AB8C2BAA11EF00854BED /* EmptyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1603AB862BAA11EF00854BED /* EmptyTarget.framework */; };
 		1603AB8D2BAA11EF00854BED /* EmptyTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1603AB862BAA11EF00854BED /* EmptyTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1617556B2EB196E900F5C100 /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
+		161957182EB2B5E9008B9334 /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 161957172EB2B5E4008B9334 /* other.txt */; };
+		161957192EB2B5E9008B9334 /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 161957172EB2B5E4008B9334 /* other.txt */; };
 		166E27392EB2838F00E5B17B /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
 		166E273A2EB2839400E5B17B /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9960CBC0047AADAB051DFB /* String+Extensions.swift */; };
 		166E273B2EB284B400E5B17B /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
@@ -22,7 +24,6 @@
 		1680AC972B9C80AD0036CB34 /* XcodebuildNvimAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1680AC962B9C80AD0036CB34 /* XcodebuildNvimAppUITests.swift */; };
 		1680AC992B9C80AD0036CB34 /* XcodebuildNvimAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1680AC982B9C80AD0036CB34 /* XcodebuildNvimAppUITestsLaunchTests.swift */; };
 		1680ACA82B9C80F80036CB34 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1680ACA72B9C80F80036CB34 /* MainViewModel.swift */; };
-		1680ACB12B9C83780036CB34 /* Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 1680ACB02B9C83780036CB34 /* Helpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1680ACB42B9C83780036CB34 /* Helpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1680ACAE2B9C83780036CB34 /* Helpers.framework */; };
 		1680ACB52B9C83780036CB34 /* Helpers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1680ACAE2B9C83780036CB34 /* Helpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C1B14040DB57B372690A846 /* CustomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4666DE6C1B8CCD72CEB637 /* CustomFile.swift */; };
@@ -80,6 +81,7 @@
 		1603AB862BAA11EF00854BED /* EmptyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EmptyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1603AB882BAA11EF00854BED /* EmptyTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyTarget.h; sourceTree = "<group>"; };
 		161755692EB196E900F5C100 /* RandomFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomFile.swift; sourceTree = "<group>"; };
+		161957172EB2B5E4008B9334 /* other.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = other.txt; sourceTree = "<group>"; };
 		1680AC782B9C80AB0036CB34 /* XcodebuildNvimApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XcodebuildNvimApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1680AC7B2B9C80AB0036CB34 /* XcodebuildNvimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodebuildNvimApp.swift; sourceTree = "<group>"; };
 		1680AC7D2B9C80AB0036CB34 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,7 +94,6 @@
 		1680AC982B9C80AD0036CB34 /* XcodebuildNvimAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodebuildNvimAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		1680ACA72B9C80F80036CB34 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		1680ACAE2B9C83780036CB34 /* Helpers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Helpers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1680ACB02B9C83780036CB34 /* Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
 		5E4666DE6C1B8CCD72CEB637 /* CustomFile.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = CustomFile.swift; sourceTree = "<group>"; };
 		FC9960CBC0047AADAB051DFB /* String+Extensions.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -226,7 +227,7 @@
 		1680ACAF2B9C83780036CB34 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				1680ACB02B9C83780036CB34 /* Helpers.h */,
+				161957172EB2B5E4008B9334 /* other.txt */,
 				D961BED8FCEE67AA066F5EB0 /* GeneralUtils */,
 			);
 			path = Helpers;
@@ -273,7 +274,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1680ACB12B9C83780036CB34 /* Helpers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +437,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1680AC832B9C80AD0036CB34 /* Preview Assets.xcassets in Resources */,
+				161957182EB2B5E9008B9334 /* other.txt in Resources */,
 				1680AC802B9C80AD0036CB34 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,6 +460,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				161957192EB2B5E9008B9334 /* other.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
