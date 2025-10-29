@@ -20,7 +20,7 @@ final class Project {
         }
 
         guard let projectPath else {
-            throw CLIError.invalidInput("xcodeproj file not found in the current directory.")
+            throw CLIError.xcodeProjectNotFound
         }
 
         Self.projectRoot = (projectPath as NSString).deletingLastPathComponent

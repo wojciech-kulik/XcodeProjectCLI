@@ -27,7 +27,7 @@ final class Files {
         createGroups: Bool
     ) throws {
         guard filePath.exists else {
-            throw CLIError.invalidInput("File \(filePath) does not exist.")
+            throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
         // Find group
@@ -36,7 +36,7 @@ final class Files {
 
         // Validate group
         if group == nil, !createGroups {
-            throw CLIError.invalidInput("Group at path \(groupPath) not found. Use --create-groups to create missing groups.")
+            throw CLIError.groupNotFoundInProject(groupPath)
         }
 
         // Create group if needed
@@ -66,7 +66,7 @@ final class Files {
 
     func removeFile(_ filePath: InputPath) throws {
         guard let fileRef = try findFile(filePath) else {
-            throw CLIError.invalidInput("File \(filePath) not found in the project.")
+            throw CLIError.fileNotFoundInProject(filePath)
         }
 
         // Remove from build phases
@@ -100,5 +100,10 @@ final class Files {
             }
             return fullPath.asInputPath != filePath
         }
+    }
+
+    func moveFile(_ filePath: InputPath, to newPath: InputPath) throws {
+        try removeFile(filePath)
+        try addFile(newPath, toTargets: [], guessTarget: true, createGroups: true)
     }
 }

@@ -8,12 +8,16 @@ final class Groups {
     }
 
     func listAllGroups() throws -> [(group: PBXGroup, path: InputPath)] {
-        try project.pbxproj.rootGroup()?
+        guard let rootGroup = try project.pbxproj.rootGroup() else {
+            throw CLIError.rootGroupNotFound
+        }
+
+        return try rootGroup
             .allNestedGroups()
             .compactMap {
                 guard let path = try $0.fullPath(sourceRoot: project.rootDir) else { return nil }
                 return ($0, path.asInputPath)
-            } ?? []
+            }
     }
 
     func findGroup(_ groupPath: InputPath) throws -> PBXGroup? {
@@ -28,7 +32,7 @@ final class Groups {
         let pathComponents = groupPath.relativePathComponents
 
         guard let rootGroup = try project.pbxproj.rootGroup() else {
-            throw CLIError.unexpectedValue("Root group not found.")
+            throw CLIError.rootGroupNotFound
         }
 
         var currentGroup = rootGroup

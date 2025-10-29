@@ -38,17 +38,15 @@ extension SerializedSuite.DeleteFileCommandTests {
 
     @Test
     func deleteFile_shouldReturnError_whenFileDoesNotExist() throws {
-        var sut = try DeleteFileCommand.parse([
+        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+        let sut = try DeleteFileCommand.parse([
             testXcodeprojPath,
             "--file",
-            "Helpers/NonExistentFile.swift"
+            file.relativePath
         ])
 
-        do {
+        #expect(throws: CLIError.fileNotFoundInProject(file)) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description == "File \(testProjectPath)/Helpers/NonExistentFile.swift not found in the project.")
-            return
         }
     }
 }

@@ -55,10 +55,8 @@ extension SerializedSuite.SetTargetCommandTests {
             "Helpers,NonExistentTarget"
         ])
 
-        do {
+        #expect(throws: CLIError.missingTargets(["NonExistentTarget"])) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description == "One or more specified targets do not exist in the project.")
         }
     }
 }

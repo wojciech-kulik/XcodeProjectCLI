@@ -15,7 +15,7 @@ final class Targets {
 
     func listTargetsForFile(_ filePath: InputPath) throws -> [PBXTarget] {
         guard filePath.exists else {
-            throw CLIError.invalidInput("File \(filePath) does not exist.")
+            throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
         return try project.pbxproj.nativeTargets
@@ -38,7 +38,7 @@ final class Targets {
         fileToTargetMap: [InputPath: [PBXNativeTarget]]? = nil
     ) throws -> [PBXTarget] {
         guard groupPath.exists else {
-            throw CLIError.invalidInput("Group \(groupPath) does not exist.")
+            throw CLIError.groupNotFoundOnDisk(groupPath)
         }
 
         let group = try groups.findGroup(groupPath)
@@ -75,7 +75,7 @@ final class Targets {
 
     func setTargets(_ targets: [String], for filePath: InputPath) throws {
         guard filePath.exists else {
-            throw CLIError.invalidInput("File \(filePath) does not exist.")
+            throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
         let destTargets = targets.flatMap {
@@ -83,7 +83,8 @@ final class Targets {
         }
 
         guard destTargets.count == targets.count else {
-            throw CLIError.invalidInput("One or more specified targets do not exist in the project.")
+            let diff = Set(targets).subtracting(destTargets.map(\.name))
+            throw CLIError.missingTargets(Array(diff))
         }
 
         let fileToTargetMap = try createFileToTargetMap()
@@ -97,7 +98,7 @@ final class Targets {
         let fileReference = try files.findFile(filePath)
 
         guard let fileReference else {
-            throw CLIError.invalidInput("File \(filePath) does not exist in the project.")
+            throw CLIError.fileNotFoundInProject(filePath)
         }
 
         for target in destTargets {

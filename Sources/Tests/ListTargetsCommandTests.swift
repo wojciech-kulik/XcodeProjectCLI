@@ -54,16 +54,15 @@ extension SerializedSuite.ListTargetsCommandTests {
 
     @Test
     func listTargets_byFilePath_shouldReturnError_whenFileDoesNotExist() throws {
+        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--file",
-            "Helpers/NonExistentFile.swift"
+            file.relativePath
         ])
 
-        do {
+        #expect(throws: CLIError.fileNotFoundOnDisk(file)) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description == "File \(testProjectPath)/Helpers/NonExistentFile.swift does not exist.")
         }
     }
 
@@ -119,16 +118,15 @@ extension SerializedSuite.ListTargetsCommandTests {
 
     @Test
     func listTargets_byGroupPath_shouldReturnError_whenGroupDoesNotExist() throws {
+        let path = InputPath("Helpers/NonExistentGroup", projectRoot: testProjectPath)
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--group",
-            "Helpers/NonExistentGroup"
+            path.relativePath
         ])
 
-        do {
+        #expect(throws: CLIError.groupNotFoundOnDisk(path)) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description == "Group \(testProjectPath)/Helpers/NonExistentGroup does not exist.")
         }
     }
 }

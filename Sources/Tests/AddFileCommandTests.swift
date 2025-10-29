@@ -29,19 +29,17 @@ extension SerializedSuite.AddFileCommandTests {
 
     @Test
     func addFile_shouldReturnError_whenFileDoesNotExist() throws {
+        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
         let sut = try AddFileCommand.parse([
             testXcodeprojPath,
             "--file",
-            "Helpers/NonExistentFile.swift",
+            file.relativePath,
             "--targets",
             "Helpers,EmptyTarget"
         ])
 
-        do {
+        #expect(throws: CLIError.fileNotFoundOnDisk(file)) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description ==
-                "File \(testProjectPath)/Helpers/NonExistentFile.swift does not exist.")
         }
     }
 
@@ -55,10 +53,8 @@ extension SerializedSuite.AddFileCommandTests {
             "Helpers,NonExistentTarget"
         ])
 
-        do {
+        #expect(throws: CLIError.missingTargets(["NonExistentTarget"])) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description == "One or more specified targets do not exist in the project.")
         }
     }
 }
@@ -106,20 +102,20 @@ extension SerializedSuite.AddFileCommandTests {
 
     @Test
     func addFile_shouldReturnError_whenGroupDoesNotExistAndCreateGroupsNotSet() throws {
-        let file = Files.XcodebuildNvimApp.Modules.NotAdded.notAddedFile
+        let file = InputPath(
+            Files.XcodebuildNvimApp.Modules.NotAdded.notAddedFile,
+            projectRoot: testProjectPath
+        )
         let sut = try AddFileCommand.parse([
             testXcodeprojPath,
             "--file",
-            file,
+            file.relativePath,
             "--targets",
             "Helpers,EmptyTarget"
         ])
 
-        do {
+        #expect(throws: CLIError.groupNotFoundInProject(file.directory)) {
             try sut.run()
-        } catch let error as CLIError {
-            #expect(error.description ==
-                "Group at path \(file.asInputPath.directory) not found. Use --create-groups to create missing groups.")
         }
     }
 }

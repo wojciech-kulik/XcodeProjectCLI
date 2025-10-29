@@ -3,7 +3,7 @@ import ArgumentParser
 struct SetTargetCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "set-target",
-        abstract: "Set target for a file or group."
+        abstract: "Set target for an existing file."
     )
 
     @OptionGroup

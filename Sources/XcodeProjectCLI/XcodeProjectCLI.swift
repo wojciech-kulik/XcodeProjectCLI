@@ -21,7 +21,7 @@ struct XcodeProjectCLI: ParsableCommand {
     static let configuration: CommandConfiguration = .init(
         commandName: "xcodeproj",
         abstract: "XcodeProjectCLI",
-        version: "1.0.0",
+        version: "0.1.0",
         groupedSubcommands: [
             .init(
                 name: "Targets",
@@ -34,7 +34,8 @@ struct XcodeProjectCLI: ParsableCommand {
                 name: "Files",
                 subcommands: [
                     AddFileCommand.self,
-                    DeleteFileCommand.self
+                    DeleteFileCommand.self,
+                    MoveFileCommand.self
                 ]
             )
         ]
