@@ -1,3 +1,4 @@
+import ArgumentParser
 import Foundation
 
 class ProjectTests {
@@ -24,6 +25,13 @@ class ProjectTests {
         try? FileManager.default.removeItem(atPath: testProjectPath)
     }
 
+    func runTest(for command: inout some ParsableCommand) throws -> String {
+        let output = try captureOutput {
+            try command.run()
+        }
+        return output
+    }
+
     func captureOutput(_ block: () throws -> ()) rethrows -> String {
         let pipe = Pipe()
         let original = dup(STDOUT_FILENO)
@@ -39,7 +47,7 @@ class ProjectTests {
         close(original)
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(data: data, encoding: .utf8) ?? ""
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     }
 }
 
@@ -50,6 +58,11 @@ extension ProjectTests {
             enum Modules {
                 static let group = "XcodebuildNvimApp/Modules"
                 static let xcodebuildNvimApp = "XcodebuildNvimApp/Modules/XcodebuildNvimApp.swift"
+                static let notAddedFile = "XcodebuildNvimApp/Modules/NotAddedFile.swift"
+
+                enum NotAdded {
+                    static let group = "XcodebuildNvimApp/Modules/NotAdded"
+                }
 
                 enum Main {
                     static let group = "XcodebuildNvimApp/Modules/Main"

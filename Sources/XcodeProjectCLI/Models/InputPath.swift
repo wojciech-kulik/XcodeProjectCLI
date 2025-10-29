@@ -53,6 +53,8 @@ extension InputPath {
 
     var fileName: String { nsString.lastPathComponent }
 
+    var exists: Bool { FileManager.default.fileExists(atPath: absolutePath) }
+
     private var nsString: NSString { path as NSString }
 }
 

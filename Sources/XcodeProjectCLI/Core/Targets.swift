@@ -15,7 +15,11 @@ final class Targets {
     }
 
     func listTargetsForFile(_ filePath: InputPath) throws -> [PBXTarget] {
-        try project.pbxproj.nativeTargets
+        guard filePath.exists else {
+            throw CLIError.invalidInput("File \(filePath) does not exist.")
+        }
+
+        return try project.pbxproj.nativeTargets
             .filter { target in
                 let files = try target.sourceFiles()
                 return try files.contains {
@@ -30,6 +34,10 @@ final class Targets {
     /// If no Swift files are found in the group, it falls back to the parent group once.
     /// If everything fails, it returns targets matching the first path component of the group.
     func guessTargetsForGroup(_ groupPath: InputPath, fallbackToParent: Bool = true) throws -> [PBXTarget] {
+        guard groupPath.exists else {
+            throw CLIError.invalidInput("Group \(groupPath) does not exist.")
+        }
+
         let group = try groups.findGroup(groupPath)
 
         guard let group else {
@@ -57,6 +65,10 @@ final class Targets {
     }
 
     func setTargets(_ targets: [String], for filePath: InputPath) throws {
+        guard filePath.exists else {
+            throw CLIError.invalidInput("File \(filePath) does not exist.")
+        }
+
         let destTargets = targets.flatMap {
             project.pbxproj.targets(named: $0)
         }
