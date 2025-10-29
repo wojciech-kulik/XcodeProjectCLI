@@ -3,6 +3,8 @@ import XcodeProj
 
 final class Project {
     let targets: Targets
+    let groups: Groups
+    let files: Files
 
     private let project: XcodeProj
 
@@ -22,6 +24,8 @@ final class Project {
 
         self.project = try XcodeProj(pathString: projectPath)
         self.targets = Targets(project: project)
+        self.groups = Groups(project: project)
+        self.files = Files(project: project)
     }
 
     func save() throws {

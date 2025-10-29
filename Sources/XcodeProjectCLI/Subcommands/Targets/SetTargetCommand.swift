@@ -11,10 +11,10 @@ struct SetTargetCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectOptions
 
-    @Option(name: .customLong("file"), help: "Full path to file")
+    @Option(name: .customLong("file"), help: "Full path to file.")
     var filePath: String
 
-    @Option(help: "Comma separated list of target names")
+    @Option(help: "Comma separated list of target names.")
     var targets: String
 
     private var parsedTargets: [String] = []

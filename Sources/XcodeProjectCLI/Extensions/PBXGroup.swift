@@ -1,3 +1,4 @@
+import Foundation
 import XcodeProj
 
 extension PBXGroup {
@@ -9,5 +10,9 @@ extension PBXGroup {
             try allGroups.append(contentsOf: group.listAllGroups())
         }
         return allGroups
+    }
+
+    func subgroup(named name: String) -> PBXGroup? {
+        children.compactMap { $0 as? PBXGroup }.first { $0.path == (name as NSString).lastPathComponent }
     }
 }

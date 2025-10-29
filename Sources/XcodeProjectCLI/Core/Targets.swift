@@ -2,9 +2,8 @@ import Foundation
 import XcodeProj
 
 final class Targets {
-    let groups: Groups
-
     private let project: XcodeProj
+    private let groups: Groups
 
     init(project: XcodeProj) {
         self.project = project
@@ -29,8 +28,9 @@ final class Targets {
     /// Guesses targets for the given group by looking for Swift files in the group
     /// and finding which targets includes the first found Swift file.
     /// If no Swift files are found in the group, it falls back to the parent group once.
+    /// If everything fails, it returns targets matching the first path component of the group.
     func guessTargetsForGroup(_ groupPath: String, fallbackToParent: Bool = true) throws -> [PBXTarget] {
-        let group = try groups.findGroup(byFullPath: groupPath)
+        let group = try groups.findGroup(groupPath)
 
         guard let group else {
             return []
@@ -51,7 +51,10 @@ final class Targets {
             }
         }
 
-        return []
+        let relativeGroupPath = groupPath.replacingOccurrences(of: project.rootDir, with: "").trimmingCharacters(in: ["/"])
+        let firstGroup = (relativeGroupPath as NSString).pathComponents.first ?? ""
+
+        return project.pbxproj.targets(named: firstGroup)
     }
 
     func setTargets(_ targets: [String], for filePath: String) throws {

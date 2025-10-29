@@ -29,6 +29,12 @@ struct XcodeProjectCLI: ParsableCommand {
                     ListTargetsCommand.self,
                     SetTargetCommand.self
                 ]
+            ),
+            .init(
+                name: "Files",
+                subcommands: [
+                    AddFileCommand.self
+                ]
             )
         ]
     )
