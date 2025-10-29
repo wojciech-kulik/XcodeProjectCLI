@@ -1,4 +1,3 @@
-import Swift
 import Testing
 @testable import XcodeProjectCLI
 

@@ -33,7 +33,11 @@ final class Targets {
     /// and finding which targets includes the first found Swift file.
     /// If no Swift files are found in the group, it falls back to the parent group once.
     /// If everything fails, it returns targets matching the first path component of the group.
-    func guessTargetsForGroup(_ groupPath: InputPath, fallbackToParent: Bool = true) throws -> [PBXTarget] {
+    func guessTargetsForGroup(
+        _ groupPath: InputPath,
+        fallbackToParent: Bool = true,
+        fileToTargetMap: [InputPath: [PBXNativeTarget]]? = nil
+    ) throws -> [PBXTarget] {
         guard groupPath.exists else {
             throw CLIError.invalidInput("Group \(groupPath) does not exist.")
         }
@@ -44,14 +48,20 @@ final class Targets {
             return []
         }
 
-        let fileToTargetMap = try createFileToTargetMap()
+        let fileToTargetMap = try fileToTargetMap ?? createFileToTargetMap()
         let swiftFiles = try group.children
             .filter { $0.path?.hasSuffix("swift") == true }
             .compactMap { try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath }
 
         if fallbackToParent, swiftFiles.isEmpty,
            let parentGroup = try group.parent?.fullPath(sourceRoot: project.rootDir)?.asInputPath {
-            return try guessTargetsForGroup(parentGroup, fallbackToParent: false)
+            let fallbackResult = try guessTargetsForGroup(parentGroup, fallbackToParent: false, fileToTargetMap: fileToTargetMap)
+
+            if !fallbackResult.isEmpty {
+                return fallbackResult
+            } else {
+                // Fallback to first path component targets
+            }
         }
 
         for swiftFile in swiftFiles {

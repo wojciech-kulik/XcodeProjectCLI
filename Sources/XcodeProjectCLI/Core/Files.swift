@@ -18,6 +18,10 @@ final class Files {
         guessTarget: Bool,
         createGroups: Bool
     ) throws {
+        guard filePath.exists else {
+            throw CLIError.invalidInput("File \(filePath) does not exist.")
+        }
+
         // Find group
         let groupPath = filePath.directory
         let group = try groups.findGroup(groupPath)
