@@ -7,7 +7,7 @@ struct SetTargetCommand: ParsableCommand {
     )
 
     @OptionGroup
-    var options: ProjectOptions
+    var options: ProjectWriteOptions
 
     @Option(name: .customLong("file"), help: "Path to file.")
     var filePath: String
@@ -21,7 +21,7 @@ struct SetTargetCommand: ParsableCommand {
         let project = try Project(projectPath: options.projectPath)
         let filePath = filePath.asInputPath
 
-        guard filePath.exists else {
+        guard options.projectOnly || filePath.exists else {
             throw CLIError.fileNotFoundOnDisk(filePath)
         }
 

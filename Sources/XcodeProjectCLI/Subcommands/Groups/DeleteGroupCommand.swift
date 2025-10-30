@@ -8,7 +8,7 @@ struct DeleteGroupCommand: ParsableCommand {
     )
 
     @OptionGroup
-    var options: ProjectOptions
+    var options: ProjectWriteOptions
 
     @Option(name: .customLong("group"), help: "Path to group.")
     var groupPath: String
@@ -17,12 +17,15 @@ struct DeleteGroupCommand: ParsableCommand {
         let project = try Project(projectPath: options.projectPath)
         let groupPath = groupPath.asInputPath
 
-        guard groupPath.exists else {
+        guard options.projectOnly || groupPath.exists else {
             throw CLIError.groupNotFoundOnDisk(groupPath)
         }
 
         try project.groups.deleteGroup(groupPath)
         try project.save()
+
+        guard !options.projectOnly else { return }
+
         try FileManager.default.removeItem(atPath: groupPath.absolutePath)
     }
 }

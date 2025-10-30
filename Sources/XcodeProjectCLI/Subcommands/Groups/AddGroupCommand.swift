@@ -8,7 +8,7 @@ struct AddGroupCommand: ParsableCommand {
     )
 
     @OptionGroup
-    var options: ProjectOptions
+    var options: ProjectWriteOptions
 
     @Option(name: .customLong("group"), help: "Path to group.")
     var groupPath: String
@@ -21,12 +21,12 @@ struct AddGroupCommand: ParsableCommand {
         let groupPath = groupPath.asInputPath
 
         if !groupPath.exists {
-            if createGroups {
+            if createGroups, !options.projectOnly {
                 try FileManager.default.createDirectory(
                     atPath: groupPath.absolutePath,
                     withIntermediateDirectories: true
                 )
-            } else {
+            } else if !createGroups {
                 throw CLIError.groupNotFoundOnDisk(groupPath)
             }
         }

@@ -24,6 +24,7 @@ sign_release: release
 	codesign --force --sign "Developer ID Application: Wojciech Kulik ($$XCODE_DEVELOPMENT_TEAM)" --options runtime .release/xcp
 	codesign -vvv --strict .release/$(EXECUTABLE)
 	zip -j .release/$(EXECUTABLE).zip .release/$(EXECUTABLE)
+	shasum -a 256 .release/$(EXECUTABLE).zip | pbcopy
 
 install: release
 	sudo cp .release/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)

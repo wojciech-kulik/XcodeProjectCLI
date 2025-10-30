@@ -8,7 +8,7 @@ struct MoveFileCommand: ParsableCommand {
     )
 
     @OptionGroup
-    var options: ProjectOptions
+    var options: ProjectWriteOptions
 
     @Option(name: .customLong("file"), help: "Path to file.")
     var filePath: String
@@ -21,12 +21,14 @@ struct MoveFileCommand: ParsableCommand {
         let filePath = filePath.asInputPath
         let destination = destination.asInputPath
 
-        guard filePath.exists else {
+        guard options.projectOnly || filePath.exists else {
             throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
         try project.files.moveFile(filePath, to: destination)
         try project.save()
+
+        guard !options.projectOnly else { return }
 
         try FileManager.default.moveItem(
             atPath: filePath.absolutePath,

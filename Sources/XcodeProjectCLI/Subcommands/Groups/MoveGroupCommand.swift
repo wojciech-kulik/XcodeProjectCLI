@@ -12,7 +12,7 @@ struct MoveGroupCommand: ParsableCommand {
     )
 
     @OptionGroup
-    var options: ProjectOptions
+    var options: ProjectWriteOptions
 
     @Option(name: .customLong("group"), help: "Path to group.")
     var groupPath: String
@@ -25,12 +25,14 @@ struct MoveGroupCommand: ParsableCommand {
         let groupPath = groupPath.asInputPath
         let destination = destination.asInputPath
 
-        guard groupPath.exists else {
+        guard options.projectOnly || groupPath.exists else {
             throw CLIError.groupNotFoundOnDisk(groupPath)
         }
 
         try project.groups.moveGroup(groupPath, to: destination)
         try project.save()
+
+        guard !options.projectOnly else { return }
 
         let newGroupPath = destination.appending(groupPath.lastComponent)
 

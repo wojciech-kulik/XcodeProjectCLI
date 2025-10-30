@@ -7,7 +7,7 @@ struct ListTargetsCommand: ParsableCommand {
     )
 
     @OptionGroup
-    var options: ProjectOptions
+    var options: ProjectReadOptions
 
     @Option(name: .customLong("file"), help: "Path to file - find targets for a specific file.")
     var filePath: String?
