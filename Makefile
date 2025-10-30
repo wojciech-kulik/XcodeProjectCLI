@@ -16,7 +16,7 @@ release_local:
 	mkdir -p .release
 	cp .build/release/$(BUILD_PRODUCT) .release/$(EXECUTABLE)
 
-release:
+release_nosign:
 	swift build --arch x86_64 -c release
 	swift build --arch arm64 -c release
 	rm -rf .release
@@ -26,11 +26,11 @@ release:
 	  .build/x86_64-apple-macosx/release/$(BUILD_PRODUCT) \
 	  -output .release/$(EXECUTABLE)
 
-sign_release: release
+release: release_nosign
 	codesign --force --sign "Developer ID Application: Wojciech Kulik ($$XCODE_DEVELOPMENT_TEAM)" --options runtime .release/xcp
 	codesign -vvv --strict .release/$(EXECUTABLE)
 	zip -j .release/$(EXECUTABLE).zip .release/$(EXECUTABLE)
-	shasum -a 256 .release/$(EXECUTABLE).zip | pbcopy
+	shasum -a 256 .release/$(EXECUTABLE).zip | cut -d' ' -f1 | tr -d '\n' | pbcopy
 
 install: release_local
 	sudo cp .release/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)
