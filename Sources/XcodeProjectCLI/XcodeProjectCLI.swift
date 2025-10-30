@@ -24,14 +24,14 @@ struct XcodeProjectCLI: ParsableCommand {
         version: "0.1.0",
         groupedSubcommands: [
             .init(
-                name: "Targets",
+                name: "Target",
                 subcommands: [
                     ListTargetsCommand.self,
                     SetTargetCommand.self
                 ]
             ),
             .init(
-                name: "Files",
+                name: "File",
                 subcommands: [
                     AddFileCommand.self,
                     DeleteFileCommand.self,

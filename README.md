@@ -20,11 +20,11 @@ OPTIONS:
   --version               Show the version.
   -h, --help              Show help information.
 
-TARGETS SUBCOMMANDS:
+TARGET SUBCOMMANDS:
   list-targets            List project targets.
   set-target              Set target for an existing file.
 
-FILES SUBCOMMANDS:
+FILE SUBCOMMANDS:
   add-file                Add a file to specified targets in the project.
   delete-file             Delete a file from the project.
   move-file               Move a file to a different location within the project.
