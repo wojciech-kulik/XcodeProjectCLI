@@ -122,11 +122,11 @@ final class ProjectGroups {
     }
 
     private func removeGroupRecursively(_ group: PBXGroup) throws {
-        for child in group.children {
+        for child in group.children.reversed() {
             if let childGroup = child as? PBXGroup {
                 try removeGroupRecursively(childGroup)
             } else if let fileRef = child as? PBXFileReference {
-                project.pbxproj.delete(object: fileRef)
+                try projectFiles.removeFile(fileRef.fullPath!)
             }
         }
 
