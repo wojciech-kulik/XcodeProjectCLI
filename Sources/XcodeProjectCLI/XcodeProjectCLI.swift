@@ -11,7 +11,7 @@ import Foundation
 struct ProjectOptions: ParsableArguments {
     @Argument(help: .init(
         "xcodeproj full path, if not provided will search in the current directory",
-        valueName: "xcodeproj"
+        valueName: "xcode-project"
     ))
     var projectPath: String?
 }
@@ -19,7 +19,7 @@ struct ProjectOptions: ParsableArguments {
 @main
 struct XcodeProjectCLI: ParsableCommand {
     static let configuration: CommandConfiguration = .init(
-        commandName: "xcodeproj",
+        commandName: "xcp",
         abstract: "XcodeProjectCLI",
         version: "0.9.1",
         groupedSubcommands: [
