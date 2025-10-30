@@ -19,6 +19,10 @@ release:
 	  .build/arm64-apple-macosx/release/$(BUILD_PRODUCT) \
 	  .build/x86_64-apple-macosx/release/$(BUILD_PRODUCT) \
 	  -output .release/$(EXECUTABLE)
+
+sign_release: release
+	codesign --force --sign "Developer ID Application: Wojciech Kulik ($$XCODE_DEVELOPMENT_TEAM)" --options runtime .release/xcp
+	codesign -vvv --strict .release/$(EXECUTABLE)
 	zip -j .release/$(EXECUTABLE).zip .release/$(EXECUTABLE)
 
 install: release
