@@ -31,21 +31,21 @@ struct XcodeProjectCLI: ParsableCommand {
                 ]
             ),
             .init(
-                name: "File",
-                subcommands: [
-                    AddFileCommand.self,
-                    DeleteFileCommand.self,
-                    MoveFileCommand.self,
-                    RenameFileCommand.self
-                ]
-            ),
-            .init(
                 name: "Group",
                 subcommands: [
                     AddGroupCommand.self,
                     DeleteGroupCommand.self,
                     MoveGroupCommand.self,
                     RenameGroupCommand.self
+                ]
+            ),
+            .init(
+                name: "File",
+                subcommands: [
+                    AddFileCommand.self,
+                    DeleteFileCommand.self,
+                    MoveFileCommand.self,
+                    RenameFileCommand.self
                 ]
             )
         ]

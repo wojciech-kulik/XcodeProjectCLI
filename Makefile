@@ -21,3 +21,13 @@ release:
 	  -output .release/$(EXECUTABLE)
 	zip -j .release/$(EXECUTABLE).zip .release/$(EXECUTABLE)
 
+install: release
+	sudo cp .release/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)
+
+make uninstall:
+	sudo rm /usr/local/bin/$(EXECUTABLE)
+
+clean:
+	rm -rf .bin .release .build
+	swift package clean
+	sudo rm /usr/local/bin/$(EXECUTABLE)

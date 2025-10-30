@@ -19,7 +19,7 @@ Easily integrate it into your development workflow or automate complex refactori
 ```
 OVERVIEW: XcodeProjectCLI
 
-USAGE: xcodeproj <subcommand>
+USAGE: xcp <subcommand>
 
 OPTIONS:
   --version               Show the version.
@@ -29,21 +29,19 @@ TARGET SUBCOMMANDS:
   list-targets            List project targets.
   set-target              Set target for an existing file.
 
-FILE SUBCOMMANDS:
-  add-file                Add a file to specified targets in the project.
-  delete-file             Delete a file from the project.
-  move-file               Move a file to a different location within the
-                          project.
-  rename-file             Rename a file within the project.
-
 GROUP SUBCOMMANDS:
   add-group               Add a group to the project.
   delete-group            Delete a group from the project.
-  move-group              Move a group to a different location within the
-                          project.
+  move-group              Move a group to a different location within the project.
   rename-group            Rename a group within the project.
 
-  See 'xcodeproj help <subcommand>' for detailed help.
+FILE SUBCOMMANDS:
+  add-file                Add a file to specified targets in the project.
+  delete-file             Delete a file from the project.
+  move-file               Move a file to a different location within the project.
+  rename-file             Rename a file within the project.
+
+  See 'xcp help <subcommand>' for detailed help.
 ```
 
 ## 📦 Installation
@@ -52,17 +50,16 @@ Right now, you need to build the project from source.
 
 1. Clone the repository.
 2. Navigate to the project directory.
-3. Build the project:
+3. Build the project and install:
 
    ```bash
-   swift build -c release
+   make install
    ```
 
-4. The built executable will be located in the `.build/release` directory. You
-   can copy it to a directory in your PATH for easier access:
+4. Verify the installation:
 
    ```bash
-    cp .build/release/XcodeProjectCLI /usr/local/bin/xcodeproj
+   xcp --version
    ```
 
 ## 🤓 My Other Projects
