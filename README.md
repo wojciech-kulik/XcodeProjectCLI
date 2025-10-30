@@ -52,7 +52,7 @@ Right now, you need to build the project from source.
     cp .build/release/XcodeProjectCLI /usr/local/bin/xcodeproj
    ```
 
-### 🤓 My Other Projects
+## 🤓 My Other Projects
 
 - [Snippety](https://snippety.app) - Snippets manager for macOS & iOS
 - [FlashSpace](https://github.com/wojciech-kulik/FlashSpace) - Fast virtual workspace manager for macOS
