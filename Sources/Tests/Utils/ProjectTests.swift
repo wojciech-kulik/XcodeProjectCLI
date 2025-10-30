@@ -66,7 +66,7 @@ class ProjectTests {
         let files = ProjectFiles(project: project)
 
         #expect(filePath.exists)
-        #expect(try files.findFile(filePath) != nil)
+        #expect(files.findFile(filePath) != nil)
     }
 
     func notExpectFileInProject(_ filePath: InputPath) throws {
@@ -74,7 +74,7 @@ class ProjectTests {
         let files = ProjectFiles(project: project)
 
         #expect(!filePath.exists)
-        #expect(try files.findFile(filePath) == nil)
+        #expect(files.findFile(filePath) == nil)
     }
 
     func expectTargets(_ targets: [String], forFile filePath: InputPath) throws {

@@ -31,6 +31,8 @@ playground.xcworkspace
 
 .build/
 .test/
+.bin/
+.release/
 
 # CocoaPods
 #

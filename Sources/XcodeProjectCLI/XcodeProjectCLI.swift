@@ -21,7 +21,7 @@ struct XcodeProjectCLI: ParsableCommand {
     static let configuration: CommandConfiguration = .init(
         commandName: "xcodeproj",
         abstract: "XcodeProjectCLI",
-        version: "0.1.0",
+        version: "0.9.1",
         groupedSubcommands: [
             .init(
                 name: "Target",
