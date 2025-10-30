@@ -6,6 +6,15 @@ Easily integrate it into your development workflow or automate complex refactori
 
 💚 Powered by the excellent [XcodeProj](https://github.com/tuist/XcodeProj) library from [Tuist](https://github.com/tuist).
 
+## ⏳ In Progress
+
+Planned commands:
+
+- [ ] add-group
+- [ ] delete-group
+- [ ] move-group
+- [ ] rename-group
+
 > [!WARNING]
 > This project is currently a work in progress.
 > 
