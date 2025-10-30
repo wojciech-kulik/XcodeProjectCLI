@@ -4,9 +4,9 @@ import XcodeProj
 final class Project {
     private(set) static var projectRoot = ""
 
-    let targets: Targets
-    let groups: Groups
-    let files: Files
+    let targets: ProjectTargets
+    let groups: ProjectGroups
+    let files: ProjectFiles
 
     private let project: XcodeProj
 
@@ -26,9 +26,9 @@ final class Project {
         Self.projectRoot = (projectPath as NSString).deletingLastPathComponent
 
         self.project = try XcodeProj(pathString: projectPath)
-        self.targets = Targets(project: project)
-        self.groups = Groups(project: project)
-        self.files = Files(project: project)
+        self.targets = ProjectTargets(project: project)
+        self.groups = ProjectGroups(project: project)
+        self.files = ProjectFiles(project: project)
     }
 
     func save() throws {

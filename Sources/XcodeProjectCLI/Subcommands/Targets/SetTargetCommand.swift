@@ -19,7 +19,13 @@ struct SetTargetCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
-        try project.targets.setTargets(parsedTargets, for: filePath.asInputPath)
+        let filePath = filePath.asInputPath
+
+        guard filePath.exists else {
+            throw CLIError.fileNotFoundOnDisk(filePath)
+        }
+
+        try project.targets.setTargets(parsedTargets, for: filePath)
         try project.save()
     }
 

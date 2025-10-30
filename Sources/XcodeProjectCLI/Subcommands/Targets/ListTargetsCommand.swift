@@ -17,11 +17,23 @@ struct ListTargetsCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
+        let filePath = filePath?.asInputPath
+        let groupPath = groupPath?.asInputPath
+
+        if let groupPath {
+            guard groupPath.exists else {
+                throw CLIError.groupNotFoundOnDisk(groupPath)
+            }
+        } else if let filePath {
+            guard filePath.exists else {
+                throw CLIError.fileNotFoundOnDisk(filePath)
+            }
+        }
 
         let targets = if let groupPath {
-            try project.targets.guessTargetsForGroup(groupPath.asInputPath)
+            try project.targets.guessTargetsForGroup(groupPath)
         } else if let filePath {
-            try project.targets.listTargetsForFile(filePath.asInputPath)
+            try project.targets.listTargetsForFile(filePath)
         } else {
             project.targets.listTargets()
         }

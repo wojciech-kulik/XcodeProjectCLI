@@ -45,13 +45,19 @@ extension InputPath {
         let newPath = nsString.appendingPathComponent(component)
         return InputPath(newPath, projectRoot: projectRoot)
     }
+
+    func changeLastComponent(to newName: String) -> InputPath {
+        let directoryPath = nsString.deletingLastPathComponent
+        let newPath = (directoryPath as NSString).appendingPathComponent(newName)
+        return InputPath(newPath, projectRoot: projectRoot)
+    }
 }
 
 // MARK: - Helpers
 extension InputPath {
     var isRelative: Bool { !path.hasPrefix("/") }
 
-    var fileName: String { nsString.lastPathComponent }
+    var lastComponent: String { nsString.lastPathComponent }
 
     var exists: Bool { FileManager.default.fileExists(atPath: absolutePath) }
 

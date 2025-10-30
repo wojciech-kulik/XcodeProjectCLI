@@ -16,6 +16,6 @@ extension PBXGroup {
     func subgroup(named name: String) -> PBXGroup? {
         children
             .compactMap { $0 as? PBXGroup }
-            .first { $0.path?.asInputPath.fileName == name }
+            .first { $0.path?.asInputPath.lastComponent == name }
     }
 }

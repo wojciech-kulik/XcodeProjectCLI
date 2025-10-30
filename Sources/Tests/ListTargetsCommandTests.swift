@@ -67,16 +67,17 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 
     @Test
-    func listTargets_byFilePath_shouldReturnEmptyString_whenFileIsNotAddedToAnyTarget() throws {
-        var sut = try ListTargetsCommand.parse([
+    func listTargets_byFilePath_shouldReturnError_whenFileIsNotAddedToAnyTarget() throws {
+        let file = InputPath(Files.Helpers.notAddedFile, projectRoot: testProjectPath)
+        let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--file",
-            Files.XcodebuildNvimApp.Modules.notAddedFile
+            file.relativePath
         ])
 
-        let output = try runTest(for: &sut)
-
-        #expect(output == "")
+        #expect(throws: CLIError.fileNotFoundInProject(file)) {
+            try sut.run()
+        }
     }
 }
 
@@ -104,16 +105,17 @@ extension SerializedSuite.ListTargetsCommandTests {
     }
 
     @Test
-    func listTargets_byGroupPath_shouldReturnEmptyString_whenGroupIsNotAddedToAnyTarget() throws {
-        var sut = try ListTargetsCommand.parse([
+    func listTargets_byGroupPath_shouldReturnError_whenGroupIsNotAddedToAnyTarget() throws {
+        let group = InputPath(Files.XcodebuildNvimApp.Modules.NotAdded.group, projectRoot: testProjectPath)
+        let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--group",
-            Files.XcodebuildNvimApp.Modules.NotAdded.group
+            group.relativePath
         ])
 
-        let output = try runTest(for: &sut)
-
-        #expect(output == "")
+        #expect(throws: CLIError.groupNotFoundInProject(group)) {
+            try sut.run()
+        }
     }
 
     @Test

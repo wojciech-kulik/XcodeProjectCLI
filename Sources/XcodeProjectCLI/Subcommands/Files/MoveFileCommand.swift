@@ -18,23 +18,19 @@ struct MoveFileCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
+        let filePath = filePath.asInputPath
+        let destination = destination.asInputPath
 
-        guard filePath.asInputPath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath.asInputPath)
+        guard filePath.exists else {
+            throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
-        try FileManager.default.moveItem(atPath: filePath.asInputPath.absolutePath, toPath: destination.asInputPath.absolutePath)
+        try project.files.moveFile(filePath, to: destination)
+        try project.save()
 
-        do {
-            try project.files.moveFile(filePath.asInputPath, to: destination.asInputPath)
-            try project.save()
-        } catch {
-            // Rollback file move
-            try? FileManager.default.moveItem(
-                atPath: destination.asInputPath.absolutePath,
-                toPath: filePath.asInputPath.absolutePath
-            )
-            throw error
-        }
+        try FileManager.default.moveItem(
+            atPath: filePath.absolutePath,
+            toPath: destination.absolutePath
+        )
     }
 }

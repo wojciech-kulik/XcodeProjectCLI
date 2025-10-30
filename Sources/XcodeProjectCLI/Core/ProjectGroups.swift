@@ -1,40 +1,24 @@
 import XcodeProj
 
-final class Groups {
+final class ProjectGroups {
     private let project: XcodeProj
 
     init(project: XcodeProj) {
         self.project = project
     }
 
-    func listAllGroups() throws -> [(group: PBXGroup, path: InputPath)] {
-        guard let rootGroup = try project.pbxproj.rootGroup() else {
-            throw CLIError.rootGroupNotFound
-        }
-
-        return try rootGroup
-            .allNestedGroups()
-            .compactMap {
-                guard let path = try $0.fullPath(sourceRoot: project.rootDir) else { return nil }
-                return ($0, path.asInputPath)
-            }
-    }
-
     func findGroup(_ groupPath: InputPath) throws -> PBXGroup? {
         try listAllGroups()
-            .first { _, enumeratedGroupPath in
-                enumeratedGroupPath == groupPath
-            }?
+            .first { $1 == groupPath }?
             .group
     }
 
     func createGroupHierarchy(at groupPath: InputPath) throws -> PBXGroup {
-        let pathComponents = groupPath.relativePathComponents
-
         guard let rootGroup = try project.pbxproj.rootGroup() else {
             throw CLIError.rootGroupNotFound
         }
 
+        let pathComponents = groupPath.relativePathComponents
         var currentGroup = rootGroup
 
         for component in pathComponents {
@@ -47,5 +31,18 @@ final class Groups {
         }
 
         return currentGroup
+    }
+
+    private func listAllGroups() throws -> [(group: PBXGroup, path: InputPath)] {
+        guard let rootGroup = try project.pbxproj.rootGroup() else {
+            throw CLIError.rootGroupNotFound
+        }
+
+        return try rootGroup
+            .allNestedGroups()
+            .compactMap {
+                guard let path = $0.fullPath else { return nil }
+                return ($0, path)
+            }
     }
 }

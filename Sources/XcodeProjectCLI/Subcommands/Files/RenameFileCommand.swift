@@ -18,19 +18,18 @@ struct RenameFileCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
+        let filePath = filePath.asInputPath
 
-        guard filePath.asInputPath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath.asInputPath)
+        guard filePath.exists else {
+            throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
-        try project.files.renameFile(filePath.asInputPath, newName: name)
-
-        let destination = (filePath.asInputPath.directory.absolutePath as NSString).appendingPathComponent(name)
-        try FileManager.default.moveItem(
-            atPath: filePath.asInputPath.absolutePath,
-            toPath: destination.asInputPath.absolutePath
-        )
-
+        try project.files.renameFile(filePath, newName: name)
         try project.save()
+
+        try FileManager.default.moveItem(
+            atPath: filePath.absolutePath,
+            toPath: filePath.changeLastComponent(to: name).absolutePath
+        )
     }
 }

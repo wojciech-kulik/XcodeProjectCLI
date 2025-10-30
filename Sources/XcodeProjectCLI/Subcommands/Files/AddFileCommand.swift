@@ -27,8 +27,14 @@ struct AddFileCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
+        let filePath = filePath.asInputPath
+
+        guard filePath.exists else {
+            throw CLIError.fileNotFoundOnDisk(filePath)
+        }
+
         try project.files.addFile(
-            filePath.asInputPath,
+            filePath,
             toTargets: parsedTargets,
             guessTarget: guessTarget,
             createGroups: createGroups

@@ -1,24 +1,18 @@
 import Foundation
 import XcodeProj
 
-#if DEBUG
-typealias FilesManager = Files
-#endif
-
-final class Files {
+final class ProjectFiles {
     private let project: XcodeProj
-    private lazy var groups = Groups(project: project)
-    private lazy var targets = Targets(project: project)
+    private lazy var projectGroups = ProjectGroups(project: project)
+    private lazy var projectTargets = ProjectTargets(project: project)
 
     init(project: XcodeProj) {
         self.project = project
     }
 
-    func findFile(_ filePath: InputPath) throws -> PBXFileReference? {
-        try project.pbxproj.fileReferences.first {
-            let fileRefPath = try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath
-            return fileRefPath == filePath
-        }
+    func findFile(_ filePath: InputPath) -> PBXFileReference? {
+        project.pbxproj.fileReferences
+            .first { $0.fullPath == filePath }
     }
 
     func addFile(
@@ -27,13 +21,9 @@ final class Files {
         guessTarget: Bool,
         createGroups: Bool
     ) throws {
-        guard filePath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath)
-        }
-
         // Find group
         let groupPath = filePath.directory
-        let group = try groups.findGroup(groupPath)
+        let group = try projectGroups.findGroup(groupPath)
 
         // Validate group
         if group == nil, !createGroups {
@@ -41,15 +31,15 @@ final class Files {
         }
 
         // Create group if needed
-        let targetGroup = try group ?? groups.createGroupHierarchy(at: groupPath)
+        let targetGroup = try group ?? projectGroups.createGroupHierarchy(at: groupPath)
 
         // Guess targets if needed
         var targets = targets
         if guessTarget, targets.isEmpty {
-            let guessedTargets = try self.targets.guessTargetsForGroup(groupPath)
+            let guessedTargets = try projectTargets.guessTargetsForGroup(groupPath)
 
             if guessedTargets.isEmpty {
-                print("Error: Could not guess any targets for group at path \(groupPath).")
+                print("Warning: Could not guess any targets for the file: \(filePath).")
             } else {
                 targets = guessedTargets.map(\.name)
             }
@@ -58,24 +48,23 @@ final class Files {
         // Add file to group
         try targetGroup.addFile(
             at: .init(filePath.absolutePath),
-            sourceRoot: .init(project.rootDir)
+            sourceRoot: .init(project.rootDir),
+            validatePresence: false
         )
 
         // Add file to targets
-        try self.targets.setTargets(targets, for: filePath)
+        try projectTargets.setTargets(targets, for: filePath)
     }
 
     func removeFile(_ filePath: InputPath) throws {
-        guard let fileRef = try findFile(filePath) else {
+        guard let fileRef = findFile(filePath) else {
             throw CLIError.fileNotFoundInProject(filePath)
         }
 
         // Remove from build phases
         try project.pbxproj.nativeTargets
             .filter { target in
-                try target.sourceFiles().contains {
-                    try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath == filePath
-                }
+                try target.sourceFiles().contains { $0.fullPath == filePath }
             }
             .forEach { try removeFile(filePath, from: $0.name) }
 
@@ -93,14 +82,8 @@ final class Files {
             return
         }
 
-        let buildPhase = try target.sourcesBuildPhase()
-        buildPhase?.files = try buildPhase?.files?.filter {
-            guard let fileRef = $0.file,
-                  let fullPath = try fileRef.fullPath(sourceRoot: project.rootDir) else {
-                return true
-            }
-            return fullPath.asInputPath != filePath
-        }
+        try target.sourcesBuildPhase()?.files?
+            .removeAll { $0.file?.fullPath == filePath }
     }
 
     func moveFile(_ filePath: InputPath, to newPath: InputPath) throws {
@@ -109,7 +92,7 @@ final class Files {
     }
 
     func renameFile(_ filePath: InputPath, newName: String) throws {
-        guard let file = try findFile(filePath) else {
+        guard let file = findFile(filePath) else {
             throw CLIError.fileNotFoundInProject(filePath)
         }
 

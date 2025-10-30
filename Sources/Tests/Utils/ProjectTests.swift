@@ -62,7 +62,7 @@ class ProjectTests {
 
     func expectFileInProject(_ filePath: InputPath) throws {
         let project = try XcodeProj(path: .init(testXcodeprojPath))
-        let files = FilesManager(project: project)
+        let files = ProjectFiles(project: project)
 
         #expect(filePath.exists)
         #expect(try files.findFile(filePath) != nil)
@@ -70,7 +70,7 @@ class ProjectTests {
 
     func notExpectFileInProject(_ filePath: InputPath) throws {
         let project = try XcodeProj(path: .init(testXcodeprojPath))
-        let files = FilesManager(project: project)
+        let files = ProjectFiles(project: project)
 
         #expect(!filePath.exists)
         #expect(try files.findFile(filePath) == nil)

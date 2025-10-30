@@ -15,8 +15,14 @@ struct DeleteFileCommand: ParsableCommand {
 
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
-        try project.files.removeFile(filePath.asInputPath)
+        let filePath = filePath.asInputPath
+
+        guard filePath.exists else {
+            throw CLIError.fileNotFoundOnDisk(filePath)
+        }
+
+        try project.files.removeFile(filePath)
         try project.save()
-        try FileManager.default.removeItem(atPath: filePath.asInputPath.absolutePath)
+        try FileManager.default.removeItem(atPath: filePath.absolutePath)
     }
 }

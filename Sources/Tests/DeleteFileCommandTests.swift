@@ -28,15 +28,13 @@ extension SerializedSuite.DeleteFileCommandTests {
                 .flatMap { $0.files ?? [] }
                 .compactMap(\.file)
 
-            try #expect(buildFiles.allSatisfy {
-                try $0.fullPath(sourceRoot: project.rootDir)?.asInputPath != file.asInputPath
-            })
+            #expect(buildFiles.allSatisfy { $0.fullPath != file.asInputPath })
         }
     }
 
     @Test
-    func deleteFile_shouldReturnError_whenFileDoesNotExist() throws {
-        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+    func deleteFile_shouldReturnError_whenFileDoesNotExistInProject() throws {
+        let file = InputPath(Files.Helpers.notAddedFile, projectRoot: testProjectPath)
         let sut = try DeleteFileCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -44,6 +42,20 @@ extension SerializedSuite.DeleteFileCommandTests {
         ])
 
         #expect(throws: CLIError.fileNotFoundInProject(file)) {
+            try sut.run()
+        }
+    }
+
+    @Test
+    func deleteFile_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
+        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+        let sut = try DeleteFileCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            file.relativePath
+        ])
+
+        #expect(throws: CLIError.fileNotFoundOnDisk(file)) {
             try sut.run()
         }
     }

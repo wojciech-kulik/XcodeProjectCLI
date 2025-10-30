@@ -16,7 +16,7 @@ extension SerializedSuite.RenameFileCommandTests {
             "--file",
             file,
             "--name",
-            dest.asInputPath.fileName
+            dest.asInputPath.lastComponent
         ])
 
         let output = try runTest(for: &sut)

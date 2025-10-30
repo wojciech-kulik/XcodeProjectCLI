@@ -27,10 +27,10 @@ struct InputPathTests {
     }
 
     @Test
-    func inputPath_fileName_shouldReturnCorrectValue() {
+    func inputPath_lastComponent_shouldReturnCorrectValue() {
         let path = InputPath(filePath, projectRoot: projectRoot)
 
-        #expect(path.fileName == "file.swift")
+        #expect(path.lastComponent == "file.swift")
     }
 
     @Test
@@ -111,5 +111,29 @@ struct InputPathTests {
 
         #expect(path1.relativePath == filePath)
         #expect(path2.relativePath == filePath)
+    }
+
+    @Test
+    func inputPath_changeLastComponent_shouldReturnPathWithNewFileName() {
+        let path = InputPath(filePath, projectRoot: projectRoot)
+        let newPath = path.changeLastComponent(to: "newFile.swift")
+
+        #expect(newPath.relativePath == "\(groupPath)/newFile.swift")
+    }
+
+    @Test
+    func inputPath_changeLastComponent_shouldReturnPathWithNewGroupName() {
+        let path = InputPath(groupPath, projectRoot: projectRoot)
+        let newPath = path.changeLastComponent(to: "Group3")
+
+        #expect(newPath.relativePath == "Group1/Group3")
+    }
+
+    @Test
+    func inputPath_appending_shouldReturnPathWithAppendedComponent() {
+        let path = InputPath(groupPath, projectRoot: projectRoot)
+        let newPath = path.appending("file.swift")
+
+        #expect(newPath.relativePath == filePath)
     }
 }
