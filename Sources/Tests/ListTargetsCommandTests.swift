@@ -54,7 +54,7 @@ extension SerializedSuite.ListTargetsCommandTests {
 
     @Test
     func listTargets_byFilePath_shouldReturnError_whenFileDoesNotExist() throws {
-        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+        let file = "Helpers/NonExistentFile.swift".asInputPath
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -68,7 +68,7 @@ extension SerializedSuite.ListTargetsCommandTests {
 
     @Test
     func listTargets_byFilePath_shouldReturnError_whenFileIsNotAddedToAnyTarget() throws {
-        let file = InputPath(Files.Helpers.notAddedFile, projectRoot: testProjectPath)
+        let file = Files.Helpers.notAddedFile.asInputPath
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -106,7 +106,7 @@ extension SerializedSuite.ListTargetsCommandTests {
 
     @Test
     func listTargets_byGroupPath_shouldReturnError_whenGroupIsNotAddedToAnyTarget() throws {
-        let group = InputPath(Files.XcodebuildNvimApp.Modules.NotAdded.group, projectRoot: testProjectPath)
+        let group = Files.XcodebuildNvimApp.Modules.NotAdded.group.asInputPath
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--group",
@@ -120,7 +120,7 @@ extension SerializedSuite.ListTargetsCommandTests {
 
     @Test
     func listTargets_byGroupPath_shouldReturnError_whenGroupDoesNotExist() throws {
-        let path = InputPath("Helpers/NonExistentGroup", projectRoot: testProjectPath)
+        let path = "Helpers/NonExistentGroup".asInputPath
         let sut = try ListTargetsCommand.parse([
             testXcodeprojPath,
             "--group",

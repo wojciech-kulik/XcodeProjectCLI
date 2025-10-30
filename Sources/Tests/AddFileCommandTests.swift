@@ -29,7 +29,7 @@ extension SerializedSuite.AddFileCommandTests {
 
     @Test
     func addFile_shouldReturnError_whenFileDoesNotExist() throws {
-        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+        let file = "Helpers/NonExistentFile.swift".asInputPath
         let sut = try AddFileCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -102,10 +102,7 @@ extension SerializedSuite.AddFileCommandTests {
 
     @Test
     func addFile_shouldReturnError_whenGroupDoesNotExistAndCreateGroupsNotSet() throws {
-        let file = InputPath(
-            Files.XcodebuildNvimApp.Modules.NotAdded.notAddedFile,
-            projectRoot: testProjectPath
-        )
+        let file = Files.XcodebuildNvimApp.Modules.NotAdded.notAddedFile.asInputPath
         let sut = try AddFileCommand.parse([
             testXcodeprojPath,
             "--file",

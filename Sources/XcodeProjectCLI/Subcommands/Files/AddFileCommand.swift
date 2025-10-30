@@ -15,12 +15,10 @@ struct AddFileCommand: ParsableCommand {
     @Option(help: "Comma separated list of target names.")
     var targets: String?
 
-    @Flag(
-        help: "If set and no targets are specified, the tool will attempt to guess the appropriate targets based on the file's location."
-    )
+    @Flag(help: "If set and no targets are specified, the tool will attempt to guess the targets based on the file's location.")
     var guessTarget = false
 
-    @Flag(help: "If set, the tool will create missing groups in the project structure when adding the file.")
+    @Flag(help: "If set, the tool will create missing groups in the project structure.")
     var createGroups = false
 
     private var parsedTargets: [String] = []

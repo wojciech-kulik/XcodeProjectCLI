@@ -22,6 +22,7 @@ class ProjectTests {
         try? FileManager.default.removeItem(atPath: testProjectPath)
         try FileManager.default.createDirectory(atPath: testPath, withIntermediateDirectories: true)
         try FileManager.default.copyItem(atPath: "\(resourcesPath)/XcodebuildNvimApp", toPath: testProjectPath)
+        _ = try Project(projectPath: testXcodeprojPath)
     }
 
     deinit {
@@ -79,5 +80,21 @@ class ProjectTests {
     func expectTargets(_ targets: [String], forFile filePath: InputPath) throws {
         let targets = try self.targets(forFile: filePath.absolutePath)
         #expect(targets == targets)
+    }
+
+    func expectGroupInProject(_ groupPath: InputPath) throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+        let groups = ProjectGroups(project: project)
+
+        #expect(groupPath.exists)
+        #expect(try groups.findGroup(groupPath) != nil)
+    }
+
+    func notExpectGroupInProject(_ groupPath: InputPath) throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+        let groups = ProjectGroups(project: project)
+
+        #expect(!groupPath.exists)
+        #expect(try groups.findGroup(groupPath) == nil)
     }
 }

@@ -38,6 +38,15 @@ struct XcodeProjectCLI: ParsableCommand {
                     MoveFileCommand.self,
                     RenameFileCommand.self
                 ]
+            ),
+            .init(
+                name: "Group",
+                subcommands: [
+                    AddGroupCommand.self,
+                    DeleteGroupCommand.self,
+                    MoveGroupCommand.self,
+                    RenameGroupCommand.self
+                ]
             )
         ]
     )

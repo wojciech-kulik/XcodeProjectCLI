@@ -29,7 +29,7 @@ extension SerializedSuite.MoveFileCommandTests {
 
     @Test
     func moveFile_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
-        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+        let file = "Helpers/NonExistentFile.swift".asInputPath
         let sut = try MoveFileCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -45,7 +45,7 @@ extension SerializedSuite.MoveFileCommandTests {
 
     @Test
     func moveFile_shouldReturnError_whenFileDoesNotExistInProject() throws {
-        let file = InputPath(Files.Helpers.notAddedFile, projectRoot: testProjectPath)
+        let file = Files.Helpers.notAddedFile.asInputPath
         let sut = try MoveFileCommand.parse([
             testXcodeprojPath,
             "--file",

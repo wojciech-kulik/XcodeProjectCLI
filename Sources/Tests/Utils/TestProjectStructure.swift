@@ -78,7 +78,7 @@ enum Files {
 
             enum Subfolder1 {
                 static let group = "Helpers/GeneralUtils/Subfolder1"
-                static let anotherFile = "Helpers/GeneralUtils/Subfolder1/CustomFile.swift"
+                static let customFile = "Helpers/GeneralUtils/Subfolder1/CustomFile.swift"
             }
 
             enum Subfolder2 {

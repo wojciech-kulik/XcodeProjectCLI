@@ -34,7 +34,7 @@ extension SerializedSuite.DeleteFileCommandTests {
 
     @Test
     func deleteFile_shouldReturnError_whenFileDoesNotExistInProject() throws {
-        let file = InputPath(Files.Helpers.notAddedFile, projectRoot: testProjectPath)
+        let file = Files.Helpers.notAddedFile.asInputPath
         let sut = try DeleteFileCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -48,7 +48,7 @@ extension SerializedSuite.DeleteFileCommandTests {
 
     @Test
     func deleteFile_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
-        let file = InputPath("Helpers/NonExistentFile.swift", projectRoot: testProjectPath)
+        let file = "Helpers/NonExistentFile.swift".asInputPath
         let sut = try DeleteFileCommand.parse([
             testXcodeprojPath,
             "--file",
