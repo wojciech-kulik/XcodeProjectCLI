@@ -1,13 +1,16 @@
 # XcodeProjectCLI
 
-> [!CAUTION]
-> 🚧 This project is a work-in-progress.
->
-> It is developed mainly to replace Ruby helper used in [xcodebuild.nvim] plugin.
+A fast, lightweight command-line tool for managing Xcode projects - built entirely in Swift.
 
-CLI tool written in Swift to manage xcodeproj.
+Easily integrate it into your development workflow or automate complex refactoring tasks with just a few commands.
 
-[xcodebuild.nvim]: https://github.com/wojciech-kulik/xcodebuild.nvim
+💚 Powered by the excellent [XcodeProj](https://github.com/tuist/XcodeProj) library from [Tuist](https://github.com/tuist).
+
+> [!WARNING]
+> This project is currently a work in progress.
+> 
+> It's being developed primarily as a Swift-based replacement for the Ruby helper used in the [xcodebuild.nvim]
+ plugin. However, the design aims to remain flexible enough to accommodate a wide range of use cases.
 
 ## 🚀 Features
 
@@ -58,3 +61,6 @@ Right now, you need to build the project from source.
 - [FlashSpace](https://github.com/wojciech-kulik/FlashSpace) - Fast virtual workspace manager for macOS
 - [Smog Poland](https://smog-polska.pl) - Air quality monitoring app for Poland
 - [xcodebuild.nvim](https://github.com/wojciech-kulik/xcodebuild.nvim) - Neovim plugin for building Xcode projects
+  
+
+[xcodebuild.nvim]: https://github.com/wojciech-kulik/xcodebuild.nvim
