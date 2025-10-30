@@ -4,7 +4,7 @@ import Foundation
 struct MoveFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "move-file",
-        abstract: "Move a file in the project."
+        abstract: "Move a file to a different location within the project."
     )
 
     @OptionGroup

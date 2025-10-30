@@ -4,7 +4,7 @@ import Foundation
 struct RenameFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "rename-file",
-        abstract: "Rename a file in the project."
+        abstract: "Rename a file within the project."
     )
 
     @OptionGroup
