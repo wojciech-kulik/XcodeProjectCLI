@@ -3,6 +3,7 @@ import XcodeProj
 
 final class ProjectGroups {
     private let project: XcodeProj
+    private lazy var projectFiles = ProjectFiles(project: project)
 
     init(project: XcodeProj) {
         self.project = project
@@ -68,22 +69,59 @@ final class ProjectGroups {
             throw CLIError.groupNotFoundInProject(groupPath)
         }
 
-        // Remove from current parent
         if let parent = group.parent as? PBXGroup {
             parent.children.removeAll { $0 === group }
         }
 
-        if let existingGroup = try findGroup(destination) {
-            existingGroup.children.append(group)
-            return
+        let destinationGroup = try findGroup(destination) ?? createGroupHierarchy(at: destination)
+
+        if let existingGroup = destinationGroup.subgroup(named: groupPath.lastComponent) {
+            try mergeGroups(from: group, into: existingGroup)
+            project.pbxproj.delete(object: group)
+        } else {
+            destinationGroup.children.append(group)
+        }
+    }
+
+    private func mergeGroups(from source: PBXGroup, into target: PBXGroup) throws {
+        for child in source.children {
+            switch child {
+            case let sourceChildGroup as PBXGroup:
+                let childName = sourceChildGroup.fullPath?.lastComponent ?? ""
+
+                if let targetChildGroup = target.subgroup(named: childName) {
+                    try mergeGroups(from: sourceChildGroup, into: targetChildGroup)
+                    project.pbxproj.delete(object: sourceChildGroup)
+                } else {
+                    sourceChildGroup.parent = target
+                    target.children.append(sourceChildGroup)
+                }
+
+            case let fileRef as PBXFileReference:
+                let fileName = fileRef.fullPath?.lastComponent ?? ""
+                let fileAlreadyExists = target.children.contains { existingChild in
+                    if let existingFile = existingChild as? PBXFileReference {
+                        return existingFile.fullPath?.lastComponent == fileName
+                    }
+                    return false
+                }
+
+                if fileAlreadyExists {
+                    try projectFiles.removeFile(fileRef.fullPath!)
+                } else {
+                    fileRef.parent = target
+                    target.children.append(fileRef)
+                }
+
+            default:
+                target.children.append(child)
+            }
         }
 
-        let destinationGroup = try createGroupHierarchy(at: destination)
-        destinationGroup.children.append(group)
+        source.children.removeAll()
     }
 
     private func removeGroupRecursively(_ group: PBXGroup) throws {
-        // Remove all children recursively
         for child in group.children {
             if let childGroup = child as? PBXGroup {
                 try removeGroupRecursively(childGroup)
@@ -92,7 +130,6 @@ final class ProjectGroups {
             }
         }
 
-        // Remove the group itself
         project.pbxproj.delete(object: group)
     }
 

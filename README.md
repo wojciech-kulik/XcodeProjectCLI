@@ -8,18 +8,11 @@ Easily integrate it into your development workflow or automate complex refactori
 
 ## ⏳ In Progress
 
-Planned commands:
-
-- [ ] add-group
-- [ ] delete-group
-- [ ] move-group
-- [ ] rename-group
-
 > [!WARNING]
 > This project is currently a work in progress.
-> 
+>
 > It's being developed primarily as a Swift-based replacement for the Ruby helper used in the [xcodebuild.nvim]
- plugin. However, the design aims to remain flexible enough to accommodate a wide range of use cases.
+> plugin. However, the design aims to remain flexible enough to accommodate a wide range of use cases.
 
 ## 🚀 Features
 
@@ -39,8 +32,16 @@ TARGET SUBCOMMANDS:
 FILE SUBCOMMANDS:
   add-file                Add a file to specified targets in the project.
   delete-file             Delete a file from the project.
-  move-file               Move a file to a different location within the project.
+  move-file               Move a file to a different location within the
+                          project.
   rename-file             Rename a file within the project.
+
+GROUP SUBCOMMANDS:
+  add-group               Add a group to the project.
+  delete-group            Delete a group from the project.
+  move-group              Move a group to a different location within the
+                          project.
+  rename-group            Rename a group within the project.
 
   See 'xcodeproj help <subcommand>' for detailed help.
 ```
@@ -70,6 +71,5 @@ Right now, you need to build the project from source.
 - [FlashSpace](https://github.com/wojciech-kulik/FlashSpace) - Fast virtual workspace manager for macOS
 - [Smog Poland](https://smog-polska.pl) - Air quality monitoring app for Poland
 - [xcodebuild.nvim](https://github.com/wojciech-kulik/xcodebuild.nvim) - Neovim plugin for building Xcode projects
-  
 
 [xcodebuild.nvim]: https://github.com/wojciech-kulik/xcodebuild.nvim
