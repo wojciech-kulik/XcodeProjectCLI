@@ -21,6 +21,9 @@ struct AddFileCommand: ParsableCommand {
     @Flag(help: "If set, the tool will create missing groups in the project structure.")
     var createGroups = false
 
+    @Flag(help: "If set, the tool will print the targets the file was added to.")
+    var printTargets = false
+
     private var parsedTargets: [String] = []
 
     func run() throws {
@@ -31,13 +34,17 @@ struct AddFileCommand: ParsableCommand {
             throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
-        try project.files.addFile(
+        let targets = try project.files.addFile(
             filePath,
             toTargets: parsedTargets,
             guessTarget: guessTarget,
             createGroups: createGroups
         )
         try project.save()
+
+        if printTargets {
+            targets.forEach { print($0) }
+        }
     }
 
     mutating func validate() throws {

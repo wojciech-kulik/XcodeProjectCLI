@@ -15,12 +15,13 @@ final class ProjectFiles {
             .first { $0.fullPath == filePath }
     }
 
+    @discardableResult
     func addFile(
         _ filePath: InputPath,
         toTargets targets: [String],
         guessTarget: Bool,
         createGroups: Bool
-    ) throws {
+    ) throws -> [TargetName] {
         // Find group
         let groupPath = filePath.directory
         let group = try projectGroups.findGroup(groupPath)
@@ -54,6 +55,8 @@ final class ProjectFiles {
 
         // Add file to targets
         try projectTargets.setTargets(targets, for: filePath)
+
+        return targets
     }
 
     func removeFile(_ filePath: InputPath) throws {
@@ -86,9 +89,10 @@ final class ProjectFiles {
             .removeAll { $0.file?.fullPath == filePath }
     }
 
-    func moveFile(_ filePath: InputPath, to newPath: InputPath) throws {
+    @discardableResult
+    func moveFile(_ filePath: InputPath, to newPath: InputPath) throws -> [TargetName] {
         try removeFile(filePath)
-        try addFile(newPath, toTargets: [], guessTarget: true, createGroups: true)
+        return try addFile(newPath, toTargets: [], guessTarget: true, createGroups: true)
     }
 
     func renameFile(_ filePath: InputPath, newName: String) throws {

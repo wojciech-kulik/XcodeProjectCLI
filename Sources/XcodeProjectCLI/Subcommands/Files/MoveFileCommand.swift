@@ -16,6 +16,9 @@ struct MoveFileCommand: ParsableCommand {
     @Option(name: .customLong("dest"), help: "Destination path.")
     var destination: String
 
+    @Flag(help: "If set, the tool will print the targets the file was added to.")
+    var printTargets = false
+
     func run() throws {
         let project = try Project(projectPath: options.projectPath)
         let filePath = filePath.asInputPath
@@ -25,8 +28,12 @@ struct MoveFileCommand: ParsableCommand {
             throw CLIError.fileNotFoundOnDisk(filePath)
         }
 
-        try project.files.moveFile(filePath, to: destination)
+        let targets = try project.files.moveFile(filePath, to: destination)
         try project.save()
+
+        if printTargets {
+            targets.forEach { print($0) }
+        }
 
         guard !options.projectOnly else { return }
 
