@@ -30,6 +30,7 @@ extension SerializedSuite.DeleteFileCommandTests {
 
             #expect(buildFiles.allSatisfy { $0.fullPath != file.asInputPath })
         }
+        try validateProject()
     }
 
     @Test

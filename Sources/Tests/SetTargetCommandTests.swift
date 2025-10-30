@@ -22,6 +22,8 @@ extension SerializedSuite.SetTargetCommandTests {
 
         let targets = try targets(forFile: Files.XcodebuildNvimApp.Modules.Main.mainViewModel)
         #expect(targets == ["Helpers"])
+
+        try validateProject()
     }
 
     @Test
@@ -43,6 +45,7 @@ extension SerializedSuite.SetTargetCommandTests {
             "Helpers",
             "XcodebuildNvimAppTests"
         ])
+        try validateProject()
     }
 
     @Test

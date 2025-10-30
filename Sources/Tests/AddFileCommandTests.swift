@@ -25,6 +25,7 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["EmptyTarget", "Helpers"])
+        try validateProject()
     }
 
     @Test
@@ -79,6 +80,7 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["EmptyTarget", "Helpers"])
+        try validateProject()
     }
 
     @Test
@@ -98,6 +100,7 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["EmptyTarget", "Helpers"])
+        try validateProject()
     }
 
     @Test
@@ -135,6 +138,7 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["XcodebuildNvimApp"])
+        try validateProject()
     }
 
     @Test
@@ -152,6 +156,7 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["Helpers"])
+        try validateProject()
     }
 
     @Test
@@ -170,5 +175,6 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["Helpers", "XcodebuildNvimApp", "XcodebuildNvimAppTests"])
+        try validateProject()
     }
 }

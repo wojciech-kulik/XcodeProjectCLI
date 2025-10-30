@@ -20,6 +20,7 @@ extension SerializedSuite.AddGroupCommandTests {
         #expect(output == "")
 
         try expectGroupInProject(group)
+        try validateProject()
     }
 
     @Test
@@ -51,6 +52,7 @@ extension SerializedSuite.AddGroupCommandTests {
 
         try expectGroupInProject(group.parent!)
         try expectGroupInProject(group)
+        try validateProject()
     }
 
     @Test
@@ -67,6 +69,7 @@ extension SerializedSuite.AddGroupCommandTests {
 
         try expectGroupInProject(group.parent!)
         try expectGroupInProject(group)
+        try validateProject()
     }
 
     @Test
@@ -80,5 +83,6 @@ extension SerializedSuite.AddGroupCommandTests {
 
         let output = try runTest(for: &sut)
         #expect(output.contains("Warning: Group already exists"))
+        try validateProject()
     }
 }

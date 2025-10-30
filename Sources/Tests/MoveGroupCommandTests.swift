@@ -28,6 +28,7 @@ extension SerializedSuite.MoveGroupCommandTests {
 
         try notExpectGroupInProject(group.asInputPath)
         try expectGroupInProject(newGroupPath.asInputPath)
+        try validateProject()
     }
 
     @Test
@@ -90,6 +91,7 @@ extension SerializedSuite.MoveGroupCommandTests {
 
         try notExpectGroupInProject(group.asInputPath)
         try expectGroupInProject(newGroupPath.asInputPath)
+        try validateProject()
     }
 }
 
@@ -148,6 +150,8 @@ extension SerializedSuite.MoveGroupCommandTests {
         try expectGroupInProject(destSubfolder.asInputPath)
         try expectFileInProject(fileInDest.asInputPath)
         try expectFileInProject("\(destSubfolder)/CustomFile.swift".asInputPath)
+
+        try validateProject()
     }
 
     @Test
@@ -211,5 +215,7 @@ extension SerializedSuite.MoveGroupCommandTests {
         try expectFileInProject("\(destSubfolder2)/String+Extensions.swift".asInputPath) // Moved file
         try expectFileInProject("\(destGeneralUtils)/Subfolder1/CustomFile.swift".asInputPath) // Moved from source
         try expectFileInProject("\(destGeneralUtils)/RandomFile.swift".asInputPath) // Moved from source
+
+        try validateProject()
     }
 }

@@ -20,6 +20,7 @@ extension SerializedSuite.DeleteGroupCommandTests {
         let output = try runTest(for: &sut)
         #expect(output == "")
         try notExpectGroupInProject(group.asInputPath)
+        try validateProject()
     }
 
     @Test
@@ -41,6 +42,8 @@ extension SerializedSuite.DeleteGroupCommandTests {
         try notExpectFileInProject(Files.Helpers.GeneralUtils.randomFile.asInputPath)
         try notExpectFileInProject(Files.Helpers.GeneralUtils.Subfolder1.customFile.asInputPath)
         try notExpectFileInProject(Files.Helpers.GeneralUtils.Subfolder2.stringExtensions.asInputPath)
+
+        try validateProject()
     }
 
     @Test

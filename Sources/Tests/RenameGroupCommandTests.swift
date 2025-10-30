@@ -24,6 +24,7 @@ extension SerializedSuite.RenameGroupCommandTests {
 
         try notExpectGroupInProject(group.asInputPath)
         try expectGroupInProject(newGroupPath.asInputPath)
+        try validateProject()
     }
 
     @Test

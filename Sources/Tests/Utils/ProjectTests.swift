@@ -97,4 +97,16 @@ class ProjectTests {
         #expect(!groupPath.exists)
         #expect(try groups.findGroup(groupPath) == nil)
     }
+
+    func validateProject() throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+
+        for ref in project.pbxproj.fileReferences {
+            #expect(ref.path != nil, "File reference has no path.")
+        }
+
+        for buildFile in project.pbxproj.buildFiles {
+            #expect(buildFile.file != nil, "Build file has no associated file reference.")
+        }
+    }
 }

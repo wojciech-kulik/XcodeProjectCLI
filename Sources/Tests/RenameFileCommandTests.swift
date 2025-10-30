@@ -25,6 +25,7 @@ extension SerializedSuite.RenameFileCommandTests {
         try notExpectFileInProject(file.asInputPath)
         try expectFileInProject(dest.asInputPath)
         try expectTargets(["Helpers", "XcodebuildNvimApp"], forFile: dest.asInputPath)
+        try validateProject()
     }
 
     @Test

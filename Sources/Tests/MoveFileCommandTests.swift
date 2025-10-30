@@ -25,6 +25,7 @@ extension SerializedSuite.MoveFileCommandTests {
         try notExpectFileInProject(file.asInputPath)
         try expectFileInProject(dest.asInputPath)
         try expectTargets(["XcodebuildNvimApp"], forFile: dest.asInputPath)
+        try validateProject()
     }
 
     @Test
