@@ -46,7 +46,11 @@ FILE SUBCOMMANDS:
 
 ## 📦 Installation
 
-Right now, you need to build the project from source.
+```bash
+brew install wojciech-kulik/tap/xcp
+```
+
+## 🛠️ Building from Source
 
 1. Clone the repository.
 2. Navigate to the project directory.
