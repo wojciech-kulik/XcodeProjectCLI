@@ -10,6 +10,12 @@ build:
 test:
 	swift test
 
+release_local:
+	swift build -c release
+	rm -rf .release
+	mkdir -p .release
+	cp .build/release/$(BUILD_PRODUCT) .release/$(EXECUTABLE)
+
 release:
 	swift build --arch x86_64 -c release
 	swift build --arch arm64 -c release
@@ -26,7 +32,7 @@ sign_release: release
 	zip -j .release/$(EXECUTABLE).zip .release/$(EXECUTABLE)
 	shasum -a 256 .release/$(EXECUTABLE).zip | pbcopy
 
-install: release
+install: release_local
 	sudo cp .release/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)
 
 make uninstall:
