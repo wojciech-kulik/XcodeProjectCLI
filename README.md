@@ -6,14 +6,6 @@ Easily integrate it into your development workflow or automate complex refactori
 
 💚 Powered by the excellent [XcodeProj](https://github.com/tuist/XcodeProj) library from [Tuist](https://github.com/tuist).
 
-## ⏳ In Progress
-
-> [!WARNING]
-> This project is currently a work in progress.
->
-> It's being developed primarily as a Swift-based replacement for the Ruby helper used in the [xcodebuild.nvim]
-> plugin. However, the design aims to remain flexible enough to accommodate a wide range of use cases.
-
 ## 🚀 Features
 
 ```
