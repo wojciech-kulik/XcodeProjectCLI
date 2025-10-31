@@ -22,10 +22,10 @@ struct DeleteGroupCommand: ParsableCommand {
         }
 
         try project.groups.deleteGroup(groupPath)
+
+        if !options.projectOnly {
+            try FileManager.default.removeItem(atPath: groupPath.absolutePath)
+        }
         try project.save()
-
-        guard !options.projectOnly else { return }
-
-        try FileManager.default.removeItem(atPath: groupPath.absolutePath)
     }
 }

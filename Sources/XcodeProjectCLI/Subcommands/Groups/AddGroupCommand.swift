@@ -20,18 +20,20 @@ struct AddGroupCommand: ParsableCommand {
         let project = try Project(projectPath: options.projectPath)
         let groupPath = groupPath.asInputPath
 
-        if !groupPath.exists {
-            if createGroups, !options.projectOnly {
-                try FileManager.default.createDirectory(
-                    atPath: groupPath.absolutePath,
-                    withIntermediateDirectories: true
-                )
-            } else if !createGroups {
-                throw CLIError.groupNotFoundOnDisk(groupPath)
-            }
+        try project.groups.addGroup(groupPath)
+
+        guard !options.projectOnly, !groupPath.exists else {
+            return try project.save()
         }
 
-        try project.groups.addGroup(groupPath)
+        guard createGroups else {
+            throw CLIError.groupNotFoundOnDisk(groupPath)
+        }
+
+        try FileManager.default.createDirectory(
+            atPath: groupPath.absolutePath,
+            withIntermediateDirectories: true
+        )
         try project.save()
     }
 }

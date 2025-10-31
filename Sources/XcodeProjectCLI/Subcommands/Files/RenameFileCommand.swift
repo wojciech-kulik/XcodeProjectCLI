@@ -25,13 +25,13 @@ struct RenameFileCommand: ParsableCommand {
         }
 
         try project.files.renameFile(filePath, newName: name)
+
+        if !options.projectOnly {
+            try FileManager.default.moveItem(
+                atPath: filePath.absolutePath,
+                toPath: filePath.changeLastComponent(to: name).absolutePath
+            )
+        }
         try project.save()
-
-        guard !options.projectOnly else { return }
-
-        try FileManager.default.moveItem(
-            atPath: filePath.absolutePath,
-            toPath: filePath.changeLastComponent(to: name).absolutePath
-        )
     }
 }

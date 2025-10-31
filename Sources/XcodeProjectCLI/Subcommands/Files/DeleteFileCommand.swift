@@ -22,10 +22,10 @@ struct DeleteFileCommand: ParsableCommand {
         }
 
         try project.files.removeFile(filePath)
+
+        if !options.projectOnly {
+            try FileManager.default.removeItem(atPath: filePath.absolutePath)
+        }
         try project.save()
-
-        guard !options.projectOnly else { return }
-
-        try FileManager.default.removeItem(atPath: filePath.absolutePath)
     }
 }

@@ -33,17 +33,17 @@ struct MoveFileCommand: ParsableCommand {
         }
 
         let targets = try project.files.moveFile(filePath, to: destination)
-        try project.save()
 
         if printTargets {
             targets.forEach { print($0) }
         }
 
-        guard !options.projectOnly else { return }
-
-        try FileManager.default.moveItem(
-            atPath: filePath.absolutePath,
-            toPath: destination.absolutePath
-        )
+        if !options.projectOnly {
+            try FileManager.default.moveItem(
+                atPath: filePath.absolutePath,
+                toPath: destination.absolutePath
+            )
+        }
+        try project.save()
     }
 }

@@ -10,7 +10,7 @@ struct RenameGroupCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("group"), help: "Path to group.")
+    @Option(name: .customLong("group"), help: .init("Group path.", valueName: "group-path"))
     var groupPath: String
 
     @Option(name: .customLong("name"), help: "New name for the group.")
@@ -25,13 +25,13 @@ struct RenameGroupCommand: ParsableCommand {
         }
 
         try project.groups.renameGroup(groupPath, newName: name)
+
+        if !options.projectOnly {
+            try FileManager.default.moveItem(
+                atPath: groupPath.absolutePath,
+                toPath: groupPath.changeLastComponent(to: name).absolutePath
+            )
+        }
         try project.save()
-
-        guard !options.projectOnly else { return }
-
-        try FileManager.default.moveItem(
-            atPath: groupPath.absolutePath,
-            toPath: groupPath.changeLastComponent(to: name).absolutePath
-        )
     }
 }

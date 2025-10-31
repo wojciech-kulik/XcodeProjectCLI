@@ -30,9 +30,8 @@ struct MoveGroupCommand: ParsableCommand {
         }
 
         try project.groups.moveGroup(groupPath, to: destination)
-        try project.save()
 
-        guard !options.projectOnly else { return }
+        guard !options.projectOnly else { return try project.save() }
 
         let newGroupPath = destination.appending(groupPath.lastComponent)
 
@@ -50,6 +49,8 @@ struct MoveGroupCommand: ParsableCommand {
                 toPath: newGroupPath.absolutePath
             )
         }
+
+        try project.save()
     }
 
     private func mergeDirectories(from source: String, to destination: String) throws {
