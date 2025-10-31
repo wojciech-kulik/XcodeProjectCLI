@@ -83,8 +83,11 @@ struct MoveGroupCommand: ParsableCommand {
                 }
             } else {
                 if fileManager.fileExists(atPath: destPath) {
-                    try fileManager.removeItem(atPath: sourcePath)
-                    print("Warning: File \(item) already exists at destination. Source file has been removed.")
+                    let bakPath = destPath.asInputPath.changeLastComponent(
+                        to: "\(destPath.asInputPath.lastComponent).bak"
+                    ).absolutePath
+                    try fileManager.moveItem(atPath: sourcePath, toPath: bakPath)
+                    print("Warning: File \(item) already exists at destination. Backup created at \(bakPath).")
                 } else {
                     try fileManager.moveItem(atPath: sourcePath, toPath: destPath)
                 }
