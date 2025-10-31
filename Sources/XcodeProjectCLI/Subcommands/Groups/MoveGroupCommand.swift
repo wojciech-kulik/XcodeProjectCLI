@@ -5,19 +5,29 @@ struct MoveGroupCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "move-group",
         abstract: "Move a group to a different location within the project.",
-        discussion: "Groups will be automatically merged if a group with the same name already exists at the destination. " +
-            "When merging, files and subgroups will be combined.\n\n" +
-            "If a file conflict occurs, existing files in the destination group will be preserved, " +
-            "and the conflicting source files will be removed. A warning will be displayed to indicate the conflict."
+        discussion: """
+          - This command does not allow to move and rename the group at the same time.
+          - Groups will be automatically merged if another group with the same name already exists at the destination.
+          - When merging, files and subgroups will be combined.
+          - If a file conflict occurs, existing files in the destination group will be preserved.
+          - The conflicting source files will be moved with a ".bak" suffix. 
+          - A warning will be displayed to indicate the conflict.
+        """
     )
 
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("group"), help: "Path to group.")
+    @Option(name: .customLong("group"), help: .init("Source group path.", valueName: "group-path"))
     var groupPath: String
 
-    @Option(name: .customLong("dest"), help: "Destination path.")
+    @Option(
+        name: .customLong("dest"),
+        help: .init(
+            "Destination group path. The whole source group will be moved into this path.",
+            valueName: "group-path"
+        )
+    )
     var destination: String
 
     func run() throws {

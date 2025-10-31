@@ -10,7 +10,7 @@ struct AddGroupCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("group"), help: "Path to group.")
+    @Option(name: .customLong("group"), help: .init("Group path.", valueName: "group-path"))
     var groupPath: String
 
     @Flag(help: "If set, the tool will create missing groups in the project structure.")

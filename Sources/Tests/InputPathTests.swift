@@ -34,6 +34,13 @@ struct InputPathTests {
     }
 
     @Test
+    func inputPath_firstRelativeComponent_shouldReturnCorrectValue() {
+        let path = InputPath(filePath, projectRoot: projectRoot)
+
+        #expect(path.firstRelativeComponent == "Group1")
+    }
+
+    @Test
     func inputPath_equals_shouldReturnTrue() {
         let path1 = InputPath(filePath, projectRoot: projectRoot)
         let path2 = InputPath(fullFilePath, projectRoot: projectRoot)

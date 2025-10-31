@@ -10,7 +10,7 @@ struct DeleteFileCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("file"), help: "Path to file.")
+    @Option(name: .customLong("file"), help: .init("File path.", valueName: "file-path"))
     var filePath: String
 
     func run() throws {

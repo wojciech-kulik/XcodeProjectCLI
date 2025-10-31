@@ -10,7 +10,7 @@ struct DeleteGroupCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("group"), help: "Path to group.")
+    @Option(name: .customLong("group"), help: .init("Group path.", valueName: "group-path"))
     var groupPath: String
 
     func run() throws {

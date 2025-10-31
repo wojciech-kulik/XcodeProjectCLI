@@ -11,7 +11,7 @@ extension SerializedSuite {
 // ---------------------------------------------------------------------------------------
 extension SerializedSuite.MoveGroupCommandTests {
     @Test
-    func moveGroup_shouldMoveGroupInProjectAndOnDisk() throws {
+    func moveGroup_shouldMoveGroupInProjectAndOnDisk_andShouldNotChangeTarget() throws {
         let group = Files.Helpers.GeneralUtils.Subfolder2.group
         let dest = Files.XcodebuildNvimApp.Modules.group
         let newGroupPath = "\(dest)/Subfolder2"
@@ -28,6 +28,10 @@ extension SerializedSuite.MoveGroupCommandTests {
 
         try notExpectGroupInProject(group.asInputPath)
         try expectGroupInProject(newGroupPath.asInputPath)
+        try expectTargets(
+            ["Helpers", "XcodebuildNvimApp"],
+            forFile: newGroupPath.asInputPath.appending("String+Extensions.swift")
+        )
         try validateProject()
     }
 

@@ -57,6 +57,8 @@ extension InputPath {
 extension InputPath {
     var isRelative: Bool { !path.hasPrefix("/") }
 
+    var firstRelativeComponent: String { relativePathComponents.first ?? "" }
+
     var lastComponent: String { nsString.lastPathComponent }
 
     var exists: Bool { FileManager.default.fileExists(atPath: absolutePath) }

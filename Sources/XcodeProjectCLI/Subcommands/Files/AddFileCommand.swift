@@ -9,7 +9,7 @@ struct AddFileCommand: ParsableCommand {
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("file"), help: "Path to file.")
+    @Option(name: .customLong("file"), help: .init("File path.", valueName: "file-path"))
     var filePath: String
 
     @Option(help: "Comma separated list of target names.")

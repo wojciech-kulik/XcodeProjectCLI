@@ -63,7 +63,7 @@ final class ProjectTargets {
             }
         }
 
-        let firstGroup = groupPath.relativePathComponents.first ?? ""
+        let firstGroup = groupPath.firstRelativeComponent
         return project.pbxproj.targets(named: firstGroup)
     }
 
