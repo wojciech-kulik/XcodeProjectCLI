@@ -91,8 +91,30 @@ final class ProjectFiles {
 
     @discardableResult
     func moveFile(_ filePath: InputPath, to newPath: InputPath) throws -> [TargetName] {
-        try removeFile(filePath)
-        return try addFile(newPath, toTargets: [], guessTarget: true, createGroups: true)
+        let targets = try projectTargets.findTargets(for: filePath)
+
+        guard let fileRef = findFile(filePath) else {
+            throw CLIError.fileNotFoundInProject(filePath)
+        }
+
+        // Find or create destination group
+        let destGroup = try projectGroups.findGroup(newPath.directory) ??
+            projectGroups.createGroupHierarchy(at: newPath.directory)
+
+        // Move file reference to new group
+        if let parent = fileRef.parent as? PBXGroup {
+            parent.children.removeAll { $0 === fileRef }
+        }
+        destGroup.children.append(fileRef)
+
+        // Rename if needed
+        if filePath.lastComponent != newPath.lastComponent {
+            fileRef.sourceTree = .group
+            fileRef.name = newPath.lastComponent
+            fileRef.path = newPath.lastComponent
+        }
+
+        return targets.map(\.name)
     }
 
     func renameFile(_ filePath: InputPath, newName: String) throws {

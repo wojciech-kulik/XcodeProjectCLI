@@ -7,10 +7,12 @@ extension SerializedSuite {
 }
 
 extension SerializedSuite.MoveFileCommandTests {
-    @Test
-    func moveFile_shouldMoveFileInProjectAndOnDisk() throws {
+    @Test(arguments: [
+        "\(Files.XcodebuildNvimApp.Modules.Main.group)/StringExt.swift",
+        "\(Files.Helpers.GeneralUtils.NotAdded.group)/StringExt.swift"
+    ])
+    func moveFile_shouldMoveAndRenameFileInProjectAndOnDisk_andShouldNotChangeTarget(dest: String) throws {
         let file = Files.Helpers.GeneralUtils.Subfolder2.stringExtensions
-        let dest = "\(Files.XcodebuildNvimApp.Modules.Main.group)/StringExt.swift"
         var sut = try MoveFileCommand.parse([
             testXcodeprojPath,
             "--file",
@@ -24,7 +26,7 @@ extension SerializedSuite.MoveFileCommandTests {
 
         try notExpectFileInProject(file.asInputPath)
         try expectFileInProject(dest.asInputPath)
-        try expectTargets(["XcodebuildNvimApp"], forFile: dest.asInputPath)
+        try expectTargets(["Helpers", "XcodebuildNvimApp"], forFile: dest.asInputPath)
         try validateProject()
     }
 

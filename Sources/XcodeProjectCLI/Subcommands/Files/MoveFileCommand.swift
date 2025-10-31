@@ -4,16 +4,20 @@ import Foundation
 struct MoveFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "move-file",
-        abstract: "Move a file to a different location within the project."
+        abstract: "Move a file to a different location within the project.",
+        discussion: """
+          - If the destination file already exists in the project, the operation will fail.
+          - The target memberships of the file will be preserved.
+        """
     )
 
     @OptionGroup
     var options: ProjectWriteOptions
 
-    @Option(name: .customLong("file"), help: "Path to file.")
+    @Option(name: .customLong("file"), help: .init("Source file path.", valueName: "file-path"))
     var filePath: String
 
-    @Option(name: .customLong("dest"), help: "Destination path.")
+    @Option(name: .customLong("dest"), help: .init("Destination file path (including file name).", valueName: "file-path"))
     var destination: String
 
     @Flag(help: "If set, the tool will print the targets the file was added to.")
