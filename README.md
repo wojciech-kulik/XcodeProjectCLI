@@ -6,6 +6,13 @@ Easily integrate it into your development workflow or automate complex refactori
 
 💚 Powered by the excellent [XcodeProj](https://github.com/tuist/XcodeProj) library from [Tuist](https://github.com/tuist).
 
+## ⏳ In Progress
+
+Planned features:
+
+- [ ] Simple build settings management
+- [ ] Synchronized folder commands
+
 ## 🚀 Features
 
 ```
