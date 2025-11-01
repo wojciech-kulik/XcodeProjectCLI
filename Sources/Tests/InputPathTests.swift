@@ -34,6 +34,20 @@ struct InputPathTests {
     }
 
     @Test
+    func inputPath_lastComponent_shouldReturnSameValue_whenContainsOnlyFileName() {
+        let path = InputPath("file.swift", projectRoot: projectRoot)
+
+        #expect(path.lastComponent == "file.swift")
+    }
+
+    @Test
+    func inputPath_lastComponent_shouldReturnSameValue_whenContainsOnlyGroupName() {
+        let path = InputPath("GroupXYZ", projectRoot: projectRoot)
+
+        #expect(path.lastComponent == "GroupXYZ")
+    }
+
+    @Test
     func inputPath_firstRelativeComponent_shouldReturnCorrectValue() {
         let path = InputPath(filePath, projectRoot: projectRoot)
 

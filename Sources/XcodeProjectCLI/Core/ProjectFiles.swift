@@ -109,9 +109,9 @@ final class ProjectFiles {
 
         // Rename if needed
         if filePath.lastComponent != newPath.lastComponent {
-            fileRef.sourceTree = .group
-            fileRef.name = newPath.lastComponent
+            fileRef.name = nil
             fileRef.path = newPath.lastComponent
+            fileRef.setGroupSourceTree()
         }
 
         return targets.map(\.name)
@@ -122,8 +122,8 @@ final class ProjectFiles {
             throw CLIError.fileNotFoundInProject(filePath)
         }
 
-        file.sourceTree = .group
-        file.name = newName
+        file.name = nil
         file.path = newName
+        file.setGroupSourceTree()
     }
 }

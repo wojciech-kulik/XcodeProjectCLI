@@ -48,9 +48,9 @@ final class ProjectGroups {
             throw CLIError.groupNotFoundInProject(groupPath)
         }
 
-        group.sourceTree = .group
-        group.name = newName
+        group.name = nil
         group.path = newName
+        group.setGroupSourceTree()
     }
 
     func deleteGroup(_ groupPath: InputPath) throws {
@@ -80,6 +80,7 @@ final class ProjectGroups {
             try mergeGroups(from: group, into: existingGroup)
             project.pbxproj.delete(object: group)
         } else {
+            group.setGroupSourceTree()
             destinationGroup.children.append(group)
         }
     }
@@ -95,6 +96,7 @@ final class ProjectGroups {
                     project.pbxproj.delete(object: sourceChildGroup)
                 } else {
                     sourceChildGroup.parent = target
+                    sourceChildGroup.setGroupSourceTree()
                     target.children.append(sourceChildGroup)
                 }
 
@@ -111,6 +113,7 @@ final class ProjectGroups {
                     try projectFiles.removeFile(fileRef.fullPath!)
                 } else {
                     fileRef.parent = target
+                    fileRef.setGroupSourceTree()
                     target.children.append(fileRef)
                 }
 
