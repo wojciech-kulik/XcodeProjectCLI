@@ -48,6 +48,7 @@ final class ProjectGroups {
             throw CLIError.groupNotFoundInProject(groupPath)
         }
 
+        group.sourceTree = .group
         group.name = newName
         group.path = newName
     }
