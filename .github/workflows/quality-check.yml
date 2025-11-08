@@ -1,0 +1,27 @@
+---
+name: Quality Check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  quality-check:
+    name: SwiftLint & SwiftFormat
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: brew bundle
+
+      - name: Run SwiftLint
+        uses: cirruslabs/swiftlint-action@v1
+        with:
+          version: latest
+
+      - name: Run SwiftFormat
+        run: swiftformat --lint --config .swiftformat --reporter github-actions-log Sources

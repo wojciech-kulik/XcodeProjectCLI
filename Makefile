@@ -7,6 +7,10 @@ build:
 	mkdir -p .bin
 	cp .build/debug/$(BUILD_PRODUCT) .bin/$(EXECUTABLE)
 
+check:
+	swiftlint --quiet
+	swiftformat --lint --config .swiftformat Sources
+
 test:
 	swift test
 
