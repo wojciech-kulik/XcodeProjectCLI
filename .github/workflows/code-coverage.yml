@@ -1,0 +1,32 @@
+---
+name: Code Coverage
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  code-coverage:
+    name: check
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: swift test --enable-code-coverage
+
+      - name: Generate coverage report
+        run: |
+          xcrun llvm-profdata merge -sparse .build/debug/codecov/*.profraw -o coverage.profdata
+          xcrun llvm-cov export \
+            -format=lcov \
+            .build/arm64-apple-macosx/debug/XcodeProjectCLIPackageTests.xctest/Contents/MacOS/XcodeProjectCLIPackageTests \
+            -instr-profile=coverage.profdata \
+            >coverage.lcov
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

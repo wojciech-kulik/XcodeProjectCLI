@@ -1,0 +1,11 @@
+---
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 80%
+        base: auto
+ignore:
+  - "Sources/Tests/*"
+  - "Sources/Tests/**/*"
