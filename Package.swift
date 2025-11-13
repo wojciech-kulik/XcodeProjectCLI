@@ -21,7 +21,7 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "Tests",
+            name: "XcodeProjectCLITests",
             dependencies: ["XcodeProjectCLI"]
         )
     ]

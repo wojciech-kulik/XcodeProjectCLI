@@ -7,5 +7,4 @@ coverage:
         threshold: 80%
         base: auto
 ignore:
-  - "Sources/Tests/*"
-  - "Sources/Tests/**/*"
+  - "Tests/**/*"
