@@ -37,12 +37,12 @@ release: release_nosign
 	shasum -a 256 .release/$(EXECUTABLE).zip | cut -d' ' -f1 | tr -d '\n' | pbcopy
 
 install: release_local
-	sudo cp .release/$(EXECUTABLE) /usr/local/bin/$(EXECUTABLE)
+	cp .release/$(EXECUTABLE) ~/.local/bin/$(EXECUTABLE)
 
 make uninstall:
-	sudo rm /usr/local/bin/$(EXECUTABLE)
+	rm ~/.local/bin/$(EXECUTABLE)
 
 clean:
 	rm -rf .bin .release .build
 	swift package clean
-	sudo rm /usr/local/bin/$(EXECUTABLE)
+	rm ~/.local/bin/$(EXECUTABLE)
