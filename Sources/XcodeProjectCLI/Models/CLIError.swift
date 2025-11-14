@@ -8,6 +8,7 @@ enum CLIError: Error, Equatable, CustomStringConvertible {
     case rootGroupNotFound
     case xcodeProjectNotFound
     case missingTargets([String])
+    case buildConfigurationNotFound(String)
 
     var description: String {
         switch self {
@@ -25,6 +26,8 @@ enum CLIError: Error, Equatable, CustomStringConvertible {
             return "Root group not found in the project."
         case .xcodeProjectNotFound:
             return "Xcode project file not found."
+        case .buildConfigurationNotFound(let configName):
+            return "Build configuration not found: \(configName)"
         }
     }
 }
