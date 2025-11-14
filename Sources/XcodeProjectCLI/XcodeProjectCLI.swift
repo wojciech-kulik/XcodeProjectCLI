@@ -10,7 +10,7 @@ import Foundation
 
 struct ProjectWriteOptions: ParsableArguments {
     @Argument(help: .init(
-        "xcodeproj full path, if not provided will search in the current directory",
+        "xcodeproj path, if not provided will search in the current directory",
         valueName: "xcode-project"
     ))
     var projectPath: String?
@@ -23,7 +23,7 @@ struct ProjectWriteOptions: ParsableArguments {
 
 struct ProjectReadOptions: ParsableArguments {
     @Argument(help: .init(
-        "xcodeproj full path, if not provided will search in the current directory",
+        "xcodeproj path, if not provided will search in the current directory",
         valueName: "xcode-project"
     ))
     var projectPath: String?
