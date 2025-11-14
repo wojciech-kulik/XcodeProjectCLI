@@ -9,6 +9,69 @@ final class ProjectTargets {
         self.project = project
     }
 
+    func getBuildSettingForTarget(
+        _ targetName: String,
+        config: String?,
+        key: String
+    ) throws -> String? {
+        guard let target = project.pbxproj.targets(named: targetName).first else {
+            throw CLIError.missingTargets([targetName])
+        }
+
+        let buildConfig: XCBuildConfiguration?
+
+        if let config {
+            guard let configFound = target.buildConfigurationList?.buildConfigurations.first(where: { $0.name == config }) else {
+                throw CLIError.buildConfigurationNotFound(config)
+            }
+            buildConfig = configFound
+        } else {
+            buildConfig = target.buildConfigurationList?.buildConfigurations.first
+        }
+
+        if let array = buildConfig?.buildSettings[key] as? [String] {
+            return array.joined(separator: "\n")
+        } else {
+            return buildConfig?.buildSettings[key] as? String
+        }
+    }
+
+    func setBuildSettingsForTarget(
+        _ targets: [String],
+        configs: [String],
+        settings: [String: String],
+        append: Bool
+    ) throws {
+        let nativeTargets = try targets.flatMap {
+            let result = project.pbxproj.targets(named: $0)
+            if result.isEmpty {
+                throw CLIError.missingTargets([$0])
+            }
+
+            return result
+        }
+
+        for target in nativeTargets {
+            target.buildConfigurationList?.buildConfigurations
+                .filter { configs.isEmpty || configs.contains($0.name) }
+                .forEach { config in
+                    for (key, value) in settings {
+                        if append, let existingValue = config.buildSettings[key] as? String {
+                            config.buildSettings[key] = existingValue + " " + value
+                        } else if let existingValue = config.buildSettings[key] as? [Any] {
+                            if append {
+                                config.buildSettings[key] = existingValue + [value]
+                            } else {
+                                config.buildSettings[key] = [value]
+                            }
+                        } else {
+                            config.buildSettings[key] = value
+                        }
+                    }
+                }
+        }
+    }
+
     func findTargets(for filePath: InputPath) throws -> [PBXTarget] {
         let map = try createFileToTargetMap()
 

@@ -38,15 +38,12 @@ FILE SUBCOMMANDS:
   move-file               Move a file to a different location within the project.
   rename-file             Rename a file within the project.
 
+BUILD SETTINGS SUBCOMMANDS:
+  get-build-setting       Get a build setting for specified target in the project.
+  set-build-setting       Set a build setting for specified targets in the project.
+
   See 'xcp help <subcommand>' for detailed help.
 ```
-
-## ⏳ In Progress
-
-Planned features:
-
-- [ ] Simple build settings management
-- [ ] Synchronized folder commands
 
 ## 📦 Installation
 

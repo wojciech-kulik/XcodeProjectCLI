@@ -60,6 +60,13 @@ struct XcodeProjectCLI: ParsableCommand {
                     MoveFileCommand.self,
                     RenameFileCommand.self
                 ]
+            ),
+            .init(
+                name: "Build Settings",
+                subcommands: [
+                    GetBuildSettingCommand.self,
+                    SetBuildSettingCommand.self
+                ]
             )
         ]
     )
