@@ -6,35 +6,14 @@
 //
 
 import ArgumentParser
-import Foundation
-
-struct ProjectWriteOptions: ParsableArguments {
-    @Argument(help: .init(
-        "xcodeproj path, if not provided will search in the current directory",
-        valueName: "xcode-project"
-    ))
-    var projectPath: String?
-
-    @Flag(
-        help: "If set, only update the project file without performing any disk operations (creating, moving, deleting files/folders)."
-    )
-    var projectOnly = false
-}
-
-struct ProjectReadOptions: ParsableArguments {
-    @Argument(help: .init(
-        "xcodeproj path, if not provided will search in the current directory",
-        valueName: "xcode-project"
-    ))
-    var projectPath: String?
-}
+import XcodeProjectCommands
 
 @main
 struct XcodeProjectCLI: ParsableCommand {
     static let configuration: CommandConfiguration = .init(
         commandName: "xcp",
         abstract: "XcodeProjectCLI",
-        version: "1.0.0",
+        version: "1.1.0",
         groupedSubcommands: [
             .init(
                 name: "Target",

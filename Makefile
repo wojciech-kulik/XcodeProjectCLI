@@ -1,5 +1,5 @@
 EXECUTABLE=xcp
-BUILD_PRODUCT=XcodeProjectCLI
+BUILD_PRODUCT=xcp
 
 build:
 	swift build
@@ -45,4 +45,4 @@ make uninstall:
 clean:
 	rm -rf .bin .release .build
 	swift package clean
-	rm ~/.local/bin/$(EXECUTABLE)
+	rm ~/.local/bin/$(EXECUTABLE) || true
