@@ -69,7 +69,9 @@ brew install wojciech-kulik/tap/xcp
 
 ## ⚙️ Use as a Library
 
-You can also use XcodeProjectCLI as a library in your Swift projects for macOS. Here's a simple example of how to integrate it:
+You can also use XcodeProjectCLI as a library in your macOS Swift projects, enabling you to create your own automations.
+
+Here's a simple example of how to integrate it:
 
 ```swift
 import XcodeProject
