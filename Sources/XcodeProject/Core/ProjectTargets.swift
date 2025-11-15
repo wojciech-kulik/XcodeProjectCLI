@@ -1,6 +1,6 @@
 import XcodeProj
 
-final class ProjectTargets {
+public final class ProjectTargets {
     private let project: XcodeProj
     private lazy var projectGroups = ProjectGroups(project: project)
     private lazy var projectFiles = ProjectFiles(project: project)
@@ -9,20 +9,24 @@ final class ProjectTargets {
         self.project = project
     }
 
-    func getBuildSettingForTarget(
+    public init(xcodeProjectPath: String) throws {
+        self.project = try XcodeProj(pathString: xcodeProjectPath)
+    }
+
+    public func getBuildSettingForTarget(
         _ targetName: String,
         config: String?,
         key: String
     ) throws -> String? {
         guard let target = project.pbxproj.targets(named: targetName).first else {
-            throw CLIError.missingTargets([targetName])
+            throw XcodeProjectError.missingTargets([targetName])
         }
 
         let buildConfig: XCBuildConfiguration?
 
         if let config {
             guard let configFound = target.buildConfigurationList?.buildConfigurations.first(where: { $0.name == config }) else {
-                throw CLIError.buildConfigurationNotFound(config)
+                throw XcodeProjectError.buildConfigurationNotFound(config)
             }
             buildConfig = configFound
         } else {
@@ -36,7 +40,7 @@ final class ProjectTargets {
         }
     }
 
-    func setBuildSettingsForTarget(
+    public func setBuildSettingsForTarget(
         _ targets: [String],
         configs: [String],
         settings: [String: String],
@@ -45,7 +49,7 @@ final class ProjectTargets {
         let nativeTargets = try targets.flatMap {
             let result = project.pbxproj.targets(named: $0)
             if result.isEmpty {
-                throw CLIError.missingTargets([$0])
+                throw XcodeProjectError.missingTargets([$0])
             }
 
             return result
@@ -72,21 +76,21 @@ final class ProjectTargets {
         }
     }
 
-    func findTargets(for filePath: InputPath) throws -> [PBXTarget] {
+    public func findTargets(for filePath: InputPath) throws -> [PBXTarget] {
         let map = try createFileToTargetMap()
 
         return map[filePath]?
             .sorted { $0.name < $1.name } ?? []
     }
 
-    func listTargets() -> [PBXTarget] {
+    public func listTargets() -> [PBXTarget] {
         project.pbxproj.nativeTargets
             .sorted { $0.name < $1.name }
     }
 
-    func listTargetsForFile(_ filePath: InputPath) throws -> [PBXTarget] {
+    public func listTargetsForFile(_ filePath: InputPath) throws -> [PBXTarget] {
         guard projectFiles.findFile(filePath) != nil else {
-            throw CLIError.fileNotFoundInProject(filePath)
+            throw XcodeProjectError.fileNotFoundInProject(filePath)
         }
 
         return try project.pbxproj.nativeTargets
@@ -98,13 +102,13 @@ final class ProjectTargets {
     /// and finding which targets includes the first found Swift file.
     /// If no Swift files are found in the group, it falls back to the parent group once.
     /// If everything fails, it returns targets matching the first path component of the group.
-    func guessTargetsForGroup(
+    public func guessTargetsForGroup(
         _ groupPath: InputPath,
         fallbackToParent: Bool = true,
         fileToTargetMap: [InputPath: [PBXNativeTarget]]? = nil
     ) throws -> [PBXTarget] {
         guard let group = try projectGroups.findGroup(groupPath) else {
-            throw CLIError.groupNotFoundInProject(groupPath)
+            throw XcodeProjectError.groupNotFoundInProject(groupPath)
         }
 
         let fileToTargetMap = try fileToTargetMap ?? createFileToTargetMap()
@@ -130,9 +134,9 @@ final class ProjectTargets {
         return project.pbxproj.targets(named: firstGroup)
     }
 
-    func setTargets(_ targets: [String], for filePath: InputPath) throws {
+    public func setTargets(_ targets: [String], for filePath: InputPath) throws {
         guard let fileReference = projectFiles.findFile(filePath) else {
-            throw CLIError.fileNotFoundInProject(filePath)
+            throw XcodeProjectError.fileNotFoundInProject(filePath)
         }
 
         let destTargets = targets
@@ -140,7 +144,7 @@ final class ProjectTargets {
 
         guard destTargets.count >= targets.count else {
             let diff = Set(targets).subtracting(destTargets.map(\.name))
-            throw CLIError.missingTargets(Array(diff))
+            throw XcodeProjectError.missingTargets(Array(diff))
         }
 
         for target in try findTargets(for: filePath) {

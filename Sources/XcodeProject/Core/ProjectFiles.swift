@@ -1,7 +1,7 @@
 import Foundation
 import XcodeProj
 
-final class ProjectFiles {
+public final class ProjectFiles {
     private let project: XcodeProj
     private lazy var projectGroups = ProjectGroups(project: project)
     private lazy var projectTargets = ProjectTargets(project: project)
@@ -10,13 +10,17 @@ final class ProjectFiles {
         self.project = project
     }
 
-    func findFile(_ filePath: InputPath) -> PBXFileReference? {
+    public init(xcodeProjectPath: String) throws {
+        self.project = try XcodeProj(pathString: xcodeProjectPath)
+    }
+
+    public func findFile(_ filePath: InputPath) -> PBXFileReference? {
         project.pbxproj.fileReferences
             .first { $0.fullPath == filePath }
     }
 
     @discardableResult
-    func addFile(
+    public func addFile(
         _ filePath: InputPath,
         toTargets targets: [String],
         guessTarget: Bool,
@@ -28,7 +32,7 @@ final class ProjectFiles {
 
         // Validate group
         if group == nil, !createGroups {
-            throw CLIError.groupNotFoundInProject(groupPath)
+            throw XcodeProjectError.groupNotFoundInProject(groupPath)
         }
 
         // Create group if needed
@@ -59,9 +63,9 @@ final class ProjectFiles {
         return targets
     }
 
-    func removeFile(_ filePath: InputPath) throws {
+    public func removeFile(_ filePath: InputPath) throws {
         guard let fileRef = findFile(filePath) else {
-            throw CLIError.fileNotFoundInProject(filePath)
+            throw XcodeProjectError.fileNotFoundInProject(filePath)
         }
 
         // Remove from build phases
@@ -80,7 +84,7 @@ final class ProjectFiles {
         project.pbxproj.delete(object: fileRef)
     }
 
-    func removeFile(_ filePath: InputPath, from target: String) throws {
+    public func removeFile(_ filePath: InputPath, from target: String) throws {
         guard let target = project.pbxproj.targets(named: target).first else {
             return
         }
@@ -90,11 +94,11 @@ final class ProjectFiles {
     }
 
     @discardableResult
-    func moveFile(_ filePath: InputPath, to newPath: InputPath) throws -> [TargetName] {
+    public func moveFile(_ filePath: InputPath, to newPath: InputPath) throws -> [TargetName] {
         let targets = try projectTargets.findTargets(for: filePath)
 
         guard let fileRef = findFile(filePath) else {
-            throw CLIError.fileNotFoundInProject(filePath)
+            throw XcodeProjectError.fileNotFoundInProject(filePath)
         }
 
         // Find or create destination group
@@ -117,9 +121,9 @@ final class ProjectFiles {
         return targets.map(\.name)
     }
 
-    func renameFile(_ filePath: InputPath, newName: String) throws {
+    public func renameFile(_ filePath: InputPath, newName: String) throws {
         guard let file = findFile(filePath) else {
-            throw CLIError.fileNotFoundInProject(filePath)
+            throw XcodeProjectError.fileNotFoundInProject(filePath)
         }
 
         file.name = nil

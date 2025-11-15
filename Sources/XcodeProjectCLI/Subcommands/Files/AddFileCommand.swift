@@ -1,4 +1,5 @@
 import ArgumentParser
+import XcodeProject
 
 struct AddFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -27,11 +28,11 @@ struct AddFileCommand: ParsableCommand {
     private var parsedTargets: [String] = []
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let filePath = filePath.asInputPath
 
         guard options.projectOnly || filePath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath)
+            throw XcodeProjectError.fileNotFoundOnDisk(filePath)
         }
 
         let targets = try project.files.addFile(

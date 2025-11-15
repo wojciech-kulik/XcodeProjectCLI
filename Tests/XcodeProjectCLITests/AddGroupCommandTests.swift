@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -32,7 +33,7 @@ extension SerializedSuite.AddGroupCommandTests {
             group.relativePath
         ])
 
-        #expect(throws: CLIError.groupNotFoundOnDisk(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundOnDisk(group)) {
             try sut.run()
         }
     }

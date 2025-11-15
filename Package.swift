@@ -8,6 +8,10 @@ let package = Package(
     platforms: [
         .macOS(.v13)
     ],
+    products: [
+        .library(name: "XcodeProject", targets: ["XcodeProject"]),
+        .executable(name: "xcp", targets: ["XcodeProjectCLI"])
+    ],
     dependencies: [
         .package(url: "https://github.com/tuist/XcodeProj.git", .upToNextMajor(from: "8.12.0")),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0")
@@ -17,8 +21,13 @@ let package = Package(
             name: "XcodeProjectCLI",
             dependencies: [
                 "XcodeProj",
+                "XcodeProject",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
+        ),
+        .target(
+            name: "XcodeProject",
+            dependencies: ["XcodeProj"]
         ),
         .testTarget(
             name: "XcodeProjectCLITests",

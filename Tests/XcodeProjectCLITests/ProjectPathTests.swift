@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -8,14 +9,6 @@ extension SerializedSuite {
         let file = Files.XcodebuildNvimApp.Modules.Main.mainViewModel
         let relativePath = ".test/XcodebuildNvimApp/XcodeBuildNvimApp.xcodeproj"
         let dotPath = "../XcodeProjectCLI/.test/XcodebuildNvimApp/XcodeBuildNvimApp.xcodeproj"
-
-        var currentDir: String {
-            ProcessInfo.processInfo.environment["PWD"]
-                ?? #filePath
-                .components(separatedBy: "/")
-                .dropLast(3)
-                .joined(separator: "/")
-        }
 
         var tildePath: String {
             testXcodeprojPath.replacingOccurrences(

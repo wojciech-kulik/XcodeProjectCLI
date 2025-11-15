@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import XcodeProject
 
 struct DeleteGroupCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -14,11 +15,11 @@ struct DeleteGroupCommand: ParsableCommand {
     var groupPath: String
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let groupPath = groupPath.asInputPath
 
         guard options.projectOnly || groupPath.exists else {
-            throw CLIError.groupNotFoundOnDisk(groupPath)
+            throw XcodeProjectError.groupNotFoundOnDisk(groupPath)
         }
 
         try project.groups.deleteGroup(groupPath)

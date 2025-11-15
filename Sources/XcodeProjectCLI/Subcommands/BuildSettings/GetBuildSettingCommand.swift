@@ -1,4 +1,5 @@
 import ArgumentParser
+import XcodeProject
 
 struct GetBuildSettingCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -21,7 +22,7 @@ struct GetBuildSettingCommand: ParsableCommand {
     var key: String
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
 
         let value = try project.targets.getBuildSettingForTarget(
             target,

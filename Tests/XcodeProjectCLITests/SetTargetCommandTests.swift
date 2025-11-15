@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -58,7 +59,7 @@ extension SerializedSuite.SetTargetCommandTests {
             "Helpers,NonExistentTarget"
         ])
 
-        #expect(throws: CLIError.missingTargets(["NonExistentTarget"])) {
+        #expect(throws: XcodeProjectError.missingTargets(["NonExistentTarget"])) {
             try sut.run()
         }
     }

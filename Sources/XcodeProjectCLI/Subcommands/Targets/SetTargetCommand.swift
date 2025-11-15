@@ -1,4 +1,5 @@
 import ArgumentParser
+import XcodeProject
 
 struct SetTargetCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -18,11 +19,11 @@ struct SetTargetCommand: ParsableCommand {
     private var parsedTargets: [String] = []
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let filePath = filePath.asInputPath
 
         guard options.projectOnly || filePath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath)
+            throw XcodeProjectError.fileNotFoundOnDisk(filePath)
         }
 
         try project.targets.setTargets(parsedTargets, for: filePath)

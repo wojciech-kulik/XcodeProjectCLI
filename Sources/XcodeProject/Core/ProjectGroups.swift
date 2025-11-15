@@ -1,7 +1,7 @@
 import Foundation
 import XcodeProj
 
-final class ProjectGroups {
+public final class ProjectGroups {
     private let project: XcodeProj
     private lazy var projectFiles = ProjectFiles(project: project)
 
@@ -9,15 +9,19 @@ final class ProjectGroups {
         self.project = project
     }
 
-    func findGroup(_ groupPath: InputPath) throws -> PBXGroup? {
+    public init(xcodeProjectPath: String) throws {
+        self.project = try XcodeProj(pathString: xcodeProjectPath)
+    }
+
+    public func findGroup(_ groupPath: InputPath) throws -> PBXGroup? {
         try listAllGroups()
             .first { $1 == groupPath }?
             .group
     }
 
-    func createGroupHierarchy(at groupPath: InputPath) throws -> PBXGroup {
+    public func createGroupHierarchy(at groupPath: InputPath) throws -> PBXGroup {
         guard let rootGroup = try project.pbxproj.rootGroup() else {
-            throw CLIError.rootGroupNotFound
+            throw XcodeProjectError.rootGroupNotFound
         }
 
         let pathComponents = groupPath.relativePathComponents
@@ -34,7 +38,7 @@ final class ProjectGroups {
         return currentGroup
     }
 
-    func addGroup(_ groupPath: InputPath) throws {
+    public func addGroup(_ groupPath: InputPath) throws {
         if try findGroup(groupPath) != nil {
             print("Warning: Group already exists in the project: \(groupPath)")
             return
@@ -43,9 +47,9 @@ final class ProjectGroups {
         _ = try createGroupHierarchy(at: groupPath)
     }
 
-    func renameGroup(_ groupPath: InputPath, newName: String) throws {
+    public func renameGroup(_ groupPath: InputPath, newName: String) throws {
         guard let group = try findGroup(groupPath) else {
-            throw CLIError.groupNotFoundInProject(groupPath)
+            throw XcodeProjectError.groupNotFoundInProject(groupPath)
         }
 
         group.name = nil
@@ -53,9 +57,9 @@ final class ProjectGroups {
         group.setGroupSourceTree()
     }
 
-    func deleteGroup(_ groupPath: InputPath) throws {
+    public func deleteGroup(_ groupPath: InputPath) throws {
         guard let group = try findGroup(groupPath) else {
-            throw CLIError.groupNotFoundInProject(groupPath)
+            throw XcodeProjectError.groupNotFoundInProject(groupPath)
         }
 
         if let parent = group.parent as? PBXGroup {
@@ -65,9 +69,9 @@ final class ProjectGroups {
         try removeGroupRecursively(group)
     }
 
-    func moveGroup(_ groupPath: InputPath, to destination: InputPath) throws {
+    public func moveGroup(_ groupPath: InputPath, to destination: InputPath) throws {
         guard let group = try findGroup(groupPath) else {
-            throw CLIError.groupNotFoundInProject(groupPath)
+            throw XcodeProjectError.groupNotFoundInProject(groupPath)
         }
 
         if let parent = group.parent as? PBXGroup {
@@ -139,7 +143,7 @@ final class ProjectGroups {
 
     private func listAllGroups() throws -> [(group: PBXGroup, path: InputPath)] {
         guard let rootGroup = try project.pbxproj.rootGroup() else {
-            throw CLIError.rootGroupNotFound
+            throw XcodeProjectError.rootGroupNotFound
         }
 
         return try rootGroup

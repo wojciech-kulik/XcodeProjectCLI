@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -39,7 +40,7 @@ extension SerializedSuite.AddFileCommandTests {
             "Helpers,EmptyTarget"
         ])
 
-        #expect(throws: CLIError.fileNotFoundOnDisk(file)) {
+        #expect(throws: XcodeProjectError.fileNotFoundOnDisk(file)) {
             try sut.run()
         }
     }
@@ -54,7 +55,7 @@ extension SerializedSuite.AddFileCommandTests {
             "Helpers,NonExistentTarget"
         ])
 
-        #expect(throws: CLIError.missingTargets(["NonExistentTarget"])) {
+        #expect(throws: XcodeProjectError.missingTargets(["NonExistentTarget"])) {
             try sut.run()
         }
     }
@@ -114,7 +115,7 @@ extension SerializedSuite.AddFileCommandTests {
             "Helpers,EmptyTarget"
         ])
 
-        #expect(throws: CLIError.groupNotFoundInProject(file.directory)) {
+        #expect(throws: XcodeProjectError.groupNotFoundInProject(file.directory)) {
             try sut.run()
         }
     }

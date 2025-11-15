@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import XcodeProject
 
 struct MoveGroupCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -31,12 +32,12 @@ struct MoveGroupCommand: ParsableCommand {
     var destination: String
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let groupPath = groupPath.asInputPath
         let destination = destination.asInputPath
 
         guard options.projectOnly || groupPath.exists else {
-            throw CLIError.groupNotFoundOnDisk(groupPath)
+            throw XcodeProjectError.groupNotFoundOnDisk(groupPath)
         }
 
         try project.groups.moveGroup(groupPath, to: destination)

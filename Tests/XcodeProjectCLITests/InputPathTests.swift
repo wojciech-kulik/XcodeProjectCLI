@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 @Suite("Input Path")

@@ -2,6 +2,7 @@ import ArgumentParser
 import Foundation
 import Testing
 import XcodeProj
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 class ProjectTests {
@@ -22,7 +23,7 @@ class ProjectTests {
         try? FileManager.default.removeItem(atPath: testProjectPath)
         try FileManager.default.createDirectory(atPath: testPath, withIntermediateDirectories: true)
         try FileManager.default.copyItem(atPath: "\(resourcesPath)/XcodebuildNvimApp", toPath: testProjectPath)
-        _ = try Project(projectPath: testXcodeprojPath)
+        _ = try Project(xcodeProjectPath: testXcodeprojPath)
     }
 
     deinit {
@@ -55,7 +56,7 @@ class ProjectTests {
     }
 
     func targets(forFile path: String) throws -> [String] {
-        try Project(projectPath: testXcodeprojPath)
+        try Project(xcodeProjectPath: testXcodeprojPath)
             .targets
             .listTargetsForFile(path.asInputPath)
             .map(\.name)

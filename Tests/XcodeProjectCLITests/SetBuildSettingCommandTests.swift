@@ -1,5 +1,6 @@
 import Testing
 import XcodeProj
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -295,7 +296,7 @@ extension SerializedSuite.SetBuildSettingCommandTests {
             "MyValue"
         ])
 
-        #expect(throws: CLIError.missingTargets(["NonExistentTarget"])) {
+        #expect(throws: XcodeProjectError.missingTargets(["NonExistentTarget"])) {
             _ = try runTest(for: &sut)
         }
     }

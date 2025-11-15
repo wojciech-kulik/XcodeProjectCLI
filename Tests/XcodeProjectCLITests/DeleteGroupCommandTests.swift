@@ -1,5 +1,6 @@
 import Testing
 import XcodeProj
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -55,7 +56,7 @@ extension SerializedSuite.DeleteGroupCommandTests {
             group.relativePath
         ])
 
-        #expect(throws: CLIError.groupNotFoundInProject(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundInProject(group)) {
             try sut.run()
         }
     }
@@ -69,7 +70,7 @@ extension SerializedSuite.DeleteGroupCommandTests {
             group.relativePath
         ])
 
-        #expect(throws: CLIError.groupNotFoundOnDisk(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundOnDisk(group)) {
             try sut.run()
         }
     }

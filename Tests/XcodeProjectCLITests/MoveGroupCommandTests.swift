@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -46,7 +47,7 @@ extension SerializedSuite.MoveGroupCommandTests {
             Files.XcodebuildNvimApp.Modules.group
         ])
 
-        #expect(throws: CLIError.groupNotFoundOnDisk(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundOnDisk(group)) {
             try sut.run()
         }
     }
@@ -62,7 +63,7 @@ extension SerializedSuite.MoveGroupCommandTests {
             Files.XcodebuildNvimApp.Modules.group
         ])
 
-        #expect(throws: CLIError.groupNotFoundInProject(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundInProject(group)) {
             try sut.run()
         }
     }

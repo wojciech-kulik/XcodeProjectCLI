@@ -1,4 +1,5 @@
 import ArgumentParser
+import XcodeProject
 
 struct ListTargetsCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -16,7 +17,7 @@ struct ListTargetsCommand: ParsableCommand {
     var groupPath: String?
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let filePath = filePath?.asInputPath
         let groupPath = groupPath?.asInputPath
 

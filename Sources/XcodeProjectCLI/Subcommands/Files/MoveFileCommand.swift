@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import XcodeProject
 
 struct MoveFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -24,12 +25,12 @@ struct MoveFileCommand: ParsableCommand {
     var printTargets = false
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let filePath = filePath.asInputPath
         let destination = destination.asInputPath
 
         guard options.projectOnly || filePath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath)
+            throw XcodeProjectError.fileNotFoundOnDisk(filePath)
         }
 
         let targets = try project.files.moveFile(filePath, to: destination)

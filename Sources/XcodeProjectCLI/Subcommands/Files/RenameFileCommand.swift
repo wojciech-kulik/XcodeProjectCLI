@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import XcodeProject
 
 struct RenameFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -17,11 +18,11 @@ struct RenameFileCommand: ParsableCommand {
     var name: String
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let filePath = filePath.asInputPath
 
         guard options.projectOnly || filePath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath)
+            throw XcodeProjectError.fileNotFoundOnDisk(filePath)
         }
 
         try project.files.renameFile(filePath, newName: name)

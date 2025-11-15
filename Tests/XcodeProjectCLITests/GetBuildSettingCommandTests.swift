@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -89,7 +90,7 @@ extension SerializedSuite.GetBuildSettingCommandTests {
             "PRODUCT_NAME"
         ])
 
-        #expect(throws: CLIError.missingTargets(["NonExistentTarget"])) {
+        #expect(throws: XcodeProjectError.missingTargets(["NonExistentTarget"])) {
             try sut.run()
         }
     }
@@ -106,7 +107,7 @@ extension SerializedSuite.GetBuildSettingCommandTests {
             "PRODUCT_NAME"
         ])
 
-        #expect(throws: CLIError.buildConfigurationNotFound("NonExistentConfig")) {
+        #expect(throws: XcodeProjectError.buildConfigurationNotFound("NonExistentConfig")) {
             try sut.run()
         }
     }

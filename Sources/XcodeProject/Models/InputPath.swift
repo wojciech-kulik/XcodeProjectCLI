@@ -1,6 +1,6 @@
 import Foundation
 
-struct InputPath: Equatable, Hashable {
+public struct InputPath: Equatable, Hashable {
     let path: String
     let projectRoot: String
 
@@ -14,17 +14,17 @@ struct InputPath: Equatable, Hashable {
         }
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(absolutePath)
     }
 
-    static func == (lhs: InputPath, rhs: InputPath) -> Bool {
+    public static func == (lhs: InputPath, rhs: InputPath) -> Bool {
         lhs.absolutePath == rhs.absolutePath
     }
 }
 
 // MARK: - Path Manipulation
-extension InputPath {
+public extension InputPath {
     var directory: InputPath {
         InputPath(
             nsString.deletingLastPathComponent,
@@ -54,7 +54,7 @@ extension InputPath {
 }
 
 // MARK: - Helpers
-extension InputPath {
+public extension InputPath {
     var isRelative: Bool { !path.hasPrefix("/") }
 
     var firstRelativeComponent: String { relativePathComponents.first ?? "" }
@@ -67,7 +67,7 @@ extension InputPath {
 }
 
 // MARK: - Absolute & Relative Paths
-extension InputPath {
+public extension InputPath {
     var absolutePathComponents: [String] { (absolutePath as NSString).pathComponents }
 
     var relativePathComponents: [String] { (relativePath as NSString).pathComponents }
@@ -94,11 +94,11 @@ extension InputPath {
 
 // MARK: - CustomStringConvertible
 extension InputPath: CustomStringConvertible {
-    var description: String { absolutePath }
+    public var description: String { absolutePath }
 }
 
 // MARK: - String Conversion
-extension String {
+public extension String {
     var asInputPath: InputPath {
         if Project.projectRoot.isEmpty {
             fatalError("Project.projectRoot is not set. Please create an instance of Project first.")

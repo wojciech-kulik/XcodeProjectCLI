@@ -1,4 +1,4 @@
-extension Collection {
+public extension Collection {
     var isNotEmpty: Bool { !isEmpty }
 
     func notContains(where predicate: (Element) throws -> Bool) rethrows -> Bool {

@@ -1,17 +1,17 @@
 import Foundation
 import XcodeProj
 
-final class Project {
+public final class Project {
     private(set) static var projectRoot = ""
 
-    let targets: ProjectTargets
-    let groups: ProjectGroups
-    let files: ProjectFiles
+    public let targets: ProjectTargets
+    public let groups: ProjectGroups
+    public let files: ProjectFiles
 
     private let project: XcodeProj
 
-    init(projectPath: String?) throws {
-        var projectPath = projectPath
+    public init(xcodeProjectPath: String?) throws {
+        var projectPath = xcodeProjectPath
 
         #if DEBUG
         let currentDir: String? = ProcessInfo.processInfo.environment["PWD"] ?? #filePath
@@ -33,7 +33,7 @@ final class Project {
         projectPath = (projectPath as NSString?)?.expandingTildeInPath
 
         guard let projectPath else {
-            throw CLIError.xcodeProjectNotFound
+            throw XcodeProjectError.xcodeProjectNotFound
         }
 
         Self.projectRoot = (projectPath as NSString).deletingLastPathComponent
@@ -44,7 +44,7 @@ final class Project {
         self.files = ProjectFiles(project: project)
     }
 
-    func save() throws {
+    public func save() throws {
         if let path = project.path {
             try project.write(path: path, override: true)
         }

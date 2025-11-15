@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -39,7 +40,7 @@ extension SerializedSuite.RenameFileCommandTests {
             "NewName.swift"
         ])
 
-        #expect(throws: CLIError.fileNotFoundOnDisk(file)) {
+        #expect(throws: XcodeProjectError.fileNotFoundOnDisk(file)) {
             try sut.run()
         }
     }
@@ -55,7 +56,7 @@ extension SerializedSuite.RenameFileCommandTests {
             "NewName.swift"
         ])
 
-        #expect(throws: CLIError.fileNotFoundInProject(file)) {
+        #expect(throws: XcodeProjectError.fileNotFoundInProject(file)) {
             try sut.run()
         }
     }

@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import XcodeProject
 
 struct DeleteFileCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -14,11 +15,11 @@ struct DeleteFileCommand: ParsableCommand {
     var filePath: String
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let filePath = filePath.asInputPath
 
         guard options.projectOnly || filePath.exists else {
-            throw CLIError.fileNotFoundOnDisk(filePath)
+            throw XcodeProjectError.fileNotFoundOnDisk(filePath)
         }
 
         try project.files.removeFile(filePath)

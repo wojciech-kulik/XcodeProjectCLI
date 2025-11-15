@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import XcodeProject
 
 struct AddGroupCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -17,7 +18,7 @@ struct AddGroupCommand: ParsableCommand {
     var createGroups = false
 
     func run() throws {
-        let project = try Project(projectPath: options.projectPath)
+        let project = try Project(xcodeProjectPath: options.projectPath)
         let groupPath = groupPath.asInputPath
 
         try project.groups.addGroup(groupPath)
@@ -27,7 +28,7 @@ struct AddGroupCommand: ParsableCommand {
         }
 
         guard createGroups else {
-            throw CLIError.groupNotFoundOnDisk(groupPath)
+            throw XcodeProjectError.groupNotFoundOnDisk(groupPath)
         }
 
         try FileManager.default.createDirectory(

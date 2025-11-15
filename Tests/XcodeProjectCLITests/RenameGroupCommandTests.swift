@@ -1,4 +1,5 @@
 import Testing
+@testable import XcodeProject
 @testable import XcodeProjectCLI
 
 extension SerializedSuite {
@@ -38,7 +39,7 @@ extension SerializedSuite.RenameGroupCommandTests {
             "NewName"
         ])
 
-        #expect(throws: CLIError.groupNotFoundOnDisk(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundOnDisk(group)) {
             try sut.run()
         }
     }
@@ -54,7 +55,7 @@ extension SerializedSuite.RenameGroupCommandTests {
             "NewName"
         ])
 
-        #expect(throws: CLIError.groupNotFoundInProject(group)) {
+        #expect(throws: XcodeProjectError.groupNotFoundInProject(group)) {
             try sut.run()
         }
     }

@@ -1,6 +1,6 @@
 import Foundation
 
-enum CLIError: Error, Equatable, CustomStringConvertible {
+public enum XcodeProjectError: Error, Equatable, CustomStringConvertible {
     case fileNotFoundOnDisk(InputPath)
     case fileNotFoundInProject(InputPath)
     case groupNotFoundOnDisk(InputPath)
@@ -10,7 +10,7 @@ enum CLIError: Error, Equatable, CustomStringConvertible {
     case missingTargets([String])
     case buildConfigurationNotFound(String)
 
-    var description: String {
+    public var description: String {
         switch self {
         case .fileNotFoundOnDisk(let filePath):
             return "File not found on disk: \(filePath)"
