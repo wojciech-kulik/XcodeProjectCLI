@@ -67,6 +67,21 @@ brew install wojciech-kulik/tap/xcp
    xcp --version
    ```
 
+## ⚙️ Use as a Library
+
+You can also use XcodeProjectCLI as a library in your Swift projects for macOS. Here's a simple example of how to integrate it:
+
+```swift
+import XcodeProject
+
+let projectPath = "/path/to/YourProject.xcodeproj"
+let xcodeProject = try Project(xcodeProjectPath: projectPath)
+
+// Sample operation:
+try project.groups.addGroup("path/relative/to/xcodeproj/NewGroup".asInputPath)
+try project.save()
+```
+
 ## 🤓 My Other Projects
 
 - [Snippety](https://snippety.app) - Snippets manager for macOS & iOS
