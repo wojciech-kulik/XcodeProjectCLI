@@ -20,8 +20,7 @@ let package = Package(
         .executableTarget(
             name: "XcodeProjectCLI",
             dependencies: [
-                "XcodeProj",
-                "XcodeProject",
+                "XcodeProjectCommands",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),
@@ -29,9 +28,16 @@ let package = Package(
             name: "XcodeProject",
             dependencies: ["XcodeProj"]
         ),
+        .target(
+            name: "XcodeProjectCommands",
+            dependencies: [
+                "XcodeProject",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]
+        ),
         .testTarget(
-            name: "XcodeProjectCLITests",
-            dependencies: ["XcodeProjectCLI"]
+            name: "XcodeProjectCommandsTests",
+            dependencies: ["XcodeProjectCommands"]
         )
     ]
 )

@@ -12,14 +12,16 @@ public final class Project {
 
     public init(xcodeProjectPath: String?) throws {
         var projectPath = xcodeProjectPath
+        let pwd = ProcessInfo.processInfo.environment["PWD"]
+        var currentDir = pwd
 
         #if DEBUG
-        let currentDir: String? = ProcessInfo.processInfo.environment["PWD"] ?? #filePath
-            .components(separatedBy: "/")
-            .dropLast(4)
-            .joined(separator: "/")
-        #else
-        let currentDir = ProcessInfo.processInfo.environment["PWD"]
+        if pwd == nil || pwd == "/tmp" {
+            currentDir = #filePath
+                .components(separatedBy: "/")
+                .dropLast(4)
+                .joined(separator: "/")
+        }
         #endif
 
         if projectPath == nil, let currentDir {
