@@ -75,4 +75,17 @@ extension SerializedSuite.ListAssetsCommandTests {
         Folder2/NestedFolder/NewImage
         """)
     }
+
+    @Test
+    func listAssets_shouldThrowException_whenXCAssetsDontExist() throws {
+        let command = try ListAssetsCommand.parse([
+            "\(testXCAssetsPath)/NonExistentAssets.xcassets"
+        ])
+
+        #expect(throws: XcodeProjectError.xcassetsNotFound(
+            "\(testXCAssetsPath)/NonExistentAssets.xcassets".asAbsoluteInputPath
+        )) {
+            try command.run()
+        }
+    }
 }

@@ -35,7 +35,7 @@ public struct AddImageAssetCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        let projectAssets = ProjectAssets(xcassetsPath: xcassetsPath)
+        let projectAssets = try ProjectAssets(xcassetsPath: xcassetsPath)
         try projectAssets.addImage(
             filePath: filePath.asAbsoluteInputPath,
             darkFilePath: darkFilePath?.asAbsoluteInputPath,

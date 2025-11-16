@@ -16,7 +16,7 @@ public struct DeleteAssetCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        let projectAssets = ProjectAssets(xcassetsPath: xcassetsPath)
+        let projectAssets = try ProjectAssets(xcassetsPath: xcassetsPath)
         try projectAssets.deleteAsset(
             assetPath: assetPath
         )

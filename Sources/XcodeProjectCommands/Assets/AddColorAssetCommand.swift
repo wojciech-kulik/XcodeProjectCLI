@@ -25,7 +25,7 @@ public struct AddColorAssetCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        let projectAssets = ProjectAssets(xcassetsPath: xcassetsPath)
+        let projectAssets = try ProjectAssets(xcassetsPath: xcassetsPath)
         try projectAssets.addColor(
             hexColor: color,
             darkHexColor: darkColor,

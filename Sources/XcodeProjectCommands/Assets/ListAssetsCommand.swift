@@ -16,7 +16,7 @@ public struct ListAssetsCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        let projectAssets = ProjectAssets(xcassetsPath: xcassetsPath)
+        let projectAssets = try ProjectAssets(xcassetsPath: xcassetsPath)
 
         let assetType: AssetType? = {
             guard let type else { return nil }

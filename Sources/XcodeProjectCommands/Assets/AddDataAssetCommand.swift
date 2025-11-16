@@ -19,7 +19,7 @@ public struct AddDataAssetCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        let projectAssets = ProjectAssets(xcassetsPath: xcassetsPath)
+        let projectAssets = try ProjectAssets(xcassetsPath: xcassetsPath)
         try projectAssets.addData(
             filePath: filePath.asAbsoluteInputPath,
             assetPath: assetPath

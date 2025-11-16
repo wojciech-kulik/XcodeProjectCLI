@@ -3,8 +3,12 @@ import Foundation
 public final class ProjectAssets {
     private let xcassetsPath: InputPath
 
-    public init(xcassetsPath: String) {
+    public init(xcassetsPath: String) throws {
         self.xcassetsPath = xcassetsPath.asAbsoluteInputPath
+
+        if !FileManager.default.fileExists(atPath: self.xcassetsPath.absolutePath) {
+            throw XcodeProjectError.xcassetsNotFound(self.xcassetsPath)
+        }
     }
 
     public func listAll() throws -> [AssetType: [String]] {

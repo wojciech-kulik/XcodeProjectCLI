@@ -25,14 +25,14 @@ class ProjectAssetsTests {
         self.darkImagePath = "\(testResourcesPath)/ImageDark.png"
         self.dataFilePath = "\(testResourcesPath)/DataFile.txt"
 
-        self.assets = ProjectAssets(xcassetsPath: testXCAssetsPath)
-
         let testPath = "\(projectRoot)/.test"
         self.testProjectPath = "\(testPath)/XcodebuildNvimApp"
 
         try? FileManager.default.removeItem(atPath: testProjectPath)
         try FileManager.default.createDirectory(atPath: testPath, withIntermediateDirectories: true)
         try FileManager.default.copyItem(atPath: "\(projectRoot)/TestResources/XcodebuildNvimApp", toPath: testProjectPath)
+
+        self.assets = try ProjectAssets(xcassetsPath: testXCAssetsPath)
     }
 
     deinit {
