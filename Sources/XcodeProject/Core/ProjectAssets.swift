@@ -40,6 +40,8 @@ public final class ProjectAssets {
         assetPath: String,
         renderingMode: RenderingMode = .default
     ) throws {
+        try ensureFileExists(at: filePath)
+
         let asset = AssetInfo(
             xcassetsPath: xcassetsPath,
             assetPath: assetPath,
@@ -77,6 +79,8 @@ public final class ProjectAssets {
     }
 
     public func addData(filePath: InputPath, assetPath: String) throws {
+        try ensureFileExists(at: filePath)
+
         let asset = AssetInfo(
             xcassetsPath: xcassetsPath,
             assetPath: assetPath,
@@ -153,6 +157,8 @@ public final class ProjectAssets {
             type: type
         )
 
+        try ensureFileExists(at: oldAsset.assetDirPath.asAbsoluteInputPath)
+
         try FileManager.default.createDirectory(
             atPath: newAsset.parentDirectory,
             withIntermediateDirectories: true,
@@ -171,6 +177,8 @@ public final class ProjectAssets {
             type: findAssetType(from: assetPath)
         )
 
+        try ensureFileExists(at: asset.assetDirPath.asAbsoluteInputPath)
+
         try FileManager.default.removeItem(atPath: asset.assetDirPath)
     }
 
@@ -185,5 +193,11 @@ public final class ProjectAssets {
         }
 
         return assetType
+    }
+
+    private func ensureFileExists(at path: InputPath) throws {
+        if !FileManager.default.fileExists(atPath: path.absolutePath) {
+            throw XcodeProjectError.fileNotFoundOnDisk(path)
+        }
     }
 }

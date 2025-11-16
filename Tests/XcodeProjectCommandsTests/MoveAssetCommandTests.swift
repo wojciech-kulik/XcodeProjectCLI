@@ -29,4 +29,21 @@ extension SerializedSuite.MoveAssetCommandTests {
             atPath: "\(testXCAssetsPath)/NewFolder/MovedImage.imageset"
         ))
     }
+
+    @Test
+    func moveAsset_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
+        let file = "Folder/NonExistingFile.png"
+
+        let sut = try MoveAssetCommand.parse([
+            testXCAssetsPath,
+            "--asset-path",
+            file,
+            "--dest",
+            "SomeDestination/Image.png"
+        ])
+
+        #expect(throws: XcodeProjectError.assetNotFound(file)) {
+            try sut.run()
+        }
+    }
 }

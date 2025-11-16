@@ -136,4 +136,23 @@ extension SerializedSuite.AddImageAssetCommandTests {
             and: "\(testResourcesPath)/ImageDark.png"
         )
     }
+
+    @Test
+    func addImageAsset_shouldThrowException_whenFileDoesntExist() throws {
+        let assetPath = "Icons/Image.png"
+        let nonExistentDataFilePath = "\(testResourcesPath)/NonExistentFile.jpg"
+        let command = try AddImageAssetCommand.parse([
+            testXCAssetsPath,
+            "--file",
+            nonExistentDataFilePath,
+            "--asset-path",
+            assetPath
+        ])
+
+        #expect(throws: XcodeProjectError.fileNotFoundOnDisk(
+            nonExistentDataFilePath.asAbsoluteInputPath
+        )) {
+            try command.run()
+        }
+    }
 }

@@ -24,4 +24,19 @@ extension SerializedSuite.DeleteAssetCommandTests {
             atPath: "\(testXCAssetsPath)/Folder/SomeImage.imageset"
         ))
     }
+
+    @Test
+    func deleteAsset_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
+        let file = "NonExistingFile.png"
+
+        let sut = try DeleteAssetCommand.parse([
+            testXCAssetsPath,
+            "--asset-path",
+            file
+        ])
+
+        #expect(throws: XcodeProjectError.assetNotFound(file)) {
+            try sut.run()
+        }
+    }
 }

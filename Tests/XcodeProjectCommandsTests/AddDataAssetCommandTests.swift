@@ -30,4 +30,23 @@ extension SerializedSuite.AddDataAssetCommandTests {
             and: "\(testResourcesPath)/DataFile.txt"
         )
     }
+
+    @Test
+    func addDataAsset_shouldThrowException_whenFileDoesntExist() throws {
+        let assetPath = "Raw/DataFile.txt"
+        let nonExistentDataFilePath = "\(testResourcesPath)/NonExistentFile.txt"
+        let command = try AddDataAssetCommand.parse([
+            testXCAssetsPath,
+            "--file",
+            nonExistentDataFilePath,
+            "--asset-path",
+            assetPath
+        ])
+
+        #expect(throws: XcodeProjectError.fileNotFoundOnDisk(
+            nonExistentDataFilePath.asAbsoluteInputPath
+        )) {
+            try command.run()
+        }
+    }
 }
