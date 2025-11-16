@@ -18,11 +18,11 @@ struct HexColor {
         if hexString.count == 8 {
             let alphaHex = String(hexString.prefix(2))
             let alphaValue = Double(Int(alphaHex, radix: 16) ?? 255) / 255.0
-            let formattedAlpha = String(format: "%.2f", alphaValue)
+            let formattedAlpha = String(format: "%.3f", alphaValue)
             self.alpha = formattedAlpha
             hexString = String(hexString.dropFirst(2))
         } else {
-            self.alpha = "1.0"
+            self.alpha = "1.000"
         }
 
         self.red = String(hexString.prefix(2))

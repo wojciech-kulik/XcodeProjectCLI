@@ -51,7 +51,8 @@ struct XcodeProjectCLI: ParsableCommand {
                 name: "Assets",
                 subcommands: [
                     AddImageAssetCommand.self,
-                    AddDataAssetCommand.self
+                    AddDataAssetCommand.self,
+                    AddColorAssetCommand.self
                 ]
             )
         ]
