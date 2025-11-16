@@ -9,6 +9,8 @@ public enum XcodeProjectError: Error, Equatable, CustomStringConvertible {
     case xcodeProjectNotFound
     case missingTargets([String])
     case buildConfigurationNotFound(String)
+    case xcassetsNotFound(InputPath)
+    case assetNotFound(String)
 
     public var description: String {
         switch self {
@@ -28,6 +30,10 @@ public enum XcodeProjectError: Error, Equatable, CustomStringConvertible {
             return "Xcode project file not found."
         case .buildConfigurationNotFound(let configName):
             return "Build configuration not found: \(configName)"
+        case .assetNotFound(let assetName):
+            return "Asset not found: \(assetName)"
+        case .xcassetsNotFound(let xcassetsPath):
+            return "xcassets folder not found on disk: \(xcassetsPath)"
         }
     }
 }

@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import XcodeProject
 @testable import XcodeProjectCommands
@@ -164,5 +165,43 @@ struct InputPathTests {
         let path = InputPath(filePath, projectRoot: projectRoot)
 
         #expect(path.fileExtension == "swift")
+    }
+
+    @Test
+    func inputPath_asAbsoluteInputPath_shouldReturnAbsolutePath_whenRelativePathIsProvided() {
+        let projectRoot = #filePath
+            .components(separatedBy: "/")
+            .dropLast(3)
+            .joined(separator: "/")
+
+        let path = "Group1/Group2/file.swift".asAbsoluteInputPath
+
+        #expect(path.absolutePath == "\(projectRoot)/Group1/Group2/file.swift")
+    }
+
+    @Test
+    func inputPath_asAbsoluteInputPath_shouldReturnAbsolutePath_whenDotPathIsProvided() {
+        let projectRoot = #filePath
+            .components(separatedBy: "/")
+            .dropLast(3)
+            .joined(separator: "/")
+
+        let path = "../XcodeProjectCLI/Group1/Group2/file.swift".asAbsoluteInputPath
+
+        #expect(path.absolutePath == "\(projectRoot)/Group1/Group2/file.swift")
+    }
+
+    @Test
+    func inputPath_asAbsoluteInputPath_shouldReturnAbsolutePath_whenTildePathIsProvided() {
+        let path = "~/XcodeProjectCLI/Group1/Group2/file.swift".asAbsoluteInputPath
+
+        #expect(path.absolutePath == "\(NSHomeDirectory())/XcodeProjectCLI/Group1/Group2/file.swift")
+    }
+
+    @Test
+    func inputPath_asAbsoluteInputPath_shouldReturnAbsolutePath_whenAbsolutePathIsProvided() {
+        let path = "/XcodeProjectCLI/Group1/Group2/file.swift"
+
+        #expect(path.asAbsoluteInputPath.absolutePath == path)
     }
 }

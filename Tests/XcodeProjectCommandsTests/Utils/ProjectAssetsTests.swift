@@ -1,0 +1,72 @@
+import ArgumentParser
+import Foundation
+import Testing
+@testable import XcodeProject
+
+class ProjectAssetsTests {
+    let assets: ProjectAssets
+    let testXCAssetsPath: String
+    let testProjectPath: String
+    let testResourcesPath: String
+    let lightImagePath: String
+    let dataFilePath: String
+    let darkImagePath: String
+
+    init() throws {
+        let projectRoot = #filePath
+            .components(separatedBy: "/")
+            .dropLast(4)
+            .joined(separator: "/")
+
+        self.testResourcesPath = "\(projectRoot)/TestResources/Assets"
+        let testXCAssetsPath = "\(projectRoot)/.test/XcodebuildNvimApp/XcodebuildNvimApp/Assets.xcassets"
+        self.testXCAssetsPath = testXCAssetsPath
+        self.lightImagePath = "\(testResourcesPath)/Image.png"
+        self.darkImagePath = "\(testResourcesPath)/ImageDark.png"
+        self.dataFilePath = "\(testResourcesPath)/DataFile.txt"
+
+        let testPath = "\(projectRoot)/.test"
+        self.testProjectPath = "\(testPath)/XcodebuildNvimApp"
+
+        try? FileManager.default.removeItem(atPath: testProjectPath)
+        try FileManager.default.createDirectory(atPath: testPath, withIntermediateDirectories: true)
+        try FileManager.default.copyItem(atPath: "\(projectRoot)/TestResources/XcodebuildNvimApp", toPath: testProjectPath)
+
+        self.assets = try ProjectAssets(xcassetsPath: testXCAssetsPath)
+    }
+
+    deinit {
+        try? FileManager.default.removeItem(atPath: testProjectPath)
+    }
+
+    func expectSameFiles(at firstPath: String, and secondPath: String) throws {
+        let firstData = try Data(contentsOf: URL(fileURLWithPath: firstPath))
+        let secondData = try Data(contentsOf: URL(fileURLWithPath: secondPath))
+        #expect(firstData == secondData)
+    }
+
+    func runTest(for command: inout some ParsableCommand) throws -> String {
+        let output = try captureOutput {
+            try command.run()
+        }
+        return output
+    }
+
+    func captureOutput(_ block: () throws -> ()) rethrows -> String {
+        let pipe = Pipe()
+        let original = dup(STDOUT_FILENO)
+
+        setvbuf(stdout, nil, _IONBF, 0)
+        dup2(pipe.fileHandleForWriting.fileDescriptor, STDOUT_FILENO)
+
+        try block()
+
+        fflush(stdout)
+        pipe.fileHandleForWriting.closeFile()
+        dup2(original, STDOUT_FILENO)
+        close(original)
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    }
+}

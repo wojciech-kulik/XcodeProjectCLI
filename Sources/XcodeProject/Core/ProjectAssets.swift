@@ -1,0 +1,203 @@
+import Foundation
+
+public final class ProjectAssets {
+    private let xcassetsPath: InputPath
+
+    public init(xcassetsPath: String) throws {
+        self.xcassetsPath = xcassetsPath.asAbsoluteInputPath
+
+        if !FileManager.default.fileExists(atPath: self.xcassetsPath.absolutePath) {
+            throw XcodeProjectError.xcassetsNotFound(self.xcassetsPath)
+        }
+    }
+
+    public func listAll() throws -> [AssetType: [String]] {
+        var assets: [AssetType: [String]] = [:]
+
+        let fileEnumerator = FileManager.default.enumerator(
+            atPath: xcassetsPath.absolutePath
+        )
+
+        let allowedExtensions = AssetType.allCases.map(\.ext)
+
+        while let element = fileEnumerator?.nextObject() as? String {
+            let url = (element as NSString)
+            let ext = url.pathExtension
+
+            if allowedExtensions.contains(ext) {
+                let assetType = AssetType.allCases.first { $0.ext == ext }!
+                let assetPath = url.deletingPathExtension
+                assets[assetType, default: []].append(assetPath)
+            }
+        }
+
+        return assets
+    }
+
+    public func addImage(
+        filePath: InputPath,
+        darkFilePath: InputPath? = nil,
+        assetPath: String,
+        renderingMode: RenderingMode = .default
+    ) throws {
+        try ensureFileExists(at: filePath)
+
+        let asset = AssetInfo(
+            xcassetsPath: xcassetsPath,
+            assetPath: assetPath,
+            type: .image
+        )
+
+        try FileManager.default.createDirectory(
+            atPath: asset.assetDirPath,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
+
+        try FileManager.default.copyItem(
+            atPath: filePath.absolutePath,
+            toPath: asset.filePath
+        )
+
+        if let darkFilePath {
+            try FileManager.default.copyItem(
+                atPath: darkFilePath.absolutePath,
+                toPath: asset.darkFilePath
+            )
+        }
+
+        let template = ImageAssetBuilder(asset)
+            .setRenderingMode(renderingMode)
+            .includeDarkAppearance(darkFilePath != nil)
+            .build()
+
+        try template.write(
+            toFile: asset.contentsPath,
+            atomically: true,
+            encoding: .utf8
+        )
+    }
+
+    public func addData(filePath: InputPath, assetPath: String) throws {
+        try ensureFileExists(at: filePath)
+
+        let asset = AssetInfo(
+            xcassetsPath: xcassetsPath,
+            assetPath: assetPath,
+            type: .data
+        )
+
+        try FileManager.default.createDirectory(
+            atPath: asset.assetDirPath,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
+
+        try FileManager.default.copyItem(
+            atPath: filePath.absolutePath,
+            toPath: asset.filePath
+        )
+
+        let template = DataAssetBuilder(asset)
+            .build()
+
+        try template.write(
+            toFile: asset.contentsPath,
+            atomically: true,
+            encoding: .utf8
+        )
+    }
+
+    public func addColor(
+        hexColor: String,
+        darkHexColor: String?,
+        colorSpace: String = "srgb",
+        assetPath: String
+    ) throws {
+        let asset = AssetInfo(
+            xcassetsPath: xcassetsPath,
+            assetPath: assetPath,
+            type: .color
+        )
+
+        try FileManager.default.createDirectory(
+            atPath: asset.assetDirPath,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
+
+        let template = ColorAssetBuilder()
+            .setHexColor(hexColor)
+            .setDarkHexColor(darkHexColor)
+            .setColorSpace(colorSpace)
+            .build()
+
+        try template.write(
+            toFile: asset.contentsPath,
+            atomically: true,
+            encoding: .utf8
+        )
+    }
+
+    public func moveAsset(
+        oldAssetPath: String,
+        newAssetPath: String
+    ) throws {
+        let type = try findAssetType(from: oldAssetPath)
+
+        let oldAsset = AssetInfo(
+            xcassetsPath: xcassetsPath,
+            assetPath: oldAssetPath,
+            type: type
+        )
+
+        let newAsset = AssetInfo(
+            xcassetsPath: xcassetsPath,
+            assetPath: newAssetPath,
+            type: type
+        )
+
+        try ensureFileExists(at: oldAsset.assetDirPath.asAbsoluteInputPath)
+
+        try FileManager.default.createDirectory(
+            atPath: newAsset.parentDirectory,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
+        try FileManager.default.moveItem(
+            atPath: oldAsset.assetDirPath,
+            toPath: newAsset.assetDirPath
+        )
+    }
+
+    public func deleteAsset(assetPath: String) throws {
+        let asset = try AssetInfo(
+            xcassetsPath: xcassetsPath,
+            assetPath: assetPath,
+            type: findAssetType(from: assetPath)
+        )
+
+        try ensureFileExists(at: asset.assetDirPath.asAbsoluteInputPath)
+
+        try FileManager.default.removeItem(atPath: asset.assetDirPath)
+    }
+
+    private func findAssetType(from assetPath: String) throws -> AssetType {
+        let assetType = AssetType.allCases.first { type in
+            let fullPath = xcassetsPath.appending("\(assetPath).\(type.ext)").absolutePath
+            return FileManager.default.fileExists(atPath: fullPath)
+        }
+
+        guard let assetType else {
+            throw XcodeProjectError.assetNotFound(assetPath)
+        }
+
+        return assetType
+    }
+
+    private func ensureFileExists(at path: InputPath) throws {
+        if !FileManager.default.fileExists(atPath: path.absolutePath) {
+            throw XcodeProjectError.fileNotFoundOnDisk(path)
+        }
+    }
+}
