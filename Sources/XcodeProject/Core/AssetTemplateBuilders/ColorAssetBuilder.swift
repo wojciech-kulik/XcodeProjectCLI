@@ -69,7 +69,7 @@ final class ColorAssetBuilder {
             "author" : "xcode",
             "version" : 1
           }
-        }
+        }\n
         """
     }
 }

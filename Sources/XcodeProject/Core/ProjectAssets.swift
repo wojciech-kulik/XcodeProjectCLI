@@ -62,7 +62,7 @@ public final class ProjectAssets {
 
         let template = ImageAssetBuilder(asset)
             .setRenderingMode(renderingMode)
-            .includeDarkAppearance()
+            .includeDarkAppearance(darkFilePath != nil)
             .build()
 
         try template.write(

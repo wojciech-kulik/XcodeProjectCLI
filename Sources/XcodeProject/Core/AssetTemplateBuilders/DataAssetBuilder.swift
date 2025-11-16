@@ -6,7 +6,7 @@ final class DataAssetBuilder {
     }
 
     func build() -> String {
-        let template = """
+        """
         {
           "data" : [
             {
@@ -18,8 +18,7 @@ final class DataAssetBuilder {
             "author" : "xcode",
             "version" : 1
           }
-        }
+        }\n
         """
-        return template
     }
 }

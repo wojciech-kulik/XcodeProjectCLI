@@ -13,8 +13,8 @@ final class ImageAssetBuilder {
         return self
     }
 
-    func includeDarkAppearance() -> ImageAssetBuilder {
-        includeDark = true
+    func includeDarkAppearance(_ includeDark: Bool) -> ImageAssetBuilder {
+        self.includeDark = includeDark
         return self
     }
 
@@ -22,7 +22,7 @@ final class ImageAssetBuilder {
         let templateRendering = renderingMode != .default
             ? """
             ,
-              "properties": {
+              "properties" : {
                 "template-rendering-intent" : "\(renderingMode.rawValue)"
               }
             """
@@ -44,7 +44,7 @@ final class ImageAssetBuilder {
             """
             : ""
 
-        let template = """
+        return """
         {
           "images" : [
             {
@@ -56,8 +56,7 @@ final class ImageAssetBuilder {
             "author" : "xcode",
             "version" : 1
           }\(templateRendering)
-        }
+        }\n
         """
-        return template
     }
 }
