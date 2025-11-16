@@ -30,6 +30,28 @@ extension SerializedSuite.RenameFileCommandTests {
     }
 
     @Test
+    func renameFile_shouldRenameResourceFileInProjectAndOnDisk() throws {
+        let file = Files.XcodebuildNvimApp.Modules.image
+        let dest = "\(Files.XcodebuildNvimApp.Modules.group)/ImageRenamed.png"
+        var sut = try RenameFileCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            file,
+            "--name",
+            dest.asInputPath.lastComponent
+        ])
+
+        let output = try runTest(for: &sut)
+        #expect(output == "")
+
+        try notExpectFileInProject(file.asInputPath)
+        try expectFileInProject(dest.asInputPath)
+        try expectFileInCopyResourcesPhase(dest.asInputPath, inTarget: "Helpers")
+        try expectTargets(["Helpers", "XcodebuildNvimApp"], forFile: dest.asInputPath)
+        try validateProject()
+    }
+
+    @Test
     func renameFile_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
         let file = "Helpers/NonExistentFile.swift".asInputPath
         let sut = try RenameFileCommand.parse([

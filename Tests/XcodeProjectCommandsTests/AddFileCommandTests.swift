@@ -26,6 +26,27 @@ extension SerializedSuite.AddFileCommandTests {
 
         let targets = try targets(forFile: file)
         #expect(targets == ["EmptyTarget", "Helpers"])
+        try expectFileInCompilePhase(file.asInputPath, inTarget: "EmptyTarget")
+        try validateProject()
+    }
+
+    @Test
+    func addFile_shouldAddResourceFile_whenGroupAlreadyExists() throws {
+        let file = Files.XcodebuildNvimApp.Modules.notAddedImage
+        var sut = try AddFileCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            file,
+            "--targets",
+            "Helpers,EmptyTarget"
+        ])
+
+        let output = try runTest(for: &sut)
+        #expect(output == "")
+
+        let targets = try targets(forFile: file)
+        #expect(targets == ["EmptyTarget", "Helpers"])
+        try expectFileInCopyResourcesPhase(file.asInputPath, inTarget: "EmptyTarget")
         try validateProject()
     }
 

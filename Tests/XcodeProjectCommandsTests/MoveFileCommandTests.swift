@@ -32,6 +32,28 @@ extension SerializedSuite.MoveFileCommandTests {
     }
 
     @Test
+    func moveFile_shouldMoveAndRenameResourceFileInProjectAndOnDisk_andShouldNotChangeTarget() throws {
+        let file = Files.XcodebuildNvimApp.Modules.image
+        let dest = "\(Files.Helpers.group)/ImageMoved.png"
+        var sut = try MoveFileCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            file,
+            "--dest",
+            dest
+        ])
+
+        let output = try runTest(for: &sut)
+        #expect(output == "")
+
+        try notExpectFileInProject(file.asInputPath)
+        try expectFileInProject(dest.asInputPath)
+        try expectFileInCopyResourcesPhase(dest.asInputPath, inTarget: "Helpers")
+        try expectTargets(["Helpers", "XcodebuildNvimApp"], forFile: dest.asInputPath)
+        try validateProject()
+    }
+
+    @Test
     func moveFile_shouldReturnError_whenFileDoesNotExistOnDisk() throws {
         let file = "Helpers/NonExistentFile.swift".asInputPath
         let sut = try MoveFileCommand.parse([

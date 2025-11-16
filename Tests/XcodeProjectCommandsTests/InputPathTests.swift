@@ -158,4 +158,11 @@ struct InputPathTests {
 
         #expect(newPath.relativePath == filePath)
     }
+
+    @Test
+    func inputPath_fileExtension_shouldReturnCorrectExtension() {
+        let path = InputPath(filePath, projectRoot: projectRoot)
+
+        #expect(path.fileExtension == "swift")
+    }
 }

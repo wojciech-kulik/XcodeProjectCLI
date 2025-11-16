@@ -6,6 +6,8 @@
    - Modules
      - XcodebuildNvimApp.swift
      - NotAddedFile.swift
+     - Image.png [targets: Helpers, XcodebuildNvimApp]
+     - NotAddedImage.png
      - NotAdded
        - NotAddedFile.swift
      - Main
@@ -39,6 +41,8 @@ enum Files {
             static let group = "XcodebuildNvimApp/Modules"
             static let xcodebuildNvimApp = "XcodebuildNvimApp/Modules/XcodebuildNvimApp.swift"
             static let notAddedFile = "XcodebuildNvimApp/Modules/NotAddedFile.swift"
+            static let image = "XcodebuildNvimApp/Modules/Image.png"
+            static let notAddedImage = "XcodebuildNvimApp/Modules/NotAddedImage.png"
 
             enum NotAdded {
                 static let group = "XcodebuildNvimApp/Modules/NotAdded"

@@ -68,10 +68,10 @@ public final class ProjectFiles {
             throw XcodeProjectError.fileNotFoundInProject(filePath)
         }
 
-        // Remove from build phases
+        // Remove from phases: "Compile sources" and "Copy Bundle Resources"
         try project.pbxproj.nativeTargets
             .filter { target in
-                try target.sourceFiles().contains { $0.fullPath == filePath }
+                try target.allFiles().contains { $0.fullPath == filePath }
             }
             .forEach { try removeFile(filePath, from: $0.name) }
 
@@ -90,6 +90,8 @@ public final class ProjectFiles {
         }
 
         try target.sourcesBuildPhase()?.files?
+            .removeAll { $0.file?.fullPath == filePath }
+        try target.resourcesBuildPhase()?.files?
             .removeAll { $0.file?.fullPath == filePath }
     }
 

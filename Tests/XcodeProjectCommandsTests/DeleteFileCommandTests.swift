@@ -35,6 +35,31 @@ extension SerializedSuite.DeleteFileCommandTests {
     }
 
     @Test
+    func deleteFile_shouldDeleteResourceFileFromProjectAndDisk() throws {
+        let file = Files.XcodebuildNvimApp.Modules.image
+        var sut = try DeleteFileCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            file
+        ])
+
+        let output = try runTest(for: &sut)
+        #expect(output == "")
+        try notExpectFileInProject(file.asInputPath)
+
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+
+        for target in project.pbxproj.nativeTargets {
+            let buildFiles = target.buildPhases
+                .flatMap { $0.files ?? [] }
+                .compactMap(\.file)
+
+            #expect(buildFiles.allSatisfy { $0.fullPath != file.asInputPath })
+        }
+        try validateProject()
+    }
+
+    @Test
     func deleteFile_shouldReturnError_whenFileDoesNotExistInProject() throws {
         let file = Files.Helpers.notAddedFile.asInputPath
         let sut = try DeleteFileCommand.parse([

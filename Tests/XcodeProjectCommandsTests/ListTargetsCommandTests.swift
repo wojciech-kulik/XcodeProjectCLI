@@ -53,6 +53,21 @@ extension SerializedSuite.ListTargetsCommandTests {
         #expect(output == testCases[testCase].expected)
     }
 
+    func listTargets_byResourceFilePath_shouldReturnTarget() throws {
+        var sut = try ListTargetsCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            Files.XcodebuildNvimApp.Modules.image
+        ])
+
+        let output = try runTest(for: &sut)
+
+        #expect(output == [
+            "Helpers",
+            "XcodebuildNvimApp"
+        ])
+    }
+
     @Test
     func listTargets_byFilePath_shouldReturnError_whenFileIsNotAddedToAnyTarget() throws {
         let file = Files.Helpers.notAddedFile.asInputPath

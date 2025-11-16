@@ -94,7 +94,7 @@ public final class ProjectTargets {
         }
 
         return try project.pbxproj.nativeTargets
-            .filter { try $0.sourceFiles().contains { $0.fullPath == filePath } }
+            .filter { try $0.allFiles().contains { $0.fullPath == filePath } }
             .sorted { $0.name < $1.name }
     }
 
@@ -153,9 +153,14 @@ public final class ProjectTargets {
             }
         }
 
+        let ext = filePath.fileExtension.lowercased()
+        let isSourceFile = ["swift", "m", "mm", "c", "cpp", "h", "hpp"].contains(ext)
+
         for target in destTargets {
-            let buildPhase = try target.sourcesBuildPhase()
-            _ = try buildPhase?.add(file: fileReference)
+            let phase = isSourceFile
+                ? try target.sourcesBuildPhase()
+                : try target.resourcesBuildPhase()
+            _ = try phase?.add(file: fileReference)
         }
     }
 
@@ -163,9 +168,9 @@ public final class ProjectTargets {
         var fileToTargetMap: [InputPath: [PBXNativeTarget]] = [:]
 
         for target in project.pbxproj.nativeTargets {
-            let sourceFiles = try target.sourceFiles()
+            let allFiles = try target.allFiles()
 
-            for file in sourceFiles {
+            for file in allFiles {
                 if let filePath = file.fullPath, !filePath.path.isEmpty {
                     fileToTargetMap[filePath, default: []].append(target)
                 }
