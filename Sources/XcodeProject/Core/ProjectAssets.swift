@@ -43,7 +43,7 @@ public final class ProjectAssets {
         )
 
         try FileManager.default.createDirectory(
-            atPath: asset.directory,
+            atPath: asset.assetDirPath,
             withIntermediateDirectories: true,
             attributes: nil
         )
@@ -80,7 +80,7 @@ public final class ProjectAssets {
         )
 
         try FileManager.default.createDirectory(
-            atPath: asset.directory,
+            atPath: asset.assetDirPath,
             withIntermediateDirectories: true,
             attributes: nil
         )
@@ -113,7 +113,7 @@ public final class ProjectAssets {
         )
 
         try FileManager.default.createDirectory(
-            atPath: asset.directory,
+            atPath: asset.assetDirPath,
             withIntermediateDirectories: true,
             attributes: nil
         )
@@ -149,9 +149,14 @@ public final class ProjectAssets {
             type: type
         )
 
+        try FileManager.default.createDirectory(
+            atPath: newAsset.parentDirectory,
+            withIntermediateDirectories: true,
+            attributes: nil
+        )
         try FileManager.default.moveItem(
-            atPath: oldAsset.directory,
-            toPath: newAsset.directory
+            atPath: oldAsset.assetDirPath,
+            toPath: newAsset.assetDirPath
         )
     }
 
@@ -162,7 +167,7 @@ public final class ProjectAssets {
             type: findAssetType(from: assetPath)
         )
 
-        try FileManager.default.removeItem(atPath: asset.directory)
+        try FileManager.default.removeItem(atPath: asset.assetDirPath)
     }
 
     private func findAssetType(from assetPath: String) throws -> AssetType {
