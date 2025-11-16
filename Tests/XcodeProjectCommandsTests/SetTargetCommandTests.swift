@@ -28,6 +28,25 @@ extension SerializedSuite.SetTargetCommandTests {
     }
 
     @Test
+    func setTarget_shouldAddResourceFileToSingleTarget() throws {
+        var sut = try SetTargetCommand.parse([
+            testXcodeprojPath,
+            "--file",
+            Files.XcodebuildNvimApp.Modules.image,
+            "--targets",
+            "EmptyTarget"
+        ])
+
+        let output = try runTest(for: &sut)
+        #expect(output == "")
+
+        let targets = try targets(forFile: Files.XcodebuildNvimApp.Modules.image)
+        #expect(targets == ["EmptyTarget"])
+
+        try validateProject()
+    }
+
+    @Test
     func setTarget_shouldAddFileToMultipleTargets() throws {
         var sut = try SetTargetCommand.parse([
             testXcodeprojPath,

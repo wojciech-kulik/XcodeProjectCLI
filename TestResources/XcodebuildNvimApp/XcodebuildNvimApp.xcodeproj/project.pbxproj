@@ -12,7 +12,9 @@
 		1617556B2EB196E900F5C100 /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
 		161957182EB2B5E9008B9334 /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 161957172EB2B5E4008B9334 /* other.txt */; };
 		161957192EB2B5E9008B9334 /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 161957172EB2B5E4008B9334 /* other.txt */; };
+		16198F862EC9D4A2007E87BA /* Image.png in Resources */ = {isa = PBXBuildFile; fileRef = 16198F852EC9D4A2007E87BA /* Image.png */; };
 		163E85A22EB2B64300E4A01E /* other.txt in Resources */ = {isa = PBXBuildFile; fileRef = 163E85A12EB2B64200E4A01E /* other.txt */; };
+		16543FB82EC9D58000B875E2 /* Image.png in Resources */ = {isa = PBXBuildFile; fileRef = 16198F852EC9D4A2007E87BA /* Image.png */; };
 		166E27392EB2838F00E5B17B /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
 		166E273A2EB2839400E5B17B /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9960CBC0047AADAB051DFB /* String+Extensions.swift */; };
 		166E273B2EB284B400E5B17B /* RandomFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161755692EB196E900F5C100 /* RandomFile.swift */; };
@@ -81,6 +83,7 @@
 		1603AB862BAA11EF00854BED /* EmptyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EmptyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		161755692EB196E900F5C100 /* RandomFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomFile.swift; sourceTree = "<group>"; };
 		161957172EB2B5E4008B9334 /* other.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = other.txt; sourceTree = "<group>"; };
+		16198F852EC9D4A2007E87BA /* Image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image.png; sourceTree = "<group>"; };
 		163E85A12EB2B64200E4A01E /* other.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = other.txt; sourceTree = "<group>"; };
 		1680AC782B9C80AB0036CB34 /* XcodebuildNvimApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XcodebuildNvimApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1680AC7B2B9C80AB0036CB34 /* XcodebuildNvimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodebuildNvimApp.swift; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 		1680ACA52B9C80E50036CB34 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				16198F852EC9D4A2007E87BA /* Image.png */,
 				1680ACA62B9C80EC0036CB34 /* Main */,
 			);
 			path = Modules;
@@ -439,6 +443,7 @@
 				1680AC832B9C80AD0036CB34 /* Preview Assets.xcassets in Resources */,
 				161957182EB2B5E9008B9334 /* other.txt in Resources */,
 				1680AC802B9C80AD0036CB34 /* Assets.xcassets in Resources */,
+				16198F862EC9D4A2007E87BA /* Image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				161957192EB2B5E9008B9334 /* other.txt in Resources */,
+				16543FB82EC9D58000B875E2 /* Image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

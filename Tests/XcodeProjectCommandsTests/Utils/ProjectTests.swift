@@ -99,6 +99,40 @@ class ProjectTests {
         #expect(try groups.findGroup(groupPath) == nil)
     }
 
+    func expectFileInCompilePhase(
+        _ filePath: InputPath,
+        inTarget targetName: String
+    ) throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+        let target = project.pbxproj.nativeTargets.first { $0.name == targetName }
+
+        #expect(target != nil, "Target \(targetName) not found.")
+
+        let compilePhase = try target?.sourceFiles()
+
+        let fileFound = compilePhase?
+            .contains { $0.fullPath == filePath }
+
+        #expect(fileFound == true, "File \(filePath) not found in compile phase of target \(targetName).")
+    }
+
+    func expectFileInCopyResourcesPhase(
+        _ filePath: InputPath,
+        inTarget targetName: String
+    ) throws {
+        let project = try XcodeProj(path: .init(testXcodeprojPath))
+        let target = project.pbxproj.nativeTargets.first { $0.name == targetName }
+
+        #expect(target != nil, "Target \(targetName) not found.")
+
+        let resourcesPhase = try target?.resourcesBuildPhase()?.files
+
+        let fileFound = resourcesPhase?
+            .contains { $0.file?.fullPath == filePath }
+
+        #expect(fileFound == true, "File \(filePath) not found in copy bundle resources phase of target \(targetName).")
+    }
+
     func validateProject() throws {
         let project = try XcodeProj(path: .init(testXcodeprojPath))
 
