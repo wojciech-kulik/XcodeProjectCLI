@@ -4,7 +4,7 @@ import XcodeProject
 public struct AddFileCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "add-file",
-        abstract: "Add a file to specified targets in the project."
+        abstract: "Add a file to specified targets."
     )
 
     @OptionGroup

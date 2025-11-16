@@ -5,7 +5,7 @@ import XcodeProject
 public struct AddGroupCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "add-group",
-        abstract: "Add a group to the project."
+        abstract: "Add a group."
     )
 
     @OptionGroup

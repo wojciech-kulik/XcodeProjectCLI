@@ -17,12 +17,12 @@ public final class ProjectAssets {
         let allowedExtensions = AssetType.allCases.map(\.ext)
 
         while let element = fileEnumerator?.nextObject() as? String {
-            let url = URL(fileURLWithPath: element)
+            let url = (element as NSString)
             let ext = url.pathExtension
 
             if allowedExtensions.contains(ext) {
                 let assetType = AssetType.allCases.first { $0.ext == ext }!
-                let assetPath = url.deletingPathExtension().path
+                let assetPath = url.deletingPathExtension
                 assets[assetType, default: []].append(assetPath)
             }
         }

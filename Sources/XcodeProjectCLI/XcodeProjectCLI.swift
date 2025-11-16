@@ -53,8 +53,9 @@ struct XcodeProjectCLI: ParsableCommand {
                     AddImageAssetCommand.self,
                     AddDataAssetCommand.self,
                     AddColorAssetCommand.self,
-                    DeleteAssetCommand.self,
-                    MoveAssetCommand.self
+                    ListAssetsCommand.self,
+                    MoveAssetCommand.self,
+                    DeleteAssetCommand.self
                 ]
             )
         ]

@@ -1,4 +1,4 @@
-public enum AssetType: CaseIterable {
+public enum AssetType: Int, CaseIterable {
     case image
     case data
     case color

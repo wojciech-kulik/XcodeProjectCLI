@@ -4,7 +4,7 @@ import XcodeProject
 public struct AddColorAssetCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "add-color-asset",
-        abstract: "Add a color asset to a given xcassets."
+        abstract: "Add a color asset."
     )
 
     @Argument

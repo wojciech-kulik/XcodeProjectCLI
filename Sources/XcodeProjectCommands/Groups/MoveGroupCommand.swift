@@ -5,7 +5,7 @@ import XcodeProject
 public struct MoveGroupCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "move-group",
-        abstract: "Move a group to a different location within the project.",
+        abstract: "Move a group.",
         discussion: """
           - This command does not allow to move and rename the group at the same time.
           - Groups will be automatically merged if another group with the same name already exists at the destination.

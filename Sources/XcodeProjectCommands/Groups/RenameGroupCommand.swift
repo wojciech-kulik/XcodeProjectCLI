@@ -5,7 +5,7 @@ import XcodeProject
 public struct RenameGroupCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "rename-group",
-        abstract: "Rename a group within the project."
+        abstract: "Rename a group."
     )
 
     @OptionGroup

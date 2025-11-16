@@ -4,7 +4,7 @@ import XcodeProject
 public struct MoveAssetCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "move-asset",
-        abstract: "Move an asset within a given xcassets."
+        abstract: "Move an asset."
     )
 
     @Argument
