@@ -5,7 +5,7 @@ import XcodeProject
 public struct DeleteFileCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "delete-file",
-        abstract: "Delete a file."
+        abstract: "Delete file."
     )
 
     @OptionGroup

@@ -24,31 +24,31 @@ OPTIONS:
 
 TARGET SUBCOMMANDS:
   list-targets            List project targets.
-  set-target              Set target for an existing file.
+  set-target              Set target for existing file.
 
 GROUP SUBCOMMANDS:
-  add-group               Add a group.
-  delete-group            Delete a group.
-  move-group              Move a group.
-  rename-group            Rename a group.
+  add-group               Add group.
+  delete-group            Delete group.
+  move-group              Move group.
+  rename-group            Rename group.
 
 FILE SUBCOMMANDS:
-  add-file                Add a file to specified targets.
-  delete-file             Delete a file.
-  move-file               Move a file.
-  rename-file             Rename a file.
+  add-file                Add file to specified targets.
+  delete-file             Delete file.
+  move-file               Move file.
+  rename-file             Rename file.
 
 BUILD SETTINGS SUBCOMMANDS:
-  get-build-setting       Get a build setting.
-  set-build-setting       Set a build setting.
+  get-build-setting       Get build setting.
+  set-build-setting       Set build setting.
 
 ASSETS SUBCOMMANDS:
-  add-image-asset         Add an image asset.
-  add-data-asset          Add a data asset.
-  add-color-asset         Add a color asset.
+  add-image-asset         Add image asset.
+  add-data-asset          Add data asset.
+  add-color-asset         Add color asset.
   list-assets             List all assets.
-  move-asset              Move an asset.
-  delete-asset            Delete an asset.
+  move-asset              Move asset.
+  delete-asset            Delete asset.
 
   See 'xcp help <subcommand>' for detailed help.
 ```

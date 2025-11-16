@@ -4,7 +4,7 @@ import XcodeProject
 public struct SetTargetCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "set-target",
-        abstract: "Set target for an existing file."
+        abstract: "Set target for existing file."
     )
 
     @OptionGroup

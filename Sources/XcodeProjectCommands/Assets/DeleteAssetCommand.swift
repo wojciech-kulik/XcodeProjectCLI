@@ -4,7 +4,7 @@ import XcodeProject
 public struct DeleteAssetCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "delete-asset",
-        abstract: "Delete an asset."
+        abstract: "Delete asset."
     )
 
     @Argument

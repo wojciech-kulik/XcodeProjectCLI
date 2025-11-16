@@ -6,7 +6,7 @@ extension RenderingMode: ExpressibleByArgument {}
 public struct AddImageAssetCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "add-image-asset",
-        abstract: "Add an image asset."
+        abstract: "Add image asset."
     )
 
     @Argument

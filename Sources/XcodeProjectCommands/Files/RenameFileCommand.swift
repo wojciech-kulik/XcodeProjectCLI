@@ -5,7 +5,7 @@ import XcodeProject
 public struct RenameFileCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "rename-file",
-        abstract: "Rename a file."
+        abstract: "Rename file."
     )
 
     @OptionGroup

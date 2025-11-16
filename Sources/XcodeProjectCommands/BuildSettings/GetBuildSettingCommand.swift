@@ -4,7 +4,7 @@ import XcodeProject
 public struct GetBuildSettingCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "get-build-setting",
-        abstract: "Get a build setting."
+        abstract: "Get build setting."
     )
 
     @OptionGroup

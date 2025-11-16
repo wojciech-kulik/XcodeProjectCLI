@@ -4,7 +4,7 @@ import XcodeProject
 public struct AddDataAssetCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "add-data-asset",
-        abstract: "Add a data asset."
+        abstract: "Add data asset."
     )
 
     @Argument

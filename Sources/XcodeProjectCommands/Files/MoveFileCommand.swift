@@ -5,7 +5,7 @@ import XcodeProject
 public struct MoveFileCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "move-file",
-        abstract: "Move a file.",
+        abstract: "Move file.",
         discussion: """
           - If the destination file already exists in the project, the operation will fail.
           - The target memberships of the file will be preserved.

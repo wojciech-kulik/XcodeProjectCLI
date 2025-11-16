@@ -5,7 +5,7 @@ import XcodeProject
 public struct DeleteGroupCommand: ParsableCommand {
     public static var configuration = CommandConfiguration(
         commandName: "delete-group",
-        abstract: "Delete a group."
+        abstract: "Delete group."
     )
 
     @OptionGroup
