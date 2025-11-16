@@ -35,7 +35,14 @@ public struct ListAssetsCommand: ParsableCommand {
             return asset.key == assetType
         }
 
-        for assetType in filteredAssets.keys.sorted(by: { $0.rawValue < $1.rawValue }) {
+        let allTypes = filteredAssets.keys
+            .sorted(by: { $0.rawValue < $1.rawValue })
+
+        for (index, assetType) in allTypes.enumerated() {
+            if index > 0 {
+                print("")
+            }
+
             if type == nil {
                 print("> \(assetType.title)")
             }
@@ -43,10 +50,6 @@ public struct ListAssetsCommand: ParsableCommand {
             let fileteredPaths = filteredAssets[assetType] ?? []
             for path in fileteredPaths.sorted() {
                 print(path)
-            }
-
-            if !fileteredPaths.isEmpty {
-                print("")
             }
         }
     }
