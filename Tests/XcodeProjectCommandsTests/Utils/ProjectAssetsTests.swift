@@ -8,6 +8,7 @@ class ProjectAssetsTests {
     let testProjectPath: String
     let testResourcesPath: String
     let lightImagePath: String
+    let dataFilePath: String
     let darkImagePath: String
 
     init() throws {
@@ -21,6 +22,7 @@ class ProjectAssetsTests {
         self.testXCAssetsPath = testXCAssetsPath
         self.lightImagePath = "\(testResourcesPath)/Image.png"
         self.darkImagePath = "\(testResourcesPath)/ImageDark.png"
+        self.dataFilePath = "\(testResourcesPath)/DataFile.txt"
 
         self.assets = ProjectAssets(xcassetsPath: testXCAssetsPath)
 

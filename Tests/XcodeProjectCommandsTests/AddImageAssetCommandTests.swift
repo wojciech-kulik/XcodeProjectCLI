@@ -33,7 +33,7 @@ extension SerializedSuite.AddImageAssetCommandTests {
     }
 
     @Test
-    func addImageAsset_shouldAddImageAsset_whenFolderExists() throws {
+    func addImageAsset_shouldAddImageAsset_toExistingFolder() throws {
         let assetPath = "Folder/Image.png"
         let command = try AddImageAssetCommand.parse([
             testXCAssetsPath,
@@ -56,7 +56,7 @@ extension SerializedSuite.AddImageAssetCommandTests {
     }
 
     @Test
-    func addImageAsset_shouldAddImageAsset_whenToRoot() throws {
+    func addImageAsset_shouldAddImageAsset_toRoot() throws {
         let assetPath = "Image.png"
         let command = try AddImageAssetCommand.parse([
             testXCAssetsPath,

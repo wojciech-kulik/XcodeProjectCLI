@@ -50,7 +50,8 @@ struct XcodeProjectCLI: ParsableCommand {
             .init(
                 name: "Assets",
                 subcommands: [
-                    AddImageAssetCommand.self
+                    AddImageAssetCommand.self,
+                    AddDataAssetCommand.self
                 ]
             )
         ]
