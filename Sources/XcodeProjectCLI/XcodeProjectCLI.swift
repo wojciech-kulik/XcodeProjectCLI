@@ -46,6 +46,12 @@ struct XcodeProjectCLI: ParsableCommand {
                     GetBuildSettingCommand.self,
                     SetBuildSettingCommand.self
                 ]
+            ),
+            .init(
+                name: "Assets",
+                subcommands: [
+                    AddImageAssetCommand.self
+                ]
             )
         ]
     )

@@ -108,4 +108,8 @@ public extension String {
 
         return InputPath(self, projectRoot: Project.projectRoot)
     }
+
+    var asAbsoluteInputPath: InputPath {
+        InputPath(PathUtils.toAbsolutePath(self), projectRoot: "")
+    }
 }
