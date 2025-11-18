@@ -5,7 +5,7 @@
 
 # XcodeProjectCLI
 
-A fast, lightweight command-line tool for managing Xcode projects - built entirely in Swift.
+A fast, lightweight command-line tool for managing Xcode projects, built entirely in Swift.
 
 Easily integrate it into your development workflow or automate complex refactoring tasks with just a few commands.
 
@@ -56,7 +56,7 @@ ASSETS SUBCOMMANDS:
 ## 📦 Installation
 
 ```bash
-brew install wojciech-kulik/tap/xcp
+brew install xcp
 ```
 
 ## 🛠️ Building from Source
