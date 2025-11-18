@@ -1,3 +1,4 @@
+[![Homebrew Version](https://img.shields.io/homebrew/v/xcp)](https://img.shields.io/homebrew/v/xcp)
 [![GitHub Release](https://img.shields.io/github/v/release/wojciech-kulik/XcodeProjectCLI?color=8A2BE2)](https://github.com/wojciech-kulik/XcodeProjectCLI/releases)
 [![min macOS](https://img.shields.io/badge/macOS-13.0+-silver)](#)
 [![CI Status](https://img.shields.io/github/actions/workflow/status/wojciech-kulik/XcodeProjectCLI/build-and-test.yml)](https://github.com/wojciech-kulik/XcodeProjectCLI/actions/workflows/build-and-test.yml)
