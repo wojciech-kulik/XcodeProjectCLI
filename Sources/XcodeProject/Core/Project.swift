@@ -36,7 +36,7 @@ public final class Project {
 
     public func save() throws {
         if let path = project.path {
-            try project.write(path: path, override: true)
+            try project.writePBXProj(path: path, override: true, outputSettings: .init())
         }
     }
 }
