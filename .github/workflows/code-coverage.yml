@@ -9,6 +9,7 @@ on:
 
 jobs:
   code-coverage:
+    if: ${{ !startsWith(github.head_ref || github.ref_name, 'chore/') }}
     name: check
     runs-on: macos-latest
     steps:
