@@ -1,5 +1,4 @@
 {
-  "originHash" : "676a5fac8edf1756ee4645122a90e0a0b9758fc271948fb7a96f0466fcbdd483",
   "pins" : [
     {
       "identity" : "aexml",
@@ -42,10 +41,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/XcodeProj.git",
       "state" : {
-        "revision" : "b1caa062d4aaab3e3d2bed5fe0ac5f8ce9bf84f4",
-        "version" : "8.27.7"
+        "revision" : "fb79d68bc758cdb00079d72b6c8b899d99f5f15e",
+        "version" : "9.12.0"
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
