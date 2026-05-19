@@ -308,6 +308,12 @@ extension SerializedSuite.SetBuildSettingCommandTests {
             $0.name == config
         }
 
-        return buildConfig?.buildSettings[key] as? T
+        if T.self == [String].self {
+            return buildConfig?.buildSettings[key]?.arrayValue as? T
+        } else if T.self == String.self {
+            return buildConfig?.buildSettings[key]?.stringValue as? T
+        }
+
+        return nil
     }
 }

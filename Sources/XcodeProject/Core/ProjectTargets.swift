@@ -33,10 +33,10 @@ public final class ProjectTargets {
             buildConfig = target.buildConfigurationList?.buildConfigurations.first
         }
 
-        if let array = buildConfig?.buildSettings[key] as? [String] {
+        if let array = buildConfig?.buildSettings[key]?.arrayValue {
             return array.joined(separator: "\n")
         } else {
-            return buildConfig?.buildSettings[key] as? String
+            return buildConfig?.buildSettings[key]?.stringValue
         }
     }
 
@@ -60,16 +60,20 @@ public final class ProjectTargets {
                 .filter { configs.isEmpty || configs.contains($0.name) }
                 .forEach { config in
                     for (key, value) in settings {
-                        if append, let existingValue = config.buildSettings[key] as? String {
-                            config.buildSettings[key] = existingValue + " " + value
-                        } else if let existingValue = config.buildSettings[key] as? [Any] {
+                        if let existingValue = config.buildSettings[key]?.arrayValue {
                             if append {
-                                config.buildSettings[key] = existingValue + [value]
+                                config.buildSettings[key] = .array(existingValue + [value])
                             } else {
-                                config.buildSettings[key] = [value]
+                                config.buildSettings[key] = .array([value])
+                            }
+                        } else if let existingValue = config.buildSettings[key]?.stringValue {
+                            if append {
+                                config.buildSettings[key] = .string("\(existingValue) \(value)")
+                            } else {
+                                config.buildSettings[key] = .string(value)
                             }
                         } else {
-                            config.buildSettings[key] = value
+                            config.buildSettings[key] = .string(value)
                         }
                     }
                 }
