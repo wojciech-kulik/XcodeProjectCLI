@@ -13,7 +13,7 @@ let package = Package(
         .executable(name: "xcp", targets: ["XcodeProjectCLI"])
     ],
     dependencies: [
-        .package(url: "https://github.com/tuist/XcodeProj.git", .upToNextMajor(from: "9.12.0")),
+        .package(url: "https://github.com/wojciech-kulik/XcodeProj.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0")
     ],
     targets: [
