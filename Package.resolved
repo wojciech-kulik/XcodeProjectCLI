@@ -39,10 +39,10 @@
     {
       "identity" : "xcodeproj",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tuist/XcodeProj.git",
+      "location" : "https://github.com/wojciech-kulik/XcodeProj.git",
       "state" : {
-        "revision" : "fb79d68bc758cdb00079d72b6c8b899d99f5f15e",
-        "version" : "9.12.0"
+        "branch" : "main",
+        "revision" : "db12c9c410baf83ca414b7a6b7150759acddf85f"
       }
     }
   ],
